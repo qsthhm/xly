@@ -16,15 +16,26 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
   useEffect(() => {
     if (!scriptLoaded || !fileId) return;
     
-    // 确保TCPlayer已定义且DOM元素已存在
-    if (typeof window !== 'undefined' && window.TCPlayer && playerContainerRef.current) {
-      try {
-        if (playerInstanceRef.current) {
-          // 如果播放器已经初始化，直接更换视频
-          playerInstanceRef.current.loadVideoByID({ fileID: fileId, appID: appId });
-        } else {
-          // 初始化播放器
-          playerInstanceRef.current = new window.TCPlayer('player-container', {
+    // 确保script已加载完成后再初始化播放器
+    const timer = setTimeout(() => {
+      if (typeof window !== 'undefined' && window.TCPlayer && playerContainerRef.current) {
+        try {
+          if (playerInstanceRef.current) {
+            playerInstanceRef.current.dispose();
+            playerInstanceRef.current = null;
+          }
+          
+          // 确保容器中有video元素
+          if (!playerContainerRef.current.querySelector('video')) {
+            const videoElement = document.createElement('video');
+            videoElement.id = 'player-video-element';
+            videoElement.className = 'w-full h-full';
+            videoElement.setAttribute('playsinline', 'true');
+            playerContainerRef.current.appendChild(videoElement);
+          }
+          
+          // 使用正确的video元素初始化播放器
+          playerInstanceRef.current = new window.TCPlayer('player-video-element', {
             fileID: fileId,
             appID: appId,
             poster: '',
@@ -35,13 +46,14 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
               },
             },
           });
+        } catch (error) {
+          console.error('播放器初始化错误:', error);
         }
-      } catch (error) {
-        console.error('播放器初始化错误:', error);
       }
-    }
+    }, 500); // 给脚本加载一些额外时间
 
     return () => {
+      clearTimeout(timer);
       if (playerInstanceRef.current) {
         try {
           playerInstanceRef.current.dispose();
@@ -59,12 +71,17 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
 
   return (
     <div className="relative w-full aspect-video bg-black">
+      {/* 播放器脚本 */}
       <Script
         src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.7.2/tcplayer.v4.7.2.min.js"
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
-      <div id="player-container" ref={playerContainerRef} className="w-full h-full"></div>
+      
+      {/* 播放器容器 */}
+      <div id="player-container" ref={playerContainerRef} className="w-full h-full">
+        {/* video元素将在useEffect中动态创建 */}
+      </div>
     </div>
   );
 }
