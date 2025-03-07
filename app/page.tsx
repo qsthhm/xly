@@ -8,8 +8,8 @@ import ThemeToggle from './components/ThemeToggle';
 // 扩展视频数据结构，包含分类信息
 const ALL_VIDEOS = [
   {
-    id: '1397757906801587829', 
-    title: 'AI对话式互联计划',
+    id: '1397757906803886577', 
+    title: '第一个视频',
     thumbnail: '/thumbnails/video1.jpg',
     description: '我是谁 我擅长什么 我能做什么',
     psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzMzcwMzcsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiVHJhbnNjb2RlIiwidHJhbnNjb2RlRGVmaW5pdGlvbiI6MTAwODAwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.xzpFTOT7jZDZnp_LremVfx49MKJn8QWB6UU9CI5k46A', // 你的psign，如果有的话
