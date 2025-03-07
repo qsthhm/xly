@@ -17,15 +17,15 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
     if (!scriptLoaded || !fileId) return;
     
     const timer = setTimeout(() => {
-      if (typeof window !== 'undefined' && window.TCPlayer && playerContainerRef.current) {
+      if (typeof window !== 'undefined' && window.TCPlayer && document.getElementById('player-video-element')) {
         try {
           if (playerInstanceRef.current) {
             playerInstanceRef.current.dispose();
             playerInstanceRef.current = null;
           }
           
-          // 初始化播放器
-          playerInstanceRef.current = new window.TCPlayer('player-container', {
+          // 使用video元素ID初始化播放器
+          playerInstanceRef.current = new window.TCPlayer('player-video-element', {
             fileID: fileId,
             appID: appId,
             poster: '',
@@ -36,15 +36,14 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
                 auto: false,
               },
             },
-            // 添加更多播放器配置，如需要
-            language: 'zh-CN', // 设置语言
-            volume: 0.5, // 设置音量
+            language: 'zh-CN',
+            volume: 0.5,
           });
         } catch (error) {
           console.error('播放器初始化错误:', error);
         }
       }
-    }, 1000); // 给样式和脚本加载一些额外时间
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
@@ -72,8 +71,14 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
         onLoad={handleScriptLoad}
       />
       
-      {/* 播放器容器 */}
-      <div id="player-container" ref={playerContainerRef} className="tcplayer w-full h-full"></div>
+      {/* 重要: 这里我们显式地放置一个video元素，并使用video元素的ID而不是容器ID */}
+      <div ref={playerContainerRef} className="w-full h-full">
+        <video 
+          id="player-video-element" 
+          className="tcplayer w-full h-full" 
+          playsInline
+        ></video>
+      </div>
     </div>
   );
 }
