@@ -8,11 +8,11 @@ import ThemeToggle from './components/ThemeToggle';
 // 扩展视频数据结构，包含分类信息
 const ALL_VIDEOS = [
   {
-    id: '1397757906803886577', 
-    title: '第一个视频',
+    id: '1397757906801587829', 
+    title: 'AI对话式互联计划',
     thumbnail: '/thumbnails/video1.jpg',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzMzcwMzcsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiVHJhbnNjb2RlIiwidHJhbnNjb2RlRGVmaW5pdGlvbiI6MTAwODAwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.xzpFTOT7jZDZnp_LremVfx49MKJn8QWB6UU9CI5k46A', // 你的psign，如果有的话
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzMzg4NDUsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.sJ3kTSo0aPvXpW665SQZ1KFr-oShEHgBHEuoU8SBo5Y', // 你的psign，如果有的话
     category: 'packaging', // 包装项目
     views: '3.2万次观看',
     uploadTime: '2个月前'
@@ -74,21 +74,20 @@ export default function Home() {
   // 确保在切换分类后，如果当前视频不在新分类中，则自动选择新分类的第一个视频
   const currentVideo = ALL_VIDEOS.find(v => v.id === currentVideoId) || ALL_VIDEOS[0];
   
-  // 当切换分类时，保持当前视频，除非它不在新分类中
+  // 修复的分类切换处理函数
   const handleCategoryChange = (category: string) => {
     setCurrentCategory(category);
     
-    // 如果是切换到"全部"分类，保持当前视频不变
-    if (category === 'all') {
-      return;
-    }
+    // 不论切换到哪个分类，都保持当前视频不变
+    // 只有当"显示"的视频列表中不包含当前视频时才切换
+    const videosInCategory = category === 'all' 
+      ? ALL_VIDEOS 
+      : ALL_VIDEOS.filter(video => video.category === category);
     
-    // 检查当前视频是否在新分类中
-    const videosInCategory = ALL_VIDEOS.filter(video => video.category === category);
+    const currentVideoInCategory = videosInCategory.some(v => v.id === currentVideoId);
     
-    // 只有当前视频不在新分类中时，才自动选中第一个视频
-    const currentVideoInNewCategory = videosInCategory.some(v => v.id === currentVideoId);
-    if (!currentVideoInNewCategory && videosInCategory.length > 0) {
+    // 如果当前视频不在筛选后的列表中，才切换到第一个视频
+    if (!currentVideoInCategory && videosInCategory.length > 0) {
       setCurrentVideoId(videosInCategory[0].id);
     }
   };
@@ -105,11 +104,6 @@ export default function Home() {
           </div>
           
           <div className="flex items-center space-x-2">
-            <a href="#" className="yt-nav-button">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-              </svg>
-            </a>
             <ThemeToggle />
           </div>
         </div>
@@ -140,18 +134,9 @@ export default function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="font-semibold">许璐雅</h2>
+                    <h2 className="font-semibold">许璨雅</h2>
                     <p className="text-sm text-foreground/60">个人作品集</p>
                   </div>
-                </div>
-                
-                <div className="flex space-x-2">
-                  <a href="#" className="yt-button yt-button-primary">
-                    <span>我的简历</span>
-                  </a>
-                  <a href="#" className="yt-button yt-button-secondary">
-                    <span>联系我</span>
-                  </a>
                 </div>
               </div>
               
