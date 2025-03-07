@@ -7,8 +7,8 @@ import VideoList from './components/VideoList';
 // 示例视频数据
 const DEMO_VIDEOS = [
   {
-    id: '3891695371094535824',
-    title: 'AI对话式互联计划',
+    id: '1397757906801587829',
+    title: '测试一下',
     thumbnail: '/thumbnails/video1.jpg',
     description: '我是谁 我擅长什么 我能做什么',
   },
