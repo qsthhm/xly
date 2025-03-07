@@ -31,15 +31,15 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
             autoplay: false
           });
           
-          // 添加事件监听帮助调试
-          playerInstanceRef.current.on('error', function(error) {
+          // 添加事件监听帮助调试，添加类型注解
+          playerInstanceRef.current.on('error', function(error: unknown) {
             console.error('播放器错误详情:', error);
           });
           
           playerInstanceRef.current.on('load', function() {
             console.log('视频加载成功');
           });
-        } catch (error) {
+        } catch (error: unknown) {
           console.error('播放器初始化错误:', error);
         }
       }
@@ -50,7 +50,7 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
       if (playerInstanceRef.current) {
         try {
           playerInstanceRef.current.dispose();
-        } catch (e) {
+        } catch (e: unknown) {
           console.error('播放器销毁错误:', e);
         }
         playerInstanceRef.current = null;
