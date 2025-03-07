@@ -23,8 +23,8 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
             playerInstanceRef.current = null;
           }
           
-          // 使用与自动生成代码相同的初始化方式
-          playerInstanceRef.current = TCPlayer('player-container-id', {
+          // 使用与自动生成代码相同的初始化方式，但添加window前缀
+          playerInstanceRef.current = window.TCPlayer('player-container-id', {
             fileID: fileId,
             appID: appId,
             psign: "", // 这个参数可能是必需的，即使是空值
@@ -76,9 +76,7 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
         id="player-container-id" 
         className="w-full h-full" 
         preload="auto"
-        playsinline 
-        webkit-playsinline 
-        x5-playsinline
+        playsInline 
       ></video>
     </div>
   );
