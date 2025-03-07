@@ -27,7 +27,7 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
           playerInstanceRef.current = window.TCPlayer('player-container-id', {
             fileID: fileId,
             appID: appId,
-            psign: "", // 这个参数可能是必需的，即使是空值
+            psign: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMTU4NzgyOSIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzMzU5NDIsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwifSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.d2UMx_1i5ALIUPT5PDmGAAbNrA-yynCego0zCjOjZB4", // 这个参数可能是必需的，即使是空值
             autoplay: false
           });
           
