@@ -10,80 +10,83 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const playerInstanceRef = useRef<any>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
+  const playerIdRef = useRef(`player-${Math.random().toString(36).substring(2, 9)}`);
 
-  // 当fileId变化时重新加载视频
-  useEffect(() => {
-    if (!scriptLoaded || !fileId) return;
+  // 初始化或重新创建播放器
+  const initializePlayer = () => {
+    if (!scriptLoaded || !fileId || !videoRef.current) return;
     
-    // 如果播放器实例已存在，并且fileId改变，直接切换视频
-    if (playerInstanceRef.current && playerReady) {
-      try {
-        // 使用loadVideoByID方法更换视频
-        playerInstanceRef.current.loadVideoByID({
+    try {
+      // 每次都完全销毁并重新创建播放器，避免切换问题
+      if (playerInstanceRef.current) {
+        playerInstanceRef.current.dispose();
+        playerInstanceRef.current = null;
+      }
+      
+      // 确保DOM元素准备好
+      if (videoRef.current && typeof window.TCPlayer === 'function') {
+        console.log('初始化播放器：', fileId);
+        
+        playerInstanceRef.current = new window.TCPlayer(videoRef.current, {
           fileID: fileId,
           appID: appId,
           psign: psign,
+          autoplay: true,
+          controls: true,
+          plugins: {
+            ContinuePlay: { auto: false },
+          },
+          language: 'zh-CN',
+          // 禁用动态创建video元素，因为我们已经提供了一个
+          createVideoElement: false
         });
-      } catch (error: unknown) {
-        console.error('切换视频错误:', error);
+        
+        console.log('播放器初始化完成');
       }
-      return;
+    } catch (error) {
+      console.error('播放器初始化错误:', error);
     }
+  };
+
+  // 处理脚本加载
+  const handleScriptLoad = () => {
+    console.log('播放器脚本加载完成');
+    setScriptLoaded(true);
+  };
+
+  // 监听脚本加载完成
+  useEffect(() => {
+    if (scriptLoaded) {
+      // 给页面一些时间确保DOM完全准备好
+      const timer = setTimeout(() => {
+        initializePlayer();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [scriptLoaded]);
+
+  // 当fileId变化时重新初始化播放器
+  useEffect(() => {
+    if (!scriptLoaded) return;
     
-    // 如果播放器还未初始化，创建新的播放器实例
+    // 重新初始化播放器
     const timer = setTimeout(() => {
-      if (typeof window !== 'undefined' && window.TCPlayer && document.getElementById('player-container-id')) {
-        try {
-          if (playerInstanceRef.current) {
-            playerInstanceRef.current.dispose();
-            playerInstanceRef.current = null;
-          }
-          
-          // 初始化播放器，添加自动播放
-          playerInstanceRef.current = window.TCPlayer('player-container-id', {
-            fileID: fileId,
-            appID: appId,
-            psign: psign,
-            autoplay: true, // 启用自动播放
-            controls: true,
-            plugins: {
-              ContinuePlay: {
-                auto: false,
-              },
-            },
-            language: 'zh-CN',
-          });
-          
-          // 添加事件监听
-          playerInstanceRef.current.on('error', function(error: unknown) {
-            console.error('播放器错误详情:', error);
-          });
-          
-          playerInstanceRef.current.on('load', function() {
-            console.log('视频加载成功');
-            setPlayerReady(true);
-          });
-        } catch (error: unknown) {
-          console.error('播放器初始化错误:', error);
-        }
-      }
-    }, 1000);
+      initializePlayer();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [fileId, appId, psign]);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [fileId, appId, psign, scriptLoaded]);
-
-  // 组件卸载时清理播放器
+  // 组件卸载时清理
   useEffect(() => {
     return () => {
       if (playerInstanceRef.current) {
         try {
           playerInstanceRef.current.dispose();
-        } catch (e: unknown) {
+        } catch (e) {
           console.error('播放器销毁错误:', e);
         }
         playerInstanceRef.current = null;
@@ -91,23 +94,21 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     };
   }, []);
 
-  const handleScriptLoad = () => {
-    setScriptLoaded(true);
-  };
-
   return (
     <div className="relative w-full aspect-video bg-black">
       <Script
-        src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
+        src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.5.2/tcplayer.v4.5.2.min.js"
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
       
       <video 
-        id="player-container-id" 
+        ref={videoRef}
+        id={playerIdRef.current}
         className="w-full h-full" 
         preload="auto"
-        playsInline 
+        playsInline
+        muted // 添加muted属性有助于某些浏览器自动播放
       ></video>
     </div>
   );
