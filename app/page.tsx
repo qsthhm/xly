@@ -15,9 +15,70 @@ const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
   )
 });
 
+// 添加接口定义视频数据类型
+interface Video {
+  id: string;
+  title: string;
+  thumbnail: string;
+  description: string;
+  psign: string;
+  category: string;
+  views: string;
+  uploadTime: string;
+}
+
 // 视频数据
-const ALL_VIDEOS = [
-  // 你的视频数据保持不变
+const ALL_VIDEOS: Video[] = [
+  {
+    id: '1397757906801587829', 
+    title: 'AI对话式互联计划',
+    thumbnail: '/thumbnails/video1.jpg',
+    description: '我是谁 我擅长什么 我能做什么',
+    psign: '', 
+    category: 'packaging',
+    views: '3.2万次观看',
+    uploadTime: '2个月前'
+  },
+  {
+    id: '第二个视频ID', 
+    title: '南川播种一年级自然工作坊',
+    thumbnail: '/thumbnails/video2.jpg',
+    description: '我是谁 我擅长什么 我能做什么',
+    psign: '',
+    category: 'packaging',
+    views: '1.8万次观看',
+    uploadTime: '3个月前'
+  },
+  {
+    id: '第三个视频ID', 
+    title: '剪辑作品1',
+    thumbnail: '/thumbnails/video3.jpg',
+    description: '我是谁 我擅长什么 我能做什么',
+    psign: '',
+    category: 'editing',
+    views: '5.4万次观看',
+    uploadTime: '1个月前'
+  },
+  {
+    id: '第四个视频ID', 
+    title: '剪辑作品2',
+    thumbnail: '/thumbnails/video4.jpg',
+    description: '我是谁 我擅长什么 我能做什么',
+    psign: '',
+    category: 'editing',
+    views: '2.7万次观看',
+    uploadTime: '5个月前'
+  },
+  {
+    id: '第五个视频ID', 
+    title: '其他作品',
+    thumbnail: '/thumbnails/video5.jpg',
+    description: '我是谁 我擅长什么 我能做什么',
+    psign: '',
+    category: 'other',
+    views: '1.2万次观看',
+    uploadTime: '4个月前'
+  }
 ];
 
 // 腾讯云VOD应用ID
