@@ -14,9 +14,9 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <head>
-        {/* 添加腾讯云播放器样式 */}
         <link 
-          href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" rel="stylesheet"
+          href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
+          rel="stylesheet"
         />
       </head>
       <body className="bg-gray-900">{children}</body>

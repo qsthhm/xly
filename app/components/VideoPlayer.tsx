@@ -6,9 +6,10 @@ import Script from 'next/script';
 interface VideoPlayerProps {
   fileId: string;
   appId: string;
+  psign?: string;
 }
 
-export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
+export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
   const playerInstanceRef = useRef<any>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
@@ -23,15 +24,15 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
             playerInstanceRef.current = null;
           }
           
-          // 使用与自动生成代码相同的初始化方式，但添加window前缀
+          // 初始化播放器
           playerInstanceRef.current = window.TCPlayer('player-container-id', {
             fileID: fileId,
             appID: appId,
-            psign: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMTU4NzgyOSIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzMzU5NDIsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwifSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.d2UMx_1i5ALIUPT5PDmGAAbNrA-yynCego0zCjOjZB4", // 这个参数可能是必需的，即使是空值
+            psign: psign,
             autoplay: false
           });
           
-          // 添加事件监听帮助调试，添加类型注解
+          // 添加事件监听帮助调试
           playerInstanceRef.current.on('error', function(error: unknown) {
             console.error('播放器错误详情:', error);
           });
@@ -56,7 +57,7 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
         playerInstanceRef.current = null;
       }
     };
-  }, [fileId, appId, scriptLoaded]);
+  }, [fileId, appId, psign, scriptLoaded]);
 
   const handleScriptLoad = () => {
     setScriptLoaded(true);
@@ -64,14 +65,12 @@ export default function VideoPlayer({ fileId, appId }: VideoPlayerProps) {
 
   return (
     <div className="relative w-full aspect-video bg-black">
-      {/* 使用与自动生成代码相同的播放器脚本 */}
       <Script
         src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
       
-      {/* 完全按照自动生成的代码设置video标签 */}
       <video 
         id="player-container-id" 
         className="w-full h-full" 
