@@ -2,13 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 24, 39;
-  --background-end-rgb: 17, 24, 39;
+@layer base {
+  :root {
+    --background: 255, 255, 255;
+    --foreground: 15, 15, 15;
+    
+    --card: 255, 255, 255;
+    --card-foreground: 15, 15, 15;
+    
+    --border: 230, 230, 230;
+    --input: 230, 230, 230;
+    
+    --primary: 15, 15, 15;
+    --primary-foreground: 255, 255, 255;
+    
+    --secondary: 245, 245, 245;
+    --secondary-foreground: 15, 15, 15;
+    
+    --accent: 230, 230, 230;
+    --accent-foreground: 15, 15, 15;
+    
+    --ring: 0, 0, 0;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 15, 15, 15;
+    --foreground: 255, 255, 255;
+    
+    --card: 35, 35, 35;
+    --card-foreground: 255, 255, 255;
+    
+    --border: 48, 48, 48;
+    --input: 48, 48, 48;
+    
+    --primary: 255, 255, 255;
+    --primary-foreground: 15, 15, 15;
+    
+    --secondary: 35, 35, 35;
+    --secondary-foreground: 255, 255, 255;
+    
+    --accent: 48, 48, 48;
+    --accent-foreground: 255, 255, 255;
+    
+    --ring: 212, 212, 212;
+  }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* 自定义YouTube风格组件 */
+@layer components {
+  .yt-button {
+    @apply rounded-full px-4 py-2 font-medium transition-colors duration-200;
+  }
+  
+  .yt-button-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  
+  .yt-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-accent;
+  }
+  
+  .yt-nav-button {
+    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-secondary;
+  }
+  
+  .yt-video-card {
+    @apply overflow-hidden rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+}
+
+/* 修改滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent-foreground/40;
+}
+
+/* 确保暗模式下正确显示 */
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-accent;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent-foreground/30;
 }
