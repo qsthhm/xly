@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import ThemeProvider from './components/ThemeProvider';
 
 export const metadata: Metadata = {
   title: '个人作品集 | 视频展示',
@@ -13,18 +12,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh" suppressHydrationWarning>
+    <html lang="zh">
       <head>
         <link 
           href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
           rel="stylesheet"
         />
       </head>
-      <ThemeProvider>
-        <body className="antialiased transition-colors duration-200">
-          {children}
-        </body>
-      </ThemeProvider>
+      <body className="bg-gray-900">
+        {children}
+      </body>
     </html>
   );
 }

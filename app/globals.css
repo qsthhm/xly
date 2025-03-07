@@ -2,60 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 255, 255, 255;
-    --foreground: 15, 15, 15;
-    
-    --card: 255, 255, 255;
-    --card-foreground: 15, 15, 15;
-    
-    --border: 230, 230, 230;
-    --input: 230, 230, 230;
-    
-    --primary: 15, 15, 15;
-    --primary-foreground: 255, 255, 255;
-    
-    --secondary: 245, 245, 245;
-    --secondary-foreground: 15, 15, 15;
-    
-    --accent: 230, 230, 230;
-    --accent-foreground: 15, 15, 15;
-    
-    --ring: 0, 0, 0;
-    
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 15, 15, 15;
-    --foreground: 255, 255, 255;
-    
-    --card: 35, 35, 35;
-    --card-foreground: 255, 255, 255;
-    
-    --border: 48, 48, 48;
-    --input: 48, 48, 48;
-    
-    --primary: 255, 255, 255;
-    --primary-foreground: 15, 15, 15;
-    
-    --secondary: 35, 35, 35;
-    --secondary-foreground: 255, 255, 255;
-    
-    --accent: 48, 48, 48;
-    --accent-foreground: 255, 255, 255;
-    
-    --ring: 212, 212, 212;
-  }
-}
-
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 /* 自定义YouTube风格组件 */
 @layer components {
   .yt-button {
@@ -67,15 +13,15 @@
   }
   
   .yt-button-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-accent;
+    @apply bg-gray-700 text-white hover:bg-gray-600;
   }
   
   .yt-nav-button {
-    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-secondary;
+    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-gray-800;
   }
   
   .yt-video-card {
-    @apply overflow-hidden rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply overflow-hidden rounded-xl bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200;
   }
 }
 
@@ -90,18 +36,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-accent rounded-full;
+  @apply bg-gray-700 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-foreground/40;
-}
-
-/* 确保暗模式下正确显示 */
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-accent;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-foreground/30;
+  @apply bg-gray-600;
 }
