@@ -1,9 +1,27 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 
 export default function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  
+  // 只在客户端渲染后挂载组件
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // 如果组件未挂载，返回预加载占位符
+  if (!mounted) {
+    return (
+      <button
+        className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      >
+        <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+      </button>
+    );
+  }
 
   return (
     <button
