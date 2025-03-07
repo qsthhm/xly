@@ -33,13 +33,16 @@ export default function VideoList({ videos, currentVideoId, onSelectVideo }: Vid
           onClick={() => onSelectVideo(video.id)}
         >
           <div className="relative w-32 h-20 flex-shrink-0">
-            <Image
+            {/* 使用占位符代替图片，避免图片加载问题 */}
+            <div className="w-full h-full bg-gray-700 rounded"></div>
+            {/* 如果有图片，可以取消下面的注释 */}
+            {/* <Image
               src={video.thumbnail}
               alt={video.title}
               width={128}
               height={80}
               className="rounded object-cover"
-            />
+            /> */}
           </div>
           <div className="ml-2 flex-grow">
             <h3 className="text-sm text-white font-medium line-clamp-2">{video.title}</h3>

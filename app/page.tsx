@@ -1,42 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
 
-// 示例视频数据 - 需要替换成您的实际视频
+// 示例视频数据
 const DEMO_VIDEOS = [
   {
-    id: '3891695371094535824', // 替换为你的腾讯云VOD文件ID
+    id: '3891695371094535824',
     title: 'AI对话式互联计划',
-    thumbnail: '/thumbnails/video1.jpg', 
+    thumbnail: '/thumbnails/video1.jpg',
     description: '我是谁 我擅长什么 我能做什么',
   },
-  {
-    id: '4496399996816123069', 
-    title: '南川播种一年级自然工作坊',
-    thumbnail: '/thumbnails/video2.jpg', 
-    description: '我是谁 我擅长什么 我能做什么',
-  },
-  {
-    id: '5285890805172236166',
-    title: '南川播种一年级自然工作坊2',
-    thumbnail: '/thumbnails/video3.jpg',
-    description: '我是谁 我擅长什么 我能做什么',
-  },
-  {
-    id: '5285890805172236167',
-    title: '南川播种一年级自然工作坊3',
-    thumbnail: '/thumbnails/video4.jpg',
-    description: '我是谁 我擅长什么 我能做什么',
-  },
+  // 其他视频...
 ];
 
 // 腾讯云VOD应用ID
 const TENCENT_APP_ID = '1310364790';
 
 export default function Home() {
-  const [currentVideoId, setCurrentVideoId] = useState(DEMO_VIDEOS[0].id);
+  // 使用 useState 但延迟初始化，避免服务器端和客户端不匹配
+  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  
+  // 使用 useEffect 确保只在客户端渲染后设置初始状态
+  useEffect(() => {
+    setIsClient(true);
+    setCurrentVideoId(DEMO_VIDEOS[0].id);
+  }, []);
+  
+  // 如果还没有在客户端渲染，返回一个加载状态
+  if (!isClient) {
+    return (
+      <main className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div>加载中...</div>
+      </main>
+    );
+  }
+  
   const currentVideo = DEMO_VIDEOS.find(v => v.id === currentVideoId) || DEMO_VIDEOS[0];
 
   return (
@@ -55,7 +56,9 @@ export default function Home() {
         
         <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
           <div className="w-full lg:w-2/3">
-            <VideoPlayer fileId={currentVideoId} appId={TENCENT_APP_ID} />
+            {currentVideoId && (
+              <VideoPlayer fileId={currentVideoId} appId={TENCENT_APP_ID} />
+            )}
             
             <div className="mt-4">
               <div className="flex items-center text-sm text-gray-400 mb-2">
@@ -70,7 +73,7 @@ export default function Home() {
           <div className="w-full lg:w-1/3 bg-gray-900 rounded-lg overflow-y-auto" style={{ maxHeight: '80vh' }}>
             <VideoList
               videos={DEMO_VIDEOS}
-              currentVideoId={currentVideoId}
+              currentVideoId={currentVideoId || ''}
               onSelectVideo={setCurrentVideoId}
             />
           </div>
