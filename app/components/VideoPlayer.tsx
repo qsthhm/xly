@@ -10,75 +10,61 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const playerInstanceRef = useRef<any>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const playerIdRef = useRef(`player-${Math.random().toString(36).substring(2, 9)}`);
-
-  // 初始化或重新创建播放器
-  const initializePlayer = () => {
-    if (!scriptLoaded || !fileId || !videoRef.current) return;
-    
-    try {
-      // 每次都完全销毁并重新创建播放器，避免切换问题
+  
+  // 清理旧播放器并创建新播放器
+  const recreatePlayer = () => {
+    // 移除所有现有视频元素
+    if (containerRef.current) {
+      // 清理旧的播放器实例
       if (playerInstanceRef.current) {
-        playerInstanceRef.current.dispose();
+        try {
+          playerInstanceRef.current.dispose();
+        } catch (e) {
+          console.error('播放器销毁错误:', e);
+        }
         playerInstanceRef.current = null;
       }
       
-      // 确保DOM元素准备好
-      if (videoRef.current && typeof window.TCPlayer === 'function') {
-        console.log('初始化播放器：', fileId);
-        
-        playerInstanceRef.current = new window.TCPlayer(videoRef.current, {
-          fileID: fileId,
-          appID: appId,
-          psign: psign,
-          autoplay: true,
-          controls: true,
-          plugins: {
-            ContinuePlay: { auto: false },
-          },
-          language: 'zh-CN',
-          // 禁用动态创建video元素，因为我们已经提供了一个
-          createVideoElement: false
-        });
-        
-        console.log('播放器初始化完成');
+      // 清空容器
+      containerRef.current.innerHTML = '';
+      
+      // 创建新的video元素
+      const videoElement = document.createElement('video');
+      videoElement.id = 'player-container-id';
+      videoElement.className = 'w-full h-full';
+      videoElement.setAttribute('preload', 'auto');
+      videoElement.setAttribute('playsinline', '');
+      containerRef.current.appendChild(videoElement);
+      
+      // 初始化播放器
+      if (typeof window.TCPlayer === 'function') {
+        try {
+          playerInstanceRef.current = window.TCPlayer('player-container-id', {
+            fileID: fileId,
+            appID: appId,
+            psign: psign,
+            autoplay: true
+          });
+        } catch (error) {
+          console.error('播放器初始化错误:', error);
+        }
       }
-    } catch (error) {
-      console.error('播放器初始化错误:', error);
     }
   };
 
-  // 处理脚本加载
-  const handleScriptLoad = () => {
-    console.log('播放器脚本加载完成');
-    setScriptLoaded(true);
-  };
-
-  // 监听脚本加载完成
+  // 脚本加载完成时
   useEffect(() => {
-    if (scriptLoaded) {
-      // 给页面一些时间确保DOM完全准备好
+    if (scriptLoaded && fileId) {
+      // 延迟一点初始化，确保DOM和播放器脚本都准备好
       const timer = setTimeout(() => {
-        initializePlayer();
+        recreatePlayer();
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [scriptLoaded]);
-
-  // 当fileId变化时重新初始化播放器
-  useEffect(() => {
-    if (!scriptLoaded) return;
-    
-    // 重新初始化播放器
-    const timer = setTimeout(() => {
-      initializePlayer();
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [fileId, appId, psign]);
+  }, [scriptLoaded, fileId, appId, psign]);
 
   // 组件卸载时清理
   useEffect(() => {
@@ -94,22 +80,21 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     };
   }, []);
 
+  const handleScriptLoad = () => {
+    setScriptLoaded(true);
+  };
+
   return (
     <div className="relative w-full aspect-video bg-black">
+      {/* 使用与腾讯云后台生成的代码完全相同的脚本 */}
       <Script
-        src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.5.2/tcplayer.v4.5.2.min.js"
+        src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
       
-      <video 
-        ref={videoRef}
-        id={playerIdRef.current}
-        className="w-full h-full" 
-        preload="auto"
-        playsInline
-        muted // 添加muted属性有助于某些浏览器自动播放
-      ></video>
+      {/* 播放器容器 */}
+      <div ref={containerRef} className="w-full h-full"></div>
     </div>
   );
 }
