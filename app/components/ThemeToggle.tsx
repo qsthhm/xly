@@ -3,33 +3,38 @@
 import { useState, useEffect } from 'react';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState('dark');
+  const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
   
-  // 只在客户端执行
+  // 组件挂载时初始化
   useEffect(() => {
     setMounted(true);
-    // 获取存储的主题
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    
-    // 应用主题到 HTML 元素
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    // 检查当前主题
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    setIsDark(isDarkMode);
   }, []);
   
   // 切换主题
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    localStorage.setItem('theme', newTheme);
+    // 切换状态
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    
+    // 更新HTML类和本地存储
+    if (newIsDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   };
   
-  // 服务器端渲染时返回静态组件
+  // 如果还没挂载，返回占位符
   if (!mounted) {
     return (
-      <button className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-        <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+      <button className="flex items-center justify-center w-9 h-9 rounded-full">
+        <div className="w-5 h-5 rounded-full bg-gray-300"></div>
       </button>
     );
   }
@@ -37,10 +42,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-      aria-label={theme === 'dark' ? '切换到亮色模式' : '切换到暗色模式'}
+      className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+      aria-label={isDark ? '切换到亮色模式' : '切换到暗色模式'}
     >
-      {theme === 'dark' ? (
+      {isDark ? (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
         </svg>

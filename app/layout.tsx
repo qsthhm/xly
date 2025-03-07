@@ -18,23 +18,25 @@ export default function RootLayout({
           href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
           rel="stylesheet"
         />
-        {/* 预加载脚本防止闪烁 */}
+        {/* 内联脚本确保主题加载时不闪烁 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  const theme = localStorage.getItem('theme') || 'dark';
-                  document.documentElement.classList.add(theme);
-                } catch (e) {
-                  document.documentElement.classList.add('dark');
-                }
+                  var storedTheme = localStorage.getItem('theme');
+                  if (storedTheme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (err) {}
               })();
             `,
           }}
         />
       </head>
-      <body className="bg-background text-foreground antialiased transition-colors duration-200">
+      <body className="bg-background text-foreground transition-colors duration-200">
         {children}
       </body>
     </html>
