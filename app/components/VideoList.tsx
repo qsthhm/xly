@@ -38,33 +38,33 @@ export default function VideoList({
       {/* 标题栏 - 左侧标题，右侧分类 - 添加底部边框 */}
       <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <span className="font-medium text-base text-gray-900 dark:text-gray-200">播放列表</span>
-        {/* 分类切换按钮 - 移除间距，移除未选中时的背景色 */}
-        <div className="flex overflow-x-auto">
+        {/* 分类切换按钮 - 使用下划线样式 */}
+        <div className="flex gap-6">
           <button 
-            className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-l-full transition-colors ${
+            className={`pb-1 text-xs transition-colors ${
               currentCategory === 'all' 
-                ? 'bg-[#C15F3C] text-white' 
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('all')}
           >
             全部
           </button>
           <button 
-            className={`whitespace-nowrap px-2.5 py-1 text-xs transition-colors ${
+            className={`pb-1 text-xs transition-colors ${
               currentCategory === 'packaging' 
-                ? 'bg-[#C15F3C] text-white' 
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('packaging')}
           >
             包装
           </button>
           <button 
-            className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-r-full transition-colors ${
+            className={`pb-1 text-xs transition-colors ${
               currentCategory === 'editing' 
-                ? 'bg-[#C15F3C] text-white' 
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('editing')}
           >

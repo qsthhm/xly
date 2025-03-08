@@ -152,10 +152,11 @@ function ClientPage() {
           </div>
           
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-sm text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+            {/* 增大字号 */}
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
             </a>
-            <a href="#" className="text-sm text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               联系我
             </a>
             <ThemeToggle />

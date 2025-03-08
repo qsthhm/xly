@@ -127,17 +127,14 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         </div>
       )}
       
-      {/* 错误状态 */}
+      {/* 错误状态 - 去掉图标，按钮使用全圆角 */}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-10">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg max-w-xs text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 mx-auto text-red-500 mb-2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-            </svg>
-            <p className="text-gray-800 dark:text-gray-200">{error}</p>
+            <p className="text-gray-800 dark:text-gray-200 mb-3">{error}</p>
             <button 
               onClick={recreatePlayer}
-              className="mt-3 px-4 py-2 bg-[#C15F3C] text-white rounded hover:bg-[#A94F32] transition-colors"
+              className="px-3 py-1 bg-[#C15F3C] text-white text-sm rounded-full hover:bg-[#A94F32] transition-colors"
             >
               重试
             </button>
