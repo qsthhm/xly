@@ -76,7 +76,7 @@ export default function VideoList({
             className={`flex items-center cursor-pointer p-2.5 transition-colors ${
               video.id === currentVideoId 
                 ? 'bg-[#C15F3C]/10 dark:bg-[#373737] border-l-4 border-[#C15F3C]' 
-                : 'hover:bg-gray-50 dark:hover:bg-[#4C4C4C] border-l-4 border-transparent'
+                : 'hover:bg-gray-50 dark:hover:bg-[#303030] border-l-4 border-transparent'
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
