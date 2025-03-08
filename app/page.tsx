@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
@@ -40,11 +41,11 @@ const ALL_VIDEOS: Video[] = [
     uploadTime: '2个月前'
   },
   {
-    id: '1397757906314451130', 
-    title: '许璐雅水墨作品',
+    id: '第二个视频ID', 
+    title: '南川播种一年级自然工作坊',
     thumbnail: '/thumbnails/video2.jpg',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjMxNDQ1MTEzMCIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzOTc3NjgsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.ISkycGGlDW7rYnPKiUJNRHxbsaYktiVfWJYYLDqi9sI',
+    psign: '',
     category: 'packaging',
     views: '1.8万次观看',
     uploadTime: '3个月前'
@@ -85,40 +86,64 @@ const ALL_VIDEOS: Video[] = [
 const TENCENT_APP_ID = '1310364790';
 
 export default function Home() {
-  const [currentVideoId, setCurrentVideoId] = useState(ALL_VIDEOS[0].id);
-  const [currentCategory, setCurrentCategory] = useState('all');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // 从URL获取视频ID和分类
+  const videoIdFromUrl = searchParams.get('v');
+  const categoryFromUrl = searchParams.get('category');
+  
+  // 默认使用URL中的视频ID和分类，如果没有则使用默认值
+  const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
+  const [currentCategory, setCurrentCategory] = useState<string>('all');
+  
+  // 在组件挂载时，从URL读取视频ID和分类
+  useEffect(() => {
+    if (videoIdFromUrl) {
+      // 检查URL中的视频ID是否存在于视频列表中
+      const videoExists = ALL_VIDEOS.some(v => v.id === videoIdFromUrl);
+      if (videoExists) {
+        setCurrentVideoId(videoIdFromUrl);
+      }
+    }
+    
+    if (categoryFromUrl && ['all', 'packaging', 'editing', 'other'].includes(categoryFromUrl)) {
+      setCurrentCategory(categoryFromUrl);
+    }
+  }, [videoIdFromUrl, categoryFromUrl]);
   
   // 根据当前分类筛选视频
   const filteredVideos = currentCategory === 'all' 
     ? ALL_VIDEOS 
     : ALL_VIDEOS.filter(video => video.category === currentCategory);
   
-  // 确保在切换分类后，如果当前视频不在新分类中，则自动选择新分类的第一个视频
+  // 获取当前视频
   const currentVideo = ALL_VIDEOS.find(v => v.id === currentVideoId) || ALL_VIDEOS[0];
   
-  // 修复的分类切换处理函数
+  // 处理视频选择
+  const handleSelectVideo = (id: string) => {
+    setCurrentVideoId(id);
+    
+    // 更新URL，保留当前分类
+    router.push(`?v=${id}&category=${currentCategory}`);
+  };
+  
+  // 修改分类切换处理函数，不自动切换视频
   const handleCategoryChange = (category: string) => {
     setCurrentCategory(category);
     
-    const videosInCategory = category === 'all' 
-      ? ALL_VIDEOS 
-      : ALL_VIDEOS.filter(video => video.category === category);
-    
-    const currentVideoInCategory = videosInCategory.some(v => v.id === currentVideoId);
-    
-    if (!currentVideoInCategory && videosInCategory.length > 0) {
-      setCurrentVideoId(videosInCategory[0].id);
-    }
+    // 更新URL，保留当前视频ID
+    router.push(`?v=${currentVideoId}&category=${category}`);
   };
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900">
+    <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* YouTube风格的顶部导航栏 */}
       <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <span className="text-xl font-bold">许璨雅 个人作品集</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">许璨雅 个人作品集</span>
             </div>
           </div>
           
@@ -135,53 +160,4 @@ export default function Home() {
             <div className="rounded-xl overflow-hidden shadow-md">
               {currentVideo && (
                 <VideoPlayer 
-                  fileId={currentVideo.id} 
-                  appId={TENCENT_APP_ID}
-                  psign={currentVideo.psign || ''}
-                />
-              )}
-            </div>
-            
-            <div className="mt-4 space-y-4">
-              <h1 className="text-2xl font-bold">{currentVideo?.title}</h1>
-              
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-                <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">许璨雅</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">个人作品集</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span>{currentVideo?.views}</span>
-                  <span>•</span>
-                  <span>{currentVideo?.uploadTime}</span>
-                </div>
-                <p className="whitespace-pre-line">{currentVideo?.description}</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
-            <VideoList
-              videos={filteredVideos}
-              currentVideoId={currentVideo?.id || ''}
-              onSelectVideo={setCurrentVideoId}
-              currentCategory={currentCategory}
-              onCategoryChange={handleCategoryChange}
-            />
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
+                  fileId={currentVideo.id}

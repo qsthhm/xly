@@ -97,7 +97,7 @@ export default function VideoList({
             </div>
             
             <div className="ml-3 flex-grow overflow-hidden">
-              <h3 className="text-sm font-medium line-clamp-2 mb-1">{video.title}</h3>
+              <h3 className="text-sm font-medium line-clamp-2 mb-1 text-gray-900 dark:text-white">{video.title}</h3>
               <div className="flex flex-col space-y-1">
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">许璨雅</p>
                 <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
