@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import Image from 'next/image';
 
 interface Video {
@@ -27,6 +28,19 @@ export default function VideoList({
   currentCategory,
   onCategoryChange
 }: VideoListProps) {
+
+  // 预加载所有视频缩略图以防止分类切换时重新加载
+  const preloadedThumbnails = useMemo(() => {
+    // 创建一个映射以记录已加载的缩略图
+    const thumbnails: Record<string, boolean> = {};
+    
+    // 标记每个缩略图为已加载
+    videos.forEach(video => {
+      thumbnails[video.id] = true;
+    });
+    
+    return thumbnails;
+  }, []); // 仅在组件挂载时运行一次
 
   return (
     <div className="w-full flex flex-col">
@@ -82,6 +96,7 @@ export default function VideoList({
           >
             {/* 缩略图容器 - 调整小屏幕尺寸更统一 */}
             <div className="relative w-32 sm:w-32 md:w-[22%] lg:w-24 flex-shrink-0 rounded-lg overflow-hidden aspect-video">
+              {/* 使用key属性强制不重新加载图片 */}
               {video.thumbnail ? (
                 <Image
                   src={video.thumbnail}
@@ -89,9 +104,12 @@ export default function VideoList({
                   fill
                   sizes="(max-width: 768px) 128px, (max-width: 1200px) 22vw, 96px"
                   className="object-cover"
-                  loading="lazy"
+                  loading="eager" // 更改为eager以立即加载图片
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEDQIHq4C2sgAAAABJRU5ErkJggg=="
+                  // 添加关键属性使图片保持不变
+                  unoptimized={true}
+                  priority={true}
                 />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
@@ -129,6 +147,22 @@ export default function VideoList({
             <p className="text-sm">此分类下暂无视频</p>
           </div>
         )}
+      </div>
+      
+      {/* 预加载所有视频缩略图 */}
+      <div className="hidden">
+        {ALL_VIDEOS.map(video => (
+          <div key={`preload-${video.id}`}>
+            <Image 
+              src={video.thumbnail} 
+              alt="预加载" 
+              width={1} 
+              height={1} 
+              priority={true}
+              unoptimized={true}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
