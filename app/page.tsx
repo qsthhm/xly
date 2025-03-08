@@ -1,9 +1,29 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense }
+
+// 主页面组件
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
+          </div>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>
+        </div>
+      </div>
+    }>
+      <ClientPage />
+    </Suspense>
+  );
+} from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import VideoPlayer from './components/VideoPlayer';
+import Image from 'next/image';
+import VideoSkeletonLoader from './components/VideoSkeletonLoader';
+import AnimatedVideoContainer from './components/AnimatedVideoContainer';
 import VideoList from './components/VideoList';
 
 // 动态导入主题切换组件
@@ -80,6 +100,7 @@ function ClientPage() {
   // 使用客户端状态
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
+  const [isLoading, setIsLoading] = useState(true);
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -99,6 +120,9 @@ function ClientPage() {
     if (category && ['all', 'packaging', 'editing', 'other'].includes(category)) {
       setCurrentCategory(category);
     }
+    
+    // 初始化完成后关闭加载状态
+    setIsLoading(false);
   }, []);
   
   // 根据当前分类筛选视频
@@ -131,11 +155,15 @@ function ClientPage() {
       <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
-            <img 
-              src="/img/logo.png" 
-              alt="许璐雅头像" 
-              className="w-8 h-8 rounded-full object-cover" 
-            />
+            <div className="relative w-8 h-8 rounded-full overflow-hidden">
+              <Image 
+                src="/img/logo.png" 
+                alt="许璐雅头像" 
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
             <span className="text-base font-medium text-[#333] dark:text-white">
               许璐雅 · 个人作品集
             </span>
@@ -157,30 +185,31 @@ function ClientPage() {
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
           {/* 视频播放区域 */}
           <div className="w-full lg:w-3/4">
-            <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
-              {currentVideo && (
-                <VideoPlayer 
-                  fileId={currentVideo.id} 
+            {isLoading ? (
+              <VideoSkeletonLoader />
+            ) : (
+              <>
+                <AnimatedVideoContainer 
+                  video={currentVideo}
                   appId={TENCENT_APP_ID}
-                  psign={currentVideo.psign || ''}
                 />
-              )}
-            </div>
-            
-            <div className="mt-5 space-y-4">
-              {/* 减小视频标题字号 */}
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
-              
-              {/* 视频信息 */}
-              <div className="text-gray-900 dark:text-gray-300">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  {/* 替换views和uploadTime为纯文本标签 */}
-                  <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
-                        currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
+                
+                <div className="mt-5 space-y-4">
+                  {/* 减小视频标题字号 */}
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
+                  
+                  {/* 视频信息 */}
+                  <div className="text-gray-900 dark:text-gray-300">
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                      {/* 替换views和uploadTime为纯文本标签 */}
+                      <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
+                            currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
+                    </div>
+                    <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
+                  </div>
                 </div>
-                <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
-              </div>
-            </div>
+              </>
+            )}
           </div>
           
           {/* 右侧视频列表 */}
@@ -196,23 +225,5 @@ function ClientPage() {
         </div>
       </div>
     </main>
-  );
-}
-
-// 主页面组件
-export default function Home() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
-          </div>
-          <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>
-        </div>
-      </div>
-    }>
-      <ClientPage />
-    </Suspense>
   );
 }

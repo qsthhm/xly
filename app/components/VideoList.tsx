@@ -84,9 +84,22 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            {/* 缩略图容器 - 调整不同屏幕尺寸下的宽度 */}
+            {/* 缩略图容器 - 使用 Next.js Image 组件优化 */}
             <div className="relative w-20 md:w-[22%] lg:w-24 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
+              {video.thumbnail ? (
+                <Image
+                  src={video.thumbnail}
+                  alt={video.title}
+                  fill
+                  sizes="(max-width: 768px) 80px, (max-width: 1200px) 22vw, 96px"
+                  className="object-cover"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEDQIHq4C2sgAAAABJRU5ErkJggg=="
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
+              )}
               
               {/* 视频时长指示器 */}
               <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
