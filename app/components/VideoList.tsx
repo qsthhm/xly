@@ -29,18 +29,8 @@ export default function VideoList({
   onCategoryChange
 }: VideoListProps) {
 
-  // 预加载所有视频缩略图以防止分类切换时重新加载
-  const preloadedThumbnails = useMemo(() => {
-    // 创建一个映射以记录已加载的缩略图
-    const thumbnails: Record<string, boolean> = {};
-    
-    // 标记每个缩略图为已加载
-    videos.forEach(video => {
-      thumbnails[video.id] = true;
-    });
-    
-    return thumbnails;
-  }, []); // 仅在组件挂载时运行一次
+  // 使用参数中的videos而不是引用外部变量
+  const allVideos = useMemo(() => videos, [videos]);
 
   return (
     <div className="w-full flex flex-col">
@@ -149,9 +139,9 @@ export default function VideoList({
         )}
       </div>
       
-      {/* 预加载所有视频缩略图 */}
+      {/* 预加载所有视频缩略图 - 使用当前可用的videos而不是ALL_VIDEOS */}
       <div className="hidden">
-        {ALL_VIDEOS.map(video => (
+        {allVideos.map(video => (
           <div key={`preload-${video.id}`}>
             <Image 
               src={video.thumbnail} 
