@@ -9,7 +9,7 @@ interface Video {
   description?: string;
   psign?: string;
   category?: string;
-  tag: string; // 添加tag字段
+  tag: string;
 }
 
 interface VideoListProps {
@@ -30,16 +30,16 @@ export default function VideoList({
 
   return (
     <div className="w-full flex flex-col">
-      {/* 标题栏 - 左侧标题，右侧分类 - 添加底部边框 */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      {/* 标题栏 - 左侧标题，右侧分类 - 更新深色模式颜色 */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-[#202020] px-4 py-3 border-b border-gray-200 dark:border-[#4C4C4C] flex justify-between items-center">
         <span className="font-medium text-base text-gray-900 dark:text-gray-200">播放列表</span>
-        {/* 分类切换按钮 - 调整间距，修复抖动问题，下划线样式调整 */}
+        {/* 分类切换按钮 - 更新深色模式颜色 */}
         <div className="flex gap-3">
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'all' 
-                ? 'text-[#C15F3C] border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] dark:text-gray-200 border-[#C15F3C] dark:border-gray-200' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-[#8A8A8A] dark:hover:text-gray-200'
             }`}
             onClick={() => onCategoryChange('all')}
           >
@@ -48,8 +48,8 @@ export default function VideoList({
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'packaging' 
-                ? 'text-[#C15F3C] border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] dark:text-gray-200 border-[#C15F3C] dark:border-gray-200' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-[#8A8A8A] dark:hover:text-gray-200'
             }`}
             onClick={() => onCategoryChange('packaging')}
           >
@@ -58,8 +58,8 @@ export default function VideoList({
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'editing' 
-                ? 'text-[#C15F3C] border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] dark:text-gray-200 border-[#C15F3C] dark:border-gray-200' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-[#8A8A8A] dark:hover:text-gray-200'
             }`}
             onClick={() => onCategoryChange('editing')}
           >
@@ -68,14 +68,14 @@ export default function VideoList({
         </div>
       </div>
       
-      {/* 视频列表 - 优化中等屏幕布局 */}
+      {/* 视频列表 - 更新深色模式颜色 */}
       <div className="py-2">
         {videos.map((video) => (
           <div
             key={video.id}
             className={`flex items-center cursor-pointer p-2.5 transition-colors ${
               video.id === currentVideoId 
-                ? 'bg-[#C15F3C]/10 dark:bg-[#C15F3C]/20 border-l-4 border-[#C15F3C]' 
+                ? 'bg-[#C15F3C]/10 dark:bg-[#373737] border-l-4 border-[#C15F3C] dark:border-gray-200' 
                 : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
             }`}
             onClick={() => onSelectVideo(video.id)}
@@ -106,7 +106,7 @@ export default function VideoList({
             {/* 文字区域 - 垂直居中，根据屏幕宽度调整字号 */}
             <div className="ml-2.5 flex-grow min-w-0 flex items-center">
               <div className="flex flex-col">
-                <h3 className={`text-base lg:text-base xl:text-base font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
+                <h3 className={`text-base lg:text-base xl:text-base font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-gray-200' : 'text-gray-900 dark:text-gray-200'}`}>
                   {video.title}
                 </h3>
                 

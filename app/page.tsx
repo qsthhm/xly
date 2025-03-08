@@ -26,17 +26,17 @@ interface Video {
   description: string;
   psign: string;
   category: string;
-  tag: string; // 添加tag字段用于自定义标签
+  tag: string;
 }
 
-// 视频数据
+// 视频数据 - 更新为新的数据
 const ALL_VIDEOS: Video[] = [
   {
     id: '1397757906803886577', 
     title: '个人介绍',
     thumbnail: '/img/01.png',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: '', 
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDE0Mjc5OTUsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.68gBjZa3oQwO3hxEtVcoYVTEfGhFfk6BhuN_3iteZ8w', 
     category: 'packaging',
     tag: '剪辑 · 短视频'
   },
@@ -120,9 +120,9 @@ function ClientPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+    <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
       {/* 导航栏 - 移除吸顶效果 */}
-      <nav className="bg-[#F0EFE7] dark:bg-gray-900">
+      <nav className="bg-[#F0EFE7] dark:bg-[#141414]">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
@@ -155,13 +155,13 @@ function ClientPage() {
       {/* 添加底部间距 */}
       <div className="container mx-auto px-4 pt-3 pb-10">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
-          {/* 视频播放区域 */}
+          {/* 视频播放区域 - 移除边框 */}
           <div className="w-full lg:w-3/4">
             {isLoading ? (
               <VideoSkeletonLoader />
             ) : (
               <>
-                <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
+                <div className="rounded-xl overflow-hidden">
                   <VideoPlayer 
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
@@ -169,25 +169,22 @@ function ClientPage() {
                   />
                 </div>
                 
-                {/* 调整内容顺序：标签、标题、描述 */}
+                {/* 调整内容顺序：只显示标题和标签，间距16px */}
                 <div className="mt-5 space-y-4">
-                  {/* 使用自定义标签 */}
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    <span>{currentVideo.tag}</span>
-                  </div>
-                  
                   {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
-                  {/* 视频描述 */}
-                  <p className="whitespace-pre-line leading-relaxed text-gray-900 dark:text-gray-300">{currentVideo?.description}</p>
+                  {/* 使用自定义标签 - 16px间距 */}
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                    <span>{currentVideo.tag}</span>
+                  </div>
                 </div>
               </>
             )}
           </div>
           
-          {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/4 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          {/* 右侧视频列表 - 更新深色模式颜色 */}
+          <div className="w-full lg:w-1/4 rounded-xl bg-white dark:bg-[#202020] overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}
@@ -206,7 +203,7 @@ function ClientPage() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#C15F3C] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
