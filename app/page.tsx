@@ -1,24 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense }
-
-// 主页面组件
-export default function Home() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
-          </div>
-          <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>
-        </div>
-      </div>
-    }>
-      <ClientPage />
-    </Suspense>
-  );
-} from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -225,5 +207,23 @@ function ClientPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+// 主页面组件
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
+          </div>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>
+        </div>
+      </div>
+    }>
+      <ClientPage />
+    </Suspense>
   );
 }
