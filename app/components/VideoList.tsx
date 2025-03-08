@@ -77,7 +77,7 @@ export default function VideoList({
         {videos.map((video) => (
           <div
             key={video.id}
-            className={`flex cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
+            className={`flex items-center cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
               video.id === currentVideoId 
                 ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500' 
                 : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
@@ -107,9 +107,9 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 文字区域 - 修改为垂直居中且内容上下分组 */}
-            <div className="ml-2.5 flex-grow flex flex-col justify-center min-w-0">
-              <div className="overflow-hidden">
+            {/* 文字区域 - 内容为一组，固定上下间距，整体居中 */}
+            <div className="ml-2.5 flex-grow min-w-0 self-center">
+              <div>
                 <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
                   {video.title}
                 </h3>
