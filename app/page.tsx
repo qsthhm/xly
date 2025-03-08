@@ -26,16 +26,17 @@ interface Video {
   description: string;
   psign: string;
   category: string;
+  tag: string; // 添加tag字段用于自定义标签
 }
 
 // 视频数据
 const ALL_VIDEOS: Video[] = [
   {
-    id: '1397757906801587829', 
-    title: 'AI对话式互联计划',
+    id: '1397757906803886577', 
+    title: '个人介绍',
     thumbnail: '/img/01.png',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: '', 
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDE0MjcxMTMsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.LzHRuLwgHZYZPLXHn8U3UUO4CcoW_I6WyS7tvOUYFiA', 
     category: 'packaging'
   },
   {
@@ -47,11 +48,11 @@ const ALL_VIDEOS: Video[] = [
     category: 'packaging'
   },
   {
-    id: '第三个视频ID', 
-    title: '剪辑作品1',
+    id: '1397757906314451130', 
+    title: '许璐雅水墨作品',
     thumbnail: '/img/03.png',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: '',
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjMxNDQ1MTEzMCIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDE0MjcwNjcsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.eqH2_D1-en-iKQpKgNkDvGza6Z4mlQYxDm2QhWmxVnE',
     category: 'editing'
   }
 ];
@@ -135,8 +136,8 @@ function ClientPage() {
             </span>
           </div>
           
-          {/* 导航项 */}
-          <div className="flex items-center space-x-3">
+          {/* 导航项 - 增加间距 */}
+          <div className="flex items-center space-x-5">
             <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
             </a>
@@ -167,10 +168,9 @@ function ClientPage() {
                 
                 {/* 调整内容顺序：标签、标题、描述 */}
                 <div className="mt-5 space-y-4">
-                  {/* 视频标签 */}
+                  {/* 使用自定义标签 */}
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
-                          currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
+                    <span>{currentVideo.tag}</span>
                   </div>
                   
                   {/* 视频标题 */}

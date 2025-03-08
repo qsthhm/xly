@@ -9,6 +9,7 @@ interface Video {
   description?: string;
   psign?: string;
   category?: string;
+  tag: string; // 添加tag字段
 }
 
 interface VideoListProps {
@@ -26,12 +27,6 @@ export default function VideoList({
   currentCategory,
   onCategoryChange
 }: VideoListProps) {
-  // 将分类名称映射为中文标签
-  const categoryMap: Record<string, string> = {
-    'packaging': '包装项目',
-    'editing': '剪辑项目',
-    'other': '其他'
-  };
 
   return (
     <div className="w-full flex flex-col">
@@ -115,10 +110,10 @@ export default function VideoList({
                   {video.title}
                 </h3>
                 
-                {/* 极小的间距 */}
+                {/* 使用视频的自定义标签 */}
                 <div style={{ marginTop: '2px' }}>
                   <span className="text-sm lg:text-xs xl:text-sm text-gray-500 dark:text-gray-400">
-                    {categoryMap[video.category || 'other'] || '其他'}
+                    {video.tag}
                   </span>
                 </div>
               </div>
