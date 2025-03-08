@@ -171,7 +171,7 @@ function ClientPage() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
           {/* 视频播放区域 */}
-          <div className="w-full lg:w-2/3">
+          <div className="w-full lg:w-3/4">
             <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
               {currentVideo && (
                 <VideoPlayer 
@@ -185,20 +185,7 @@ function ClientPage() {
             <div className="mt-5 space-y-5">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
               
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-                <div className="flex items-center space-x-3">
-                  <div className="h-11 w-11 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-blue-600 dark:text-blue-300">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-white">许璐雅</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">个人作品集</p>
-                  </div>
-                </div>
-              </div>
-              
+              {/* 移除头像和名称模块，直接显示视频信息 */}
               <div className="rounded-xl bg-white dark:bg-gray-800 p-5 shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
                   <span>{currentVideo?.views}</span>
@@ -210,8 +197,8 @@ function ClientPage() {
             </div>
           </div>
           
-          {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          {/* 右侧视频列表 - 调整宽度和背景色 */}
+          <div className="w-full lg:w-1/4 rounded-xl bg-[#F8F7F3] dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}

@@ -30,33 +30,33 @@ export default function VideoList({
 }: VideoListProps) {
   return (
     <div className="w-full flex flex-col">
-      {/* 分类切换栏 */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
+      {/* 分类切换栏 - 按钮变小全圆角 */}
+      <div className="sticky top-0 z-10 bg-[#F8F7F3] dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
             currentCategory === 'all' 
-              ? 'bg-blue-600 text-white shadow-md transform' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
+              ? 'bg-blue-600 text-white shadow-sm' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
           }`}
           onClick={() => onCategoryChange('all')}
         >
           全部
         </button>
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
             currentCategory === 'packaging' 
-              ? 'bg-blue-600 text-white shadow-md transform' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
+              ? 'bg-blue-600 text-white shadow-sm' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
           }`}
           onClick={() => onCategoryChange('packaging')}
         >
           包装项目
         </button>
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
+          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
             currentCategory === 'editing' 
-              ? 'bg-blue-600 text-white shadow-md transform' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
+              ? 'bg-blue-600 text-white shadow-sm' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
           }`}
           onClick={() => onCategoryChange('editing')}
         >
