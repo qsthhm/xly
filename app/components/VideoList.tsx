@@ -31,7 +31,7 @@ export default function VideoList({
   return (
     <div className="w-full flex flex-col">
       {/* 分类切换栏 - 按钮变小全圆角 */}
-      <div className="sticky top-0 z-10 bg-[#F8F7F3] dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
+      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
         <button 
           className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
             currentCategory === 'all' 
@@ -64,7 +64,7 @@ export default function VideoList({
         </button>
       </div>
       
-      {/* 视频列表 */}
+      {/* 视频列表 - 优化布局 */}
       <div className="py-2">
         {videos.map((video) => (
           <div
@@ -76,7 +76,8 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            <div className="relative w-40 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
+            {/* 缩略图容器固定宽高 */}
+            <div className="relative w-32 h-18 flex-shrink-0 rounded-lg overflow-hidden">
               {/* 占位图或实际缩略图 */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
               
@@ -96,15 +97,13 @@ export default function VideoList({
               </div>
             </div>
             
-            <div className="ml-3 flex-grow overflow-hidden">
-              <h3 className={`text-sm font-medium line-clamp-2 mb-1 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{video.title}</h3>
-              <div className="flex flex-col space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">许璐雅</p>
-                <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                  <span>{video.views || "1.2万次观看"}</span>
-                  <span className="mx-1">•</span>
-                  <span>{video.uploadTime || "3个月前"}</span>
-                </div>
+            {/* 优化文字区域布局 */}
+            <div className="ml-3 flex-grow overflow-hidden flex flex-col justify-between">
+              <h3 className={`text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{video.title}</h3>
+              <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                <span>{video.views || "1.2万次观看"}</span>
+                <span className="mx-1">•</span>
+                <span>{video.uploadTime || "3个月前"}</span>
               </div>
             </div>
           </div>

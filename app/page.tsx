@@ -144,12 +144,9 @@ function ClientPage() {
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <img 
-              src="/img/logo.png" 
+              src="https://via.placeholder.com/32" 
               alt="许璐雅头像" 
               className="w-8 h-8 rounded-full object-cover" 
-              onError={(e) => {
-                e.currentTarget.src = 'https://via.placeholder.com/32';
-              }}
             />
             <span className="text-base font-medium text-[#333] dark:text-white">
               许璐雅 · 个人作品集
@@ -182,23 +179,23 @@ function ClientPage() {
               )}
             </div>
             
-            <div className="mt-5 space-y-5">
+            <div className="mt-5 space-y-4">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
               
-              {/* 移除头像和名称模块，直接显示视频信息 */}
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-5 shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-lg">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
+              {/* 移除卡片效果，改为普通文本 */}
+              <div className="text-gray-900 dark:text-gray-300">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span>{currentVideo?.views}</span>
                   <span>•</span>
                   <span>{currentVideo?.uploadTime}</span>
                 </div>
-                <p className="whitespace-pre-line text-gray-700 dark:text-gray-300 leading-relaxed">{currentVideo?.description}</p>
+                <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
               </div>
             </div>
           </div>
           
-          {/* 右侧视频列表 - 调整宽度和背景色 */}
-          <div className="w-full lg:w-1/4 rounded-xl bg-[#F8F7F3] dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          {/* 右侧视频列表 - 背景改回白色 */}
+          <div className="w-full lg:w-1/4 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}
