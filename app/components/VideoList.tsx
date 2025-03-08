@@ -33,30 +33,30 @@ export default function VideoList({
       {/* 分类切换栏 */}
       <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-colors ${
+          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
             currentCategory === 'all' 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+              ? 'bg-blue-600 text-white shadow-md transform' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
           }`}
           onClick={() => onCategoryChange('all')}
         >
           全部
         </button>
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-colors ${
+          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
             currentCategory === 'packaging' 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+              ? 'bg-blue-600 text-white shadow-md transform' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
           }`}
           onClick={() => onCategoryChange('packaging')}
         >
           包装项目
         </button>
         <button 
-          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-colors ${
+          className={`whitespace-nowrap px-4 py-2 rounded-md font-medium transition-all duration-200 ${
             currentCategory === 'editing' 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+              ? 'bg-blue-600 text-white shadow-md transform' 
+              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white hover:shadow'
           }`}
           onClick={() => onCategoryChange('editing')}
         >
@@ -69,16 +69,16 @@ export default function VideoList({
         {videos.map((video) => (
           <div
             key={video.id}
-            className={`flex cursor-pointer p-2 rounded-lg transition-colors ${
+            className={`flex cursor-pointer p-3 rounded-lg transition-all duration-200 ${
               video.id === currentVideoId 
-                ? 'bg-gray-100 dark:bg-gray-700' 
-                : 'hover:bg-gray-50 dark:hover:bg-gray-800/70'
+                ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500' 
+                : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            <div className="relative w-40 h-22 flex-shrink-0 rounded-lg overflow-hidden">
+            <div className="relative w-40 h-22 flex-shrink-0 rounded-lg overflow-hidden shadow-sm">
               {/* 占位图或实际缩略图 */}
-              <div className="absolute inset-0 bg-gray-300 dark:bg-gray-600 animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
               
               {/* 如果有真实缩略图，取消下面注释 */}
               {/* <Image
@@ -97,7 +97,7 @@ export default function VideoList({
             </div>
             
             <div className="ml-3 flex-grow overflow-hidden">
-              <h3 className="text-sm font-medium line-clamp-2 mb-1 text-gray-900 dark:text-white">{video.title}</h3>
+              <h3 className={`text-sm font-medium line-clamp-2 mb-1 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{video.title}</h3>
               <div className="flex flex-col space-y-1">
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">许璨雅</p>
                 <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">

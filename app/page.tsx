@@ -140,8 +140,8 @@ function ClientPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* YouTube风格的顶部导航栏 */}
-      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
-        <div className="container mx-auto flex items-center justify-between px-4 py-2">
+      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm shadow-sm">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <span className="text-xl font-bold text-gray-900 dark:text-white">许璨雅 个人作品集</span>
@@ -158,7 +158,7 @@ function ClientPage() {
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
           {/* 视频播放区域 */}
           <div className="w-full lg:w-2/3">
-            <div className="rounded-xl overflow-hidden shadow-md">
+            <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
               {currentVideo && (
                 <VideoPlayer 
                   fileId={currentVideo.id} 
@@ -168,13 +168,13 @@ function ClientPage() {
               )}
             </div>
             
-            <div className="mt-4 space-y-4">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
+            <div className="mt-5 space-y-5">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
               
               <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-700 dark:text-gray-200">
+                  <div className="h-11 w-11 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-blue-600 dark:text-blue-300">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                   </div>
@@ -185,19 +185,19 @@ function ClientPage() {
                 </div>
               </div>
               
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+              <div className="rounded-xl bg-white dark:bg-gray-800 p-5 shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-lg">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
                   <span>{currentVideo?.views}</span>
                   <span>•</span>
                   <span>{currentVideo?.uploadTime}</span>
                 </div>
-                <p className="whitespace-pre-line text-gray-700 dark:text-gray-300">{currentVideo?.description}</p>
+                <p className="whitespace-pre-line text-gray-700 dark:text-gray-300 leading-relaxed">{currentVideo?.description}</p>
               </div>
             </div>
           </div>
           
           {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-sm border border-gray-100 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-lg" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}
@@ -217,7 +217,12 @@ export default function Home() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-500 dark:text-gray-400">加载中...</div>
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
+          </div>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>
+        </div>
       </div>
     }>
       <ClientPage />

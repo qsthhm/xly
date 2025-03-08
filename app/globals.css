@@ -2,57 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 暗色模式样式 */
-.dark {
-  --tw-bg-opacity: 1;
-  --tw-text-opacity: 1;
-  --tw-border-opacity: 1;
-
-  background-color: #111111;
-  color: #ffffff;
-}
-
-/* 亮色模式样式 */
-:root:not(.dark) {
-  --tw-bg-opacity: 1;
-  --tw-text-opacity: 1;
-  --tw-border-opacity: 1;
-
-  background-color: #ffffff;
-  color: #111111;
-}
-
-/* 自定义YouTube风格组件 */
-@layer components {
-  .yt-button {
-    @apply rounded-full px-4 py-2 font-medium transition-colors duration-200;
+@layer base {
+  * {
+    @apply transition-colors duration-200;
   }
   
-  .yt-button-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-700;
-  }
-  
-  .yt-button-secondary {
-    @apply bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600;
-  }
-  
-  .yt-nav-button {
-    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700;
-  }
-  
-  .yt-video-card {
-    @apply overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200;
+  body {
+    @apply bg-white dark:bg-gray-900;
   }
 }
 
-/* 修改滚动条样式 */
+/* 滚动条美化 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
