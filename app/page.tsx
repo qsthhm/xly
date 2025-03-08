@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
 
-// 动态导入主题切换组件，不使用SSR
+// 动态导入主题切换组件
 const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
   ssr: false,
   loading: () => (
@@ -16,7 +16,7 @@ const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
   )
 });
 
-// 添加接口定义视频数据类型
+// 视频数据类型
 interface Video {
   id: string;
   title: string;
@@ -85,32 +85,33 @@ const ALL_VIDEOS: Video[] = [
 // 腾讯云VOD应用ID
 const TENCENT_APP_ID = '1310364790';
 
-export default function Home() {
+// 客户端组件，处理URL参数
+function ClientPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   
-  // 从URL获取视频ID和分类
-  const videoIdFromUrl = searchParams.get('v');
-  const categoryFromUrl = searchParams.get('category');
-  
-  // 默认使用URL中的视频ID和分类，如果没有则使用默认值
+  // 使用客户端状态
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   
-  // 在组件挂载时，从URL读取视频ID和分类
+  // 从URL获取初始参数
   useEffect(() => {
-    if (videoIdFromUrl) {
+    // 在客户端运行时从URL获取参数
+    const url = new URL(window.location.href);
+    const videoId = url.searchParams.get('v');
+    const category = url.searchParams.get('category');
+    
+    if (videoId) {
       // 检查URL中的视频ID是否存在于视频列表中
-      const videoExists = ALL_VIDEOS.some(v => v.id === videoIdFromUrl);
+      const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
       if (videoExists) {
-        setCurrentVideoId(videoIdFromUrl);
+        setCurrentVideoId(videoId);
       }
     }
     
-    if (categoryFromUrl && ['all', 'packaging', 'editing', 'other'].includes(categoryFromUrl)) {
-      setCurrentCategory(categoryFromUrl);
+    if (category && ['all', 'packaging', 'editing', 'other'].includes(category)) {
+      setCurrentCategory(category);
     }
-  }, [videoIdFromUrl, categoryFromUrl]);
+  }, []);
   
   // 根据当前分类筛选视频
   const filteredVideos = currentCategory === 'all' 
@@ -125,7 +126,7 @@ export default function Home() {
     setCurrentVideoId(id);
     
     // 更新URL，保留当前分类
-    router.push(`?v=${id}&category=${currentCategory}`);
+    router.push(`?v=${id}&category=${currentCategory}`, { scroll: false });
   };
   
   // 修改分类切换处理函数，不自动切换视频
@@ -133,7 +134,7 @@ export default function Home() {
     setCurrentCategory(category);
     
     // 更新URL，保留当前视频ID
-    router.push(`?v=${currentVideoId}&category=${category}`);
+    router.push(`?v=${currentVideoId}&category=${category}`, { scroll: false });
   };
 
   return (
@@ -184,7 +185,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4 shadow-sm">
+              <div className="rounded-xl bg-white dark:bg-gray-800 p-4 shadow-sm border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span>{currentVideo?.views}</span>
                   <span>•</span>
@@ -196,7 +197,7 @@ export default function Home() {
           </div>
           
           {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-sm" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-sm border border-gray-100 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}
@@ -208,5 +209,18 @@ export default function Home() {
         </div>
       </div>
     </main>
+  );
+}
+
+// 主页面组件
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-gray-500 dark:text-gray-400">加载中...</div>
+      </div>
+    }>
+      <ClientPage />
+    </Suspense>
   );
 }
