@@ -84,8 +84,8 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            {/* 缩略图容器 - 使用纵横比控制 */}
-            <div className="relative w-20 md:w-24 lg:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
+            {/* 缩略图容器 - 调整不同屏幕尺寸下的宽度 */}
+            <div className="relative w-20 md:w-[22%] lg:w-24 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
               
               {/* 视频时长指示器 */}
@@ -94,14 +94,14 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 文字区域 - 优化响应式布局 */}
-            <div className="ml-2.5 flex-grow overflow-hidden flex flex-col justify-between min-w-0">
+            {/* 文字区域 - 固定间距和行数限制 */}
+            <div className="ml-2.5 flex-grow overflow-hidden flex flex-col min-w-0">
               <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
                 {video.title}
               </h3>
               
-              {/* 替换为纯文本标签 */}
-              <div className="mt-1">
+              {/* 固定间距12px */}
+              <div className="mt-3">
                 <span className="text-[10px] text-gray-500 dark:text-gray-400">
                   {categoryMap[video.category || 'other'] || '其他'}
                 </span>
