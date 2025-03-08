@@ -133,29 +133,29 @@ function ClientPage() {
 
   return (
     <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-      {/* 更新后的导航栏 */}
-      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
+      {/* 更新后的导航栏 - 移除底部边框 */}
+      <nav className="sticky top-0 z-10 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
               <Image 
                 src="/img/logo.png" 
-                alt="头像" 
+                alt="许璐雅头像" 
                 fill
                 className="object-cover"
                 priority
               />
             </div>
-            <span className="text-base font-medium text-[#333] dark:text-gray-200">
+            <span className="text-base font-medium text-gray-900 dark:text-gray-200">
               许璐雅 · 个人作品集
             </span>
           </div>
           
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-sm text-[#333] dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+            <a href="#" className="text-sm text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
             </a>
-            <a href="#" className="text-sm text-[#333] dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+            <a href="#" className="text-sm text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               联系我
             </a>
             <ThemeToggle />

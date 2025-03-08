@@ -35,9 +35,9 @@ export default function VideoList({
 
   return (
     <div className="w-full flex flex-col">
-      {/* 标题栏 - 左侧标题，右侧分类 */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-        <span className="font-medium text-base">播放列表</span>
+      {/* 标题栏 - 左侧标题，右侧分类 - 去掉底部边框 */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 flex justify-between items-center">
+        <span className="font-medium text-base text-gray-900 dark:text-gray-200">播放列表</span>
         <div className="flex space-x-2 overflow-x-auto">
           <button 
             className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
@@ -77,7 +77,7 @@ export default function VideoList({
         {videos.map((video) => (
           <div
             key={video.id}
-            className={`flex items-center cursor-pointer p-2.5 transition-all duration-200 ${
+            className={`flex items-center cursor-pointer p-2.5 transition-colors ${
               video.id === currentVideoId 
                 ? 'bg-[#C15F3C]/10 dark:bg-[#C15F3C]/20 border-l-4 border-[#C15F3C]' 
                 : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
