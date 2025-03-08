@@ -42,7 +42,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-[#E3E2D9] dark:hover:bg-[#373737] transition-colors"
       aria-label={isDark ? '切换到亮色模式' : '切换到暗色模式'}
     >
       {isDark ? (

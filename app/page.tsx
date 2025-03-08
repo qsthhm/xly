@@ -139,12 +139,12 @@ function ClientPage() {
             </span>
           </div>
           
-          {/* 导航项 - 增加间距 */}
-          <div className="flex items-center space-x-5">
-            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+          {/* 导航项 - 调整模式切换按钮的距离 */}
+          <div className="flex items-center">
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
               简历
             </a>
-            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-[-1px]">
               联系我
             </a>
             <ThemeToggle />
