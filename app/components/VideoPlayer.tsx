@@ -37,12 +37,17 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       // 清空容器
       containerRef.current.innerHTML = '';
       
+      // 重要：将容器背景色设置为与全局背景一致
+      containerRef.current.style.backgroundColor = '#141414';
+      
       // 创建新的video元素
       const videoElement = document.createElement('video');
       videoElement.id = 'player-container-id';
       videoElement.className = 'w-full h-full';
       videoElement.setAttribute('preload', 'auto');
       videoElement.setAttribute('playsinline', '');
+      // 明确设置背景色
+      videoElement.style.backgroundColor = '#141414'; 
       containerRef.current.appendChild(videoElement);
       
       // 初始化播放器
@@ -107,10 +112,41 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const handleScriptLoad = () => {
     setScriptLoaded(true);
   };
+  
+  // 强制背景色以确保一致性
+  useEffect(() => {
+    // 设置播放器背景色的函数
+    const fixPlayerBackground = () => {
+      // 明确设置容器背景色
+      if (containerRef.current) {
+        containerRef.current.style.backgroundColor = '#141414';
+      }
+      
+      // 设置视频元素背景色
+      const videoEl = document.getElementById('player-container-id');
+      if (videoEl) {
+        videoEl.style.backgroundColor = '#141414';
+      }
+    };
+    
+    // 初始设置
+    fixPlayerBackground();
+    
+    // 设置一个定时器，在页面加载后和播放器初始化期间多次尝试设置背景色
+    const intervals = [100, 500, 1000, 2000, 5000];
+    const timers = intervals.map(interval => setTimeout(fixPlayerBackground, interval));
+    
+    return () => {
+      // 清理所有定时器
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
 
   return (
-    <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
-      {/* 使用与腾讯云后台生成的代码完全相同的脚本 */}
+    <div className="relative w-full aspect-video rounded-xl overflow-hidden" style={{ backgroundColor: '#141414' }}>
+      {/* 使用内联样式强制设置背景色，确保与全局深色模式背景一致 */}
+      <div className="absolute inset-0 bg-[#141414] dark:bg-[#141414]"></div>
+      
       <Script
         src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
         strategy="afterInteractive"
@@ -119,18 +155,18 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       
       {/* 加载状态 - 简化为单个转圈动画 */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/70 z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-[#141414] dark:bg-[#141414] z-10">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 border-4 border-[#DEDCD1]/30 dark:border-[#202020]/30 border-t-[#C15F3C] rounded-full animate-spin"></div>
+            <div className="w-12 h-12 border-4 border-[#202020]/30 border-t-[#C15F3C] rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       
       {/* 错误状态 - 保持简洁 */}
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80 z-10">
-          <div className="bg-white dark:bg-gray-800 p-5 rounded-lg max-w-xs text-center">
-            <p className="text-gray-800 dark:text-gray-200 mb-4">{error}</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-[#141414] z-10">
+          <div className="bg-[#202020] p-5 rounded-lg max-w-xs text-center">
+            <p className="text-gray-200 mb-4">{error}</p>
             <button 
               onClick={recreatePlayer}
               className="px-4 py-2 bg-[#C15F3C] text-white text-sm rounded-lg hover:bg-[#A94F32] transition-colors"
@@ -141,8 +177,8 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         </div>
       )}
       
-      {/* 播放器容器 */}
-      <div ref={containerRef} className="w-full h-full"></div>
+      {/* 播放器容器 - 使用内联样式和类同时指定背景色 */}
+      <div ref={containerRef} className="w-full h-full bg-[#141414] dark:bg-[#141414]" style={{ backgroundColor: '#141414' }}></div>
     </div>
   );
 }
