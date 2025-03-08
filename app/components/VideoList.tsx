@@ -37,7 +37,7 @@ export default function VideoList({
     <div className="w-full flex flex-col">
       {/* 标题栏 - 左侧标题，右侧分类 */}
       <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-        <span className="font-medium text-sm">视频标题</span>
+        <span className="font-medium text-base">播放列表</span>
         <div className="flex space-x-2 overflow-x-auto">
           <button 
             className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
@@ -84,8 +84,8 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            {/* 缩略图容器 - 使用 Next.js Image 组件优化 */}
-            <div className="relative w-20 md:w-[22%] lg:w-24 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
+            {/* 缩略图容器 - 保持宽度，固定16:9比例 */}
+            <div className="relative w-20 md:w-[22%] lg:w-24 flex-shrink-0 rounded-lg overflow-hidden aspect-video">
               {video.thumbnail ? (
                 <Image
                   src={video.thumbnail}
@@ -107,17 +107,19 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 文字区域 - 固定间距和行数限制 */}
-            <div className="ml-2.5 flex-grow overflow-hidden flex flex-col min-w-0">
-              <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
-                {video.title}
-              </h3>
-              
-              {/* 固定间距12px */}
-              <div className="mt-3">
-                <span className="text-[10px] text-gray-500 dark:text-gray-400">
-                  {categoryMap[video.category || 'other'] || '其他'}
-                </span>
+            {/* 文字区域 - 修改为垂直居中且内容上下分组 */}
+            <div className="ml-2.5 flex-grow flex flex-col justify-center min-w-0">
+              <div className="overflow-hidden">
+                <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                  {video.title}
+                </h3>
+                
+                {/* 固定12px上边距 */}
+                <div className="mt-3">
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                    {categoryMap[video.category || 'other'] || '其他'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
