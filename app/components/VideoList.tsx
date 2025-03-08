@@ -9,8 +9,6 @@ interface Video {
   description?: string;
   psign?: string;
   category?: string;
-  views?: string;
-  uploadTime?: string;
 }
 
 interface VideoListProps {
@@ -102,9 +100,9 @@ export default function VideoList({
                 {video.title}
               </h3>
               
-              {/* 替换views和uploadTime为标签 */}
+              {/* 替换为纯文本标签 */}
               <div className="mt-1">
-                <span className="inline-block text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                <span className="text-[10px] text-gray-500 dark:text-gray-400">
                   {categoryMap[video.category || 'other'] || '其他'}
                 </span>
               </div>

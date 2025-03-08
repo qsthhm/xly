@@ -24,8 +24,6 @@ interface Video {
   description: string;
   psign: string;
   category: string;
-  views: string;
-  uploadTime: string;
 }
 
 // 视频数据
@@ -36,19 +34,15 @@ const ALL_VIDEOS: Video[] = [
     thumbnail: '/thumbnails/video1.jpg',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '', 
-    category: 'packaging',
-    views: '3.2万次观看',
-    uploadTime: '2个月前'
+    category: 'packaging'
   },
   {
     id: '第二个视频ID', 
     title: '南川播种一年级自然工作坊',
-    thumbnail: '/thumbnails/video2.jpg',
+    thumbnail: '/img/03.png',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
-    category: 'packaging',
-    views: '1.8万次观看',
-    uploadTime: '3个月前'
+    category: 'packaging'
   },
   {
     id: '第三个视频ID', 
@@ -56,9 +50,7 @@ const ALL_VIDEOS: Video[] = [
     thumbnail: '/thumbnails/video3.jpg',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
-    category: 'editing',
-    views: '5.4万次观看',
-    uploadTime: '1个月前'
+    category: 'editing'
   },
   {
     id: '第四个视频ID', 
@@ -66,9 +58,7 @@ const ALL_VIDEOS: Video[] = [
     thumbnail: '/thumbnails/video4.jpg',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
-    category: 'editing',
-    views: '2.7万次观看',
-    uploadTime: '5个月前'
+    category: 'editing'
   },
   {
     id: '第五个视频ID', 
@@ -76,9 +66,7 @@ const ALL_VIDEOS: Video[] = [
     thumbnail: '/thumbnails/video5.jpg',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
-    category: 'other',
-    views: '1.2万次观看',
-    uploadTime: '4个月前'
+    category: 'other'
   }
 ];
 
@@ -144,7 +132,7 @@ function ClientPage() {
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <img 
-              src="https://via.placeholder.com/32" 
+              src="/img/logo.png" 
               alt="许璐雅头像" 
               className="w-8 h-8 rounded-full object-cover" 
             />
@@ -186,9 +174,9 @@ function ClientPage() {
               {/* 视频信息 */}
               <div className="text-gray-900 dark:text-gray-300">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span>{currentVideo?.views}</span>
-                  <span>•</span>
-                  <span>{currentVideo?.uploadTime}</span>
+                  {/* 替换views和uploadTime为纯文本标签 */}
+                  <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
+                        currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
                 </div>
                 <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
               </div>
