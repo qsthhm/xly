@@ -15,11 +15,13 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   
   // 清理旧播放器并创建新播放器
   const recreatePlayer = () => {
-    // 设置加载状态
+    // 重置状态
     setIsLoading(true);
+    setVideoLoaded(false);
     setError(null);
     
     // 移除所有现有视频元素
@@ -37,17 +39,18 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       // 清空容器
       containerRef.current.innerHTML = '';
       
-      // 重要：将容器背景色设置为与全局背景一致
-      containerRef.current.style.backgroundColor = '#141414';
-      
       // 创建新的video元素
       const videoElement = document.createElement('video');
       videoElement.id = 'player-container-id';
       videoElement.className = 'w-full h-full';
       videoElement.setAttribute('preload', 'auto');
       videoElement.setAttribute('playsinline', '');
-      // 明确设置背景色
-      videoElement.style.backgroundColor = '#141414'; 
+      
+      // 在加载阶段设置背景色
+      if (!videoLoaded) {
+        videoElement.style.backgroundColor = '#141414';
+      }
+      
       containerRef.current.appendChild(videoElement);
       
       // 初始化播放器
@@ -67,12 +70,62 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
             setIsLoading(false);
           });
           
+          // 监听播放器准备就绪事件
           playerInstanceRef.current.on('ready', () => {
             setIsLoading(false);
           });
           
+          // 监听播放开始事件
+          playerInstanceRef.current.on('playing', () => {
+            console.log('Video playing, removing background');
+            setVideoLoaded(true);
+            setIsLoading(false);
+            
+            // 视频开始播放后移除背景色
+            setTimeout(() => {
+              if (videoElement) {
+                videoElement.style.backgroundColor = 'transparent';
+              }
+              
+              // 寻找并移除其他播放器元素的背景色
+              try {
+                const playerElements = document.querySelectorAll('.vcp-player, .vcp-player .vcp-poster, .vcp-player .vcp-loading');
+                playerElements.forEach(el => {
+                  (el as HTMLElement).style.backgroundColor = 'transparent';
+                });
+              } catch (e) {
+                console.error('移除背景色错误:', e);
+              }
+            }, 500); // 延迟半秒以确保视频内容已显示
+          });
+          
+          // 监听时间更新事件
           playerInstanceRef.current.on('timeupdate', () => {
-            if (isLoading) setIsLoading(false);
+            if (isLoading) {
+              setIsLoading(false);
+            }
+            
+            // 确保视频播放时移除背景色
+            if (!videoLoaded) {
+              setVideoLoaded(true);
+              
+              // 视频播放时移除背景色
+              setTimeout(() => {
+                if (videoElement) {
+                  videoElement.style.backgroundColor = 'transparent';
+                }
+                
+                // 寻找并移除其他播放器元素的背景色
+                try {
+                  const playerElements = document.querySelectorAll('.vcp-player, .vcp-player .vcp-poster, .vcp-player .vcp-loading');
+                  playerElements.forEach(el => {
+                    (el as HTMLElement).style.backgroundColor = 'transparent';
+                  });
+                } catch (e) {
+                  console.error('移除背景色错误:', e);
+                }
+              }, 200);
+            }
           });
           
         } catch (error) {
@@ -112,41 +165,9 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const handleScriptLoad = () => {
     setScriptLoaded(true);
   };
-  
-  // 强制背景色以确保一致性
-  useEffect(() => {
-    // 设置播放器背景色的函数
-    const fixPlayerBackground = () => {
-      // 明确设置容器背景色
-      if (containerRef.current) {
-        containerRef.current.style.backgroundColor = '#141414';
-      }
-      
-      // 设置视频元素背景色
-      const videoEl = document.getElementById('player-container-id');
-      if (videoEl) {
-        videoEl.style.backgroundColor = '#000';
-      }
-    };
-    
-    // 初始设置
-    fixPlayerBackground();
-    
-    // 设置一个定时器，在页面加载后和播放器初始化期间多次尝试设置背景色
-    const intervals = [100, 500, 1000, 2000, 5000];
-    const timers = intervals.map(interval => setTimeout(fixPlayerBackground, interval));
-    
-    return () => {
-      // 清理所有定时器
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  }, []);
 
   return (
-    <div className="relative w-full aspect-video rounded-xl overflow-hidden" style={{ backgroundColor: '#141414' }}>
-      {/* 使用内联样式强制设置背景色，确保与全局深色模式背景一致 */}
-      <div className="absolute inset-0 bg-[#141414] dark:bg-[#141414]"></div>
-      
+    <div className={`relative w-full aspect-video rounded-xl overflow-hidden ${isLoading || !videoLoaded ? 'bg-[#141414] dark:bg-[#141414]' : 'bg-transparent'}`}>
       <Script
         src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
         strategy="afterInteractive"
@@ -177,8 +198,12 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         </div>
       )}
       
-      {/* 播放器容器 - 使用内联样式和类同时指定背景色 */}
-      <div ref={containerRef} className="w-full h-full bg-[#141414] dark:bg-[#141414]" style={{ backgroundColor: '#141414' }}></div>
+      {/* 播放器容器 - 根据加载状态动态设置背景 */}
+      <div 
+        ref={containerRef} 
+        className={`w-full h-full ${isLoading || !videoLoaded ? 'bg-[#141414] dark:bg-[#141414]' : 'bg-transparent'}`}
+        style={{ backgroundColor: isLoading || !videoLoaded ? '#141414' : 'transparent' }}
+      ></div>
     </div>
   );
 }
