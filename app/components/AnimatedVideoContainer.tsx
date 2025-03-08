@@ -41,7 +41,7 @@ export default function AnimatedVideoContainer({ video, appId }: AnimatedVideoCo
   }, [video, currentVideo]);
   
   return (
-    <div className="relative w-full rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
+    <div className="relative w-full">
       {/* 当前视频 */}
       <div 
         className={`w-full transition-opacity duration-400 ease-in-out ${

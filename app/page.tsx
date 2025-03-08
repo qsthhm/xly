@@ -132,7 +132,7 @@ function ClientPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-white">
+    <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
       {/* 更新后的导航栏 */}
       <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
@@ -140,22 +140,22 @@ function ClientPage() {
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
               <Image 
                 src="/img/logo.png" 
-                alt="许璐雅头像" 
+                alt="头像" 
                 fill
                 className="object-cover"
                 priority
               />
             </div>
-            <span className="text-base font-medium text-[#333] dark:text-white">
+            <span className="text-base font-medium text-[#333] dark:text-gray-200">
               许璐雅 · 个人作品集
             </span>
           </div>
           
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-sm text-[#333] dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="#" className="text-sm text-[#333] dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
             </a>
-            <a href="#" className="text-sm text-[#333] dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="#" className="text-sm text-[#333] dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               联系我
             </a>
             <ThemeToggle />
@@ -171,14 +171,16 @@ function ClientPage() {
               <VideoSkeletonLoader />
             ) : (
               <>
-                <AnimatedVideoContainer 
-                  video={currentVideo}
-                  appId={TENCENT_APP_ID}
-                />
+                <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
+                  <AnimatedVideoContainer 
+                    video={currentVideo}
+                    appId={TENCENT_APP_ID}
+                  />
+                </div>
                 
                 <div className="mt-5 space-y-4">
                   {/* 减小视频标题字号 */}
-                  <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
                   {/* 视频信息 */}
                   <div className="text-gray-900 dark:text-gray-300">
@@ -216,7 +218,7 @@ export default function Home() {
     <Suspense fallback={
       <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#C15F3C] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
           </div>
           <p className="mt-2 text-gray-500 dark:text-gray-400">精彩内容加载中...</p>

@@ -42,7 +42,7 @@ export default function VideoList({
           <button 
             className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
               currentCategory === 'all' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-[#C15F3C] text-white' 
                 : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('all')}
@@ -52,7 +52,7 @@ export default function VideoList({
           <button 
             className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
               currentCategory === 'packaging' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-[#C15F3C] text-white' 
                 : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('packaging')}
@@ -62,7 +62,7 @@ export default function VideoList({
           <button 
             className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
               currentCategory === 'editing' 
-                ? 'bg-blue-600 text-white' 
+                ? 'bg-[#C15F3C] text-white' 
                 : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('editing')}
@@ -77,9 +77,9 @@ export default function VideoList({
         {videos.map((video) => (
           <div
             key={video.id}
-            className={`flex items-center cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
+            className={`flex items-center cursor-pointer p-2.5 transition-all duration-200 ${
               video.id === currentVideoId 
-                ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500' 
+                ? 'bg-[#C15F3C]/10 dark:bg-[#C15F3C]/20 border-l-4 border-[#C15F3C]' 
                 : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
             }`}
             onClick={() => onSelectVideo(video.id)}
@@ -110,7 +110,7 @@ export default function VideoList({
             {/* 文字区域 - 垂直居中，标题和标签之间间距更小，标签字号更大 */}
             <div className="ml-2.5 flex-grow min-w-0 flex items-center">
               <div className="flex flex-col">
-                <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
                   {video.title}
                 </h3>
                 
