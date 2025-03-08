@@ -125,7 +125,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       // 设置视频元素背景色
       const videoEl = document.getElementById('player-container-id');
       if (videoEl) {
-        videoEl.style.backgroundColor = '#141414';
+        videoEl.style.backgroundColor = '#000';
       }
     };
     
