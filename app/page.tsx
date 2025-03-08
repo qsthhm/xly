@@ -28,7 +28,6 @@ interface Video {
   category: string;
 }
 
-
 // 视频数据
 const ALL_VIDEOS: Video[] = [
   {
@@ -68,7 +67,6 @@ function ClientPage() {
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
-  const [videoKey, setVideoKey] = useState(0); // 用于强制重新渲染视频播放器
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -103,13 +101,10 @@ function ClientPage() {
   
   // 处理视频选择
   const handleSelectVideo = (id: string) => {
-    if (id !== currentVideoId) {
-      setCurrentVideoId(id);
-      setVideoKey(prev => prev + 1); // 更改key以强制重新渲染播放器
-      
-      // 更新URL，保留当前分类
-      router.push(`?v=${id}&category=${currentCategory}`, { scroll: false });
-    }
+    setCurrentVideoId(id);
+    
+    // 更新URL，保留当前分类
+    router.push(`?v=${id}&category=${currentCategory}`, { scroll: false });
   };
   
   // 修改分类切换处理函数，不自动切换视频
@@ -156,7 +151,7 @@ function ClientPage() {
       {/* 添加底部间距 */}
       <div className="container mx-auto px-4 pt-3 pb-10">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
-          {/* 视频播放区域 - 直接使用VideoPlayer而不是AnimatedVideoContainer */}
+          {/* 视频播放区域 */}
           <div className="w-full lg:w-3/4">
             {isLoading ? (
               <VideoSkeletonLoader />
@@ -164,7 +159,6 @@ function ClientPage() {
               <>
                 <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
                   <VideoPlayer 
-                    key={videoKey} // 添加key使得切换视频时重新创建播放器组件
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}
