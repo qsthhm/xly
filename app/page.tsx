@@ -137,7 +137,7 @@ function ClientPage() {
             <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
               简历
             </a>
-            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-[-1px]">
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-4">
               联系我
             </a>
             <ThemeToggle />
