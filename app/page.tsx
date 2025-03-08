@@ -160,4 +160,53 @@ export default function Home() {
             <div className="rounded-xl overflow-hidden shadow-md">
               {currentVideo && (
                 <VideoPlayer 
-                  fileId={currentVideo.id}
+                  fileId={currentVideo.id} 
+                  appId={TENCENT_APP_ID}
+                  psign={currentVideo.psign || ''}
+                />
+              )}
+            </div>
+            
+            <div className="mt-4 space-y-4">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
+              
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div className="flex items-center space-x-3">
+                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6 text-gray-700 dark:text-gray-200">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="font-semibold text-gray-900 dark:text-white">许璨雅</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">个人作品集</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="rounded-xl bg-white dark:bg-gray-800 p-4 shadow-sm">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  <span>{currentVideo?.views}</span>
+                  <span>•</span>
+                  <span>{currentVideo?.uploadTime}</span>
+                </div>
+                <p className="whitespace-pre-line text-gray-700 dark:text-gray-300">{currentVideo?.description}</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* 右侧视频列表 */}
+          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-sm" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+            <VideoList
+              videos={filteredVideos}
+              currentVideoId={currentVideo?.id || ''}
+              onSelectVideo={handleSelectVideo}
+              currentCategory={currentCategory}
+              onCategoryChange={handleCategoryChange}
+            />
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
