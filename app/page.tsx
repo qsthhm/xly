@@ -77,7 +77,6 @@ function ClientPage() {
     // 在客户端运行时从URL获取参数
     const url = new URL(window.location.href);
     const videoId = url.searchParams.get('v');
-    const category = url.searchParams.get('category');
     
     if (videoId) {
       // 检查URL中的视频ID是否存在于视频列表中
@@ -85,10 +84,6 @@ function ClientPage() {
       if (videoExists) {
         setCurrentVideoId(videoId);
       }
-    }
-    
-    if (category && ['all', 'packaging', 'editing', 'other'].includes(category)) {
-      setCurrentCategory(category);
     }
     
     // 初始化完成后关闭加载状态
@@ -107,16 +102,14 @@ function ClientPage() {
   const handleSelectVideo = (id: string) => {
     setCurrentVideoId(id);
     
-    // 更新URL，保留当前分类
-    router.push(`?v=${id}&category=${currentCategory}`, { scroll: false });
+    // 更新URL，但不包含分类参数
+    router.push(`?v=${id}`, { scroll: false });
   };
   
-  // 修改分类切换处理函数，不自动切换视频
+  // 修改分类切换处理函数，不改变URL
   const handleCategoryChange = (category: string) => {
     setCurrentCategory(category);
-    
-    // 更新URL，保留当前视频ID
-    router.push(`?v=${currentVideoId}&category=${category}`, { scroll: false });
+    // 不再更新URL
   };
 
   return (
@@ -144,7 +137,7 @@ function ClientPage() {
             <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
               简历
             </a>
-            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3">
+            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-[-1px]">
               联系我
             </a>
             <ThemeToggle />
