@@ -133,8 +133,8 @@ function ClientPage() {
 
   return (
     <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-      {/* 更新后的导航栏 - 移除底部边框 */}
-      <nav className="sticky top-0 z-10 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
+      {/* 更新后的导航栏 - 背景完全不透明 */}
+      <nav className="sticky top-0 z-10 bg-[#F4F2EB] dark:bg-gray-900">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
@@ -163,7 +163,8 @@ function ClientPage() {
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-6">
+      {/* 减小与导航的间距 */}
+      <div className="container mx-auto px-4 pt-3">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
           {/* 视频播放区域 */}
           <div className="w-full lg:w-3/4">
