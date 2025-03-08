@@ -28,68 +28,67 @@ export default function VideoList({
   currentCategory,
   onCategoryChange
 }: VideoListProps) {
+  // 将分类名称映射为中文标签
+  const categoryMap: Record<string, string> = {
+    'packaging': '包装项目',
+    'editing': '剪辑项目',
+    'other': '其他'
+  };
+
   return (
     <div className="w-full flex flex-col">
-      {/* 分类切换栏 - 按钮变小全圆角 */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex space-x-3 overflow-x-auto">
-        <button 
-          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
-            currentCategory === 'all' 
-              ? 'bg-blue-600 text-white shadow-sm' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
-          }`}
-          onClick={() => onCategoryChange('all')}
-        >
-          全部
-        </button>
-        <button 
-          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
-            currentCategory === 'packaging' 
-              ? 'bg-blue-600 text-white shadow-sm' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
-          }`}
-          onClick={() => onCategoryChange('packaging')}
-        >
-          包装项目
-        </button>
-        <button 
-          className={`whitespace-nowrap px-3 py-1.5 text-xs rounded-full font-medium transition-all duration-200 ${
-            currentCategory === 'editing' 
-              ? 'bg-blue-600 text-white shadow-sm' 
-              : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
-          }`}
-          onClick={() => onCategoryChange('editing')}
-        >
-          剪辑项目
-        </button>
+      {/* 标题栏 - 左侧标题，右侧分类 */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <span className="font-medium text-sm">视频标题</span>
+        <div className="flex space-x-2 overflow-x-auto">
+          <button 
+            className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
+              currentCategory === 'all' 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+            }`}
+            onClick={() => onCategoryChange('all')}
+          >
+            全部
+          </button>
+          <button 
+            className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
+              currentCategory === 'packaging' 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+            }`}
+            onClick={() => onCategoryChange('packaging')}
+          >
+            包装
+          </button>
+          <button 
+            className={`whitespace-nowrap px-2.5 py-1 text-xs rounded-full transition-all duration-200 ${
+              currentCategory === 'editing' 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+            }`}
+            onClick={() => onCategoryChange('editing')}
+          >
+            剪辑
+          </button>
+        </div>
       </div>
       
-      {/* 视频列表 - 优化布局 */}
+      {/* 视频列表 - 优化中等屏幕布局 */}
       <div className="py-2">
         {videos.map((video) => (
           <div
             key={video.id}
-            className={`flex cursor-pointer p-3 rounded-lg transition-all duration-200 ${
+            className={`flex cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
               video.id === currentVideoId 
                 ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500' 
                 : 'hover:bg-gray-50 dark:hover:bg-gray-800/70 border-l-4 border-transparent'
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            {/* 缩略图容器固定宽高 */}
-            <div className="relative w-32 h-18 flex-shrink-0 rounded-lg overflow-hidden">
-              {/* 占位图或实际缩略图 */}
+            {/* 缩略图容器 - 使用纵横比控制 */}
+            <div className="relative w-20 md:w-24 lg:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
-              
-              {/* 如果有真实缩略图，取消下面注释 */}
-              {/* <Image
-                src={video.thumbnail}
-                alt={video.title}
-                layout="fill"
-                objectFit="cover"
-                className="object-cover"
-                loading="lazy"
-              /> */}
               
               {/* 视频时长指示器 */}
               <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
@@ -97,13 +96,17 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 优化文字区域布局 */}
-            <div className="ml-3 flex-grow overflow-hidden flex flex-col justify-between">
-              <h3 className={`text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{video.title}</h3>
-              <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                <span>{video.views || "1.2万次观看"}</span>
-                <span className="mx-1">•</span>
-                <span>{video.uploadTime || "3个月前"}</span>
+            {/* 文字区域 - 优化响应式布局 */}
+            <div className="ml-2.5 flex-grow overflow-hidden flex flex-col justify-between min-w-0">
+              <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                {video.title}
+              </h3>
+              
+              {/* 替换views和uploadTime为标签 */}
+              <div className="mt-1">
+                <span className="inline-block text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                  {categoryMap[video.category || 'other'] || '其他'}
+                </span>
               </div>
             </div>
           </div>

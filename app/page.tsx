@@ -180,9 +180,10 @@ function ClientPage() {
             </div>
             
             <div className="mt-5 space-y-4">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
+              {/* 减小视频标题字号 */}
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">{currentVideo?.title}</h1>
               
-              {/* 移除卡片效果，改为普通文本 */}
+              {/* 视频信息 */}
               <div className="text-gray-900 dark:text-gray-300">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span>{currentVideo?.views}</span>
@@ -194,7 +195,7 @@ function ClientPage() {
             </div>
           </div>
           
-          {/* 右侧视频列表 - 背景改回白色 */}
+          {/* 右侧视频列表 */}
           <div className="w-full lg:w-1/4 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
