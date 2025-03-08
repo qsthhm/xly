@@ -33,7 +33,7 @@ const ALL_VIDEOS: Video[] = [
   {
     id: '1397757906801587829', 
     title: 'AI对话式互联计划',
-    thumbnail: '/thumbnails/video1.jpg',
+    thumbnail: '/img/01.png',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '', 
     category: 'packaging'
@@ -41,7 +41,7 @@ const ALL_VIDEOS: Video[] = [
   {
     id: '第二个视频ID', 
     title: '南川播种一年级自然工作坊',
-    thumbnail: '/img/03.png',
+    thumbnail: '/img/02.png',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
     category: 'packaging'
@@ -49,26 +49,10 @@ const ALL_VIDEOS: Video[] = [
   {
     id: '第三个视频ID', 
     title: '剪辑作品1',
-    thumbnail: '/thumbnails/video3.jpg',
+    thumbnail: '/img/03.png',
     description: '我是谁 我擅长什么 我能做什么',
     psign: '',
     category: 'editing'
-  },
-  {
-    id: '第四个视频ID', 
-    title: '剪辑作品2',
-    thumbnail: '/thumbnails/video4.jpg',
-    description: '我是谁 我擅长什么 我能做什么',
-    psign: '',
-    category: 'editing'
-  },
-  {
-    id: '第五个视频ID', 
-    title: '其他作品',
-    thumbnail: '/thumbnails/video5.jpg',
-    description: '我是谁 我擅长什么 我能做什么',
-    psign: '',
-    category: 'other'
   }
 ];
 
@@ -83,20 +67,6 @@ function ClientPage() {
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
-  
-  // 监听滚动事件
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -147,11 +117,8 @@ function ClientPage() {
 
   return (
     <main className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-      {/* 导航栏 - 滚动时才添加背景色 */}
-      <nav 
-        className={`sticky top-0 z-10 transition-colors ${isScrolled ? 'bg-[#F0EFE7]' : ''}`} 
-        style={{ backgroundColor: isScrolled ? '#F0EFE7' : 'transparent' }}
-      >
+      {/* 导航栏 - 移除吸顶效果 */}
+      <nav className="bg-[#F0EFE7] dark:bg-gray-900">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
@@ -168,7 +135,7 @@ function ClientPage() {
             </span>
           </div>
           
-          {/* 减小导航项之间的间距 */}
+          {/* 导航项 */}
           <div className="flex items-center space-x-3">
             <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
@@ -197,18 +164,19 @@ function ClientPage() {
                   />
                 </div>
                 
+                {/* 调整内容顺序：标签、标题、描述 */}
                 <div className="mt-5 space-y-4">
+                  {/* 视频标签 */}
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
+                          currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
+                  </div>
+                  
                   {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
-                  {/* 视频信息 */}
-                  <div className="text-gray-900 dark:text-gray-300">
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                      <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
-                            currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
-                    </div>
-                    <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
-                  </div>
+                  {/* 视频描述 */}
+                  <p className="whitespace-pre-line leading-relaxed text-gray-900 dark:text-gray-300">{currentVideo?.description}</p>
                 </div>
               </>
             )}

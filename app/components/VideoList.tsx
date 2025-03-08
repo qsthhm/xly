@@ -43,7 +43,7 @@ export default function VideoList({
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'all' 
-                ? 'text-[#C15F3C] border-[#C15F3C] rounded-b' 
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('all')}
@@ -53,7 +53,7 @@ export default function VideoList({
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'packaging' 
-                ? 'text-[#C15F3C] border-[#C15F3C] rounded-b' 
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('packaging')}
@@ -63,7 +63,7 @@ export default function VideoList({
           <button 
             className={`text-sm pb-[13px] border-b-3 -mb-[15px] transition-colors ${
               currentCategory === 'editing' 
-                ? 'text-[#C15F3C] border-[#C15F3C] rounded-b' 
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('editing')}
@@ -85,14 +85,14 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            {/* 缩略图容器 - 调整移动端尺寸更大，大屏幕保持原样 */}
-            <div className="relative w-28 sm:w-24 md:w-[22%] lg:w-24 flex-shrink-0 rounded-lg overflow-hidden aspect-video">
+            {/* 缩略图容器 - 调整小屏幕尺寸更统一 */}
+            <div className="relative w-32 sm:w-32 md:w-[22%] lg:w-24 flex-shrink-0 rounded-lg overflow-hidden aspect-video">
               {video.thumbnail ? (
                 <Image
                   src={video.thumbnail}
                   alt={video.title}
                   fill
-                  sizes="(max-width: 768px) 112px, (max-width: 1200px) 22vw, 96px"
+                  sizes="(max-width: 768px) 128px, (max-width: 1200px) 22vw, 96px"
                   className="object-cover"
                   loading="lazy"
                   placeholder="blur"
@@ -111,13 +111,13 @@ export default function VideoList({
             {/* 文字区域 - 垂直居中，根据屏幕宽度调整字号 */}
             <div className="ml-2.5 flex-grow min-w-0 flex items-center">
               <div className="flex flex-col">
-                <h3 className={`text-base lg:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
+                <h3 className={`text-base lg:text-base xl:text-base font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
                   {video.title}
                 </h3>
                 
                 {/* 极小的间距 */}
                 <div style={{ marginTop: '2px' }}>
-                  <span className="text-sm lg:text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-sm lg:text-xs xl:text-sm text-gray-500 dark:text-gray-400">
                     {categoryMap[video.category || 'other'] || '其他'}
                   </span>
                 </div>
