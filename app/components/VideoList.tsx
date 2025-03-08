@@ -39,9 +39,9 @@ export default function VideoList({
       <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <span className="font-medium text-base text-gray-900 dark:text-gray-200">播放列表</span>
         {/* 分类切换按钮 - 调整间距，修复抖动问题 */}
-        <div className="flex gap-4">
+        <div className="flex gap-3">
           <button 
-            className={`text-sm border-b-2 transition-colors ${
+            className={`text-sm pb-[11px] border-b-2 -mb-[13px] transition-colors ${
               currentCategory === 'all' 
                 ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
@@ -51,7 +51,7 @@ export default function VideoList({
             全部
           </button>
           <button 
-            className={`text-sm border-b-2 transition-colors ${
+            className={`text-sm pb-[11px] border-b-2 -mb-[13px] transition-colors ${
               currentCategory === 'packaging' 
                 ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
@@ -61,7 +61,7 @@ export default function VideoList({
             包装
           </button>
           <button 
-            className={`text-sm border-b-2 transition-colors ${
+            className={`text-sm pb-[11px] border-b-2 -mb-[13px] transition-colors ${
               currentCategory === 'editing' 
                 ? 'text-[#C15F3C] border-[#C15F3C]' 
                 : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
@@ -108,16 +108,16 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 文字区域 - 垂直居中，标题和标签之间间距更小，标签字号更大 */}
+            {/* 文字区域 - 垂直居中，增加移动端字号 */}
             <div className="ml-2.5 flex-grow min-w-0 flex items-center">
               <div className="flex flex-col">
-                <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
+                <h3 className={`text-sm sm:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-[#C15F3C] dark:text-[#C15F3C]' : 'text-gray-900 dark:text-gray-200'}`}>
                   {video.title}
                 </h3>
                 
                 {/* 极小的间距 */}
                 <div style={{ marginTop: '2px' }}>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs sm:text-xs text-gray-500 dark:text-gray-400">
                     {categoryMap[video.category || 'other'] || '其他'}
                   </span>
                 </div>

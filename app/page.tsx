@@ -132,9 +132,9 @@ function ClientPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-      {/* 更新后的导航栏 - 使用纯色填充背景 */}
-      <nav className="sticky top-0 z-10 bg-[#F0EFE7] dark:bg-gray-900">
+    <main className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+      {/* 更新后的导航栏 - 使用纯色填充背景，并确保没有透明度 */}
+      <nav className="sticky top-0 z-10 bg-[#F0EFE7] dark:bg-gray-900" style={{ backgroundColor: '#F0EFE7' }}>
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
@@ -166,13 +166,13 @@ function ClientPage() {
       {/* 添加底部间距 */}
       <div className="container mx-auto px-4 pt-3 pb-10">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
-          {/* 视频播放区域 */}
+          {/* 视频播放区域 - 去掉投影 */}
           <div className="w-full lg:w-3/4">
             {isLoading ? (
               <VideoSkeletonLoader />
             ) : (
               <>
-                <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
+                <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
                   <AnimatedVideoContainer 
                     video={currentVideo}
                     appId={TENCENT_APP_ID}
@@ -180,17 +180,16 @@ function ClientPage() {
                 </div>
                 
                 <div className="mt-5 space-y-4">
-                  {/* 减小视频标题字号 */}
+                  {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
-                  {/* 视频信息 */}
+                  {/* 视频信息 - 移动端增大字号 */}
                   <div className="text-gray-900 dark:text-gray-300">
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
-                      {/* 替换views和uploadTime为纯文本标签 */}
+                    <div className="flex items-center space-x-2 text-base sm:text-sm text-gray-500 dark:text-gray-400 mb-2">
                       <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
                             currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
                     </div>
-                    <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
+                    <p className="whitespace-pre-line leading-relaxed text-base sm:text-base">{currentVideo?.description}</p>
                   </div>
                 </div>
               </>
@@ -217,7 +216,7 @@ function ClientPage() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#C15F3C] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>

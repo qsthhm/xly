@@ -8,7 +8,7 @@
   }
   
   body {
-    @apply bg-[#F4F2EB] dark:bg-gray-900;
+    @apply bg-[#F0EFE7] dark:bg-gray-900;
   }
 }
 
