@@ -38,33 +38,33 @@ export default function VideoList({
       {/* 标题栏 - 左侧标题，右侧分类 - 添加底部边框 */}
       <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <span className="font-medium text-base text-gray-900 dark:text-gray-200">播放列表</span>
-        {/* 分类切换按钮 - 使用下划线样式 */}
-        <div className="flex gap-6">
+        {/* 分类切换按钮 - 调整间距，修复抖动问题 */}
+        <div className="flex gap-4">
           <button 
-            className={`pb-1 text-xs transition-colors ${
+            className={`text-sm border-b-2 transition-colors ${
               currentCategory === 'all' 
-                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('all')}
           >
             全部
           </button>
           <button 
-            className={`pb-1 text-xs transition-colors ${
+            className={`text-sm border-b-2 transition-colors ${
               currentCategory === 'packaging' 
-                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('packaging')}
           >
             包装
           </button>
           <button 
-            className={`pb-1 text-xs transition-colors ${
+            className={`text-sm border-b-2 transition-colors ${
               currentCategory === 'editing' 
-                ? 'text-[#C15F3C] border-b-2 border-[#C15F3C]' 
-                : 'hover:text-[#C15F3C] text-gray-800 dark:text-white'
+                ? 'text-[#C15F3C] border-[#C15F3C]' 
+                : 'hover:text-[#C15F3C] border-transparent text-gray-800 dark:text-white'
             }`}
             onClick={() => onCategoryChange('editing')}
           >
