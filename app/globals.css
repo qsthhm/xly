@@ -4,8 +4,7 @@
 
 @layer base {
   * {
-    /* 减少颜色过渡时间以解决主题切换延迟 */
-    @apply transition-colors duration-0;
+    @apply transition-colors duration-100;
   }
   
   body {
@@ -34,4 +33,41 @@
 /* 基本过渡动画相关样式 */
 .duration-400 {
   transition-duration: 400ms;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 400ms ease-in-out forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 400ms ease-in-out forwards;
+}
+
+/* 添加淡入淡出过渡组 */
+.fade-transition-enter {
+  opacity: 0;
+}
+
+.fade-transition-enter-active {
+  opacity: 1;
+  transition: opacity 400ms;
+}
+
+.fade-transition-exit {
+  opacity: 1;
+}
+
+.fade-transition-exit-active {
+  opacity: 0;
+  transition: opacity 400ms;
 }
