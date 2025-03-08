@@ -15,12 +15,19 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [playerReady, setPlayerReady] = useState(false);
+  
+  // 重置状态，为创建新播放器做准备
+  const resetState = () => {
+    setIsLoading(true);
+    setError(null);
+    setPlayerReady(false);
+  };
   
   // 清理旧播放器并创建新播放器
   const recreatePlayer = () => {
-    // 设置加载状态
-    setIsLoading(true);
-    setError(null);
+    // 重置状态
+    resetState();
     
     // 移除所有现有视频元素
     if (containerRef.current) {
@@ -28,10 +35,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       if (playerInstanceRef.current) {
         try {
           playerInstanceRef.current.dispose();
+          playerInstanceRef.current = null;
         } catch (e) {
           console.error('播放器销毁错误:', e);
         }
-        playerInstanceRef.current = null;
       }
       
       // 清空容器
@@ -48,6 +55,8 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       // 初始化播放器
       if (typeof window.TCPlayer === 'function') {
         try {
+          console.log(`正在初始化播放器，视频ID: ${fileId}`);
+          
           playerInstanceRef.current = window.TCPlayer('player-container-id', {
             fileID: fileId,
             appID: appId,
@@ -62,13 +71,33 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
             setIsLoading(false);
           });
           
-          playerInstanceRef.current.on('ready', () => {
+          playerInstanceRef.current.on('loadedmetadata', () => {
+            console.log('视频元数据已加载');
+            setIsLoading(false);
+            setPlayerReady(true);
+          });
+          
+          playerInstanceRef.current.on('playing', () => {
+            console.log('视频开始播放');
+            setIsLoading(false);
+            setPlayerReady(true);
+          });
+          
+          // 添加更多事件监听以确保状态更新
+          playerInstanceRef.current.on('canplay', () => {
+            console.log('视频可以播放');
             setIsLoading(false);
           });
           
-          playerInstanceRef.current.on('timeupdate', () => {
-            if (isLoading) setIsLoading(false);
-          });
+          // 30秒后如果仍在加载，则强制设置为非加载状态
+          const timer = setTimeout(() => {
+            if (isLoading) {
+              console.log('强制结束加载状态');
+              setIsLoading(false);
+            }
+          }, 3000);
+          
+          return () => clearTimeout(timer);
           
         } catch (error) {
           console.error('播放器初始化错误:', error);
@@ -79,9 +108,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     }
   };
 
-  // 脚本加载完成时
+  // 监听视频ID变化，重新创建播放器
   useEffect(() => {
     if (scriptLoaded && fileId) {
+      console.log(`视频ID变化: ${fileId}`);
       // 延迟一点初始化，确保DOM和播放器脚本都准备好
       const timer = setTimeout(() => {
         recreatePlayer();
@@ -96,10 +126,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       if (playerInstanceRef.current) {
         try {
           playerInstanceRef.current.dispose();
+          playerInstanceRef.current = null;
         } catch (e) {
           console.error('播放器销毁错误:', e);
         }
-        playerInstanceRef.current = null;
       }
     };
   }, []);
@@ -107,6 +137,26 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const handleScriptLoad = () => {
     setScriptLoaded(true);
   };
+
+  // 主动监听播放器状态的备用方案
+  useEffect(() => {
+    if (isLoading && playerInstanceRef.current) {
+      const checkPlayerState = setInterval(() => {
+        try {
+          const currentTime = playerInstanceRef.current.currentTime();
+          if (currentTime > 0) {
+            console.log('检测到播放进度，视频已开始播放');
+            setIsLoading(false);
+            clearInterval(checkPlayerState);
+          }
+        } catch (e) {
+          // 忽略错误
+        }
+      }, 500);
+      
+      return () => clearInterval(checkPlayerState);
+    }
+  }, [isLoading, playerReady]);
 
   return (
     <div className="relative w-full aspect-video bg-black">
@@ -127,7 +177,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         </div>
       )}
       
-      {/* 错误状态 - 去掉图标，按钮使用全圆角 */}
+      {/* 错误状态 */}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 z-10">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg max-w-xs text-center">

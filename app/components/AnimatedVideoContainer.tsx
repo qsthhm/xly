@@ -22,6 +22,7 @@ export default function AnimatedVideoContainer({ video, appId }: AnimatedVideoCo
   const [currentVideo, setCurrentVideo] = useState<Video>(video);
   const [previousVideo, setPreviousVideo] = useState<Video | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [key, setKey] = useState(0); // 添加key来强制重新渲染播放器
   
   useEffect(() => {
     // 当视频ID变化时，开始过渡动画
@@ -34,6 +35,7 @@ export default function AnimatedVideoContainer({ video, appId }: AnimatedVideoCo
       const timer = setTimeout(() => {
         setIsTransitioning(false);
         setPreviousVideo(null);
+        setKey(prev => prev + 1); // 增加key以强制重新渲染播放器
       }, 400);
       
       return () => clearTimeout(timer);
@@ -49,6 +51,7 @@ export default function AnimatedVideoContainer({ video, appId }: AnimatedVideoCo
         }`}
       >
         <VideoPlayer 
+          key={`current-${key}`}
           fileId={currentVideo.id} 
           appId={appId}
           psign={currentVideo.psign || ''}
@@ -61,6 +64,7 @@ export default function AnimatedVideoContainer({ video, appId }: AnimatedVideoCo
           className="absolute inset-0 transition-opacity duration-400 ease-in-out opacity-100"
         >
           <VideoPlayer 
+            key={`previous-${key}`}
             fileId={previousVideo.id} 
             appId={appId}
             psign={previousVideo.psign || ''}
