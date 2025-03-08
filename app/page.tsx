@@ -40,11 +40,11 @@ const ALL_VIDEOS: Video[] = [
     uploadTime: '2个月前'
   },
   {
-    id: '第二个视频ID', 
-    title: '南川播种一年级自然工作坊',
+    id: '1397757906314451130', 
+    title: '许璐雅水墨作品',
     thumbnail: '/thumbnails/video2.jpg',
     description: '我是谁 我擅长什么 我能做什么',
-    psign: '',
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjMxNDQ1MTEzMCIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDEzOTc3NjgsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.ISkycGGlDW7rYnPKiUJNRHxbsaYktiVfWJYYLDqi9sI',
     category: 'packaging',
     views: '1.8万次观看',
     uploadTime: '3个月前'
@@ -88,13 +88,15 @@ export default function Home() {
   const [currentVideoId, setCurrentVideoId] = useState(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState('all');
   
-  // 逻辑保持不变
+  // 根据当前分类筛选视频
   const filteredVideos = currentCategory === 'all' 
     ? ALL_VIDEOS 
     : ALL_VIDEOS.filter(video => video.category === currentCategory);
   
+  // 确保在切换分类后，如果当前视频不在新分类中，则自动选择新分类的第一个视频
   const currentVideo = ALL_VIDEOS.find(v => v.id === currentVideoId) || ALL_VIDEOS[0];
   
+  // 修复的分类切换处理函数
   const handleCategoryChange = (category: string) => {
     setCurrentCategory(category);
     
@@ -110,9 +112,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-white dark:bg-gray-900">
       {/* YouTube风格的顶部导航栏 */}
-      <nav className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur-sm">
+      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -145,20 +147,20 @@ export default function Home() {
               
               <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 rounded-full bg-accent flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                   </div>
                   <div>
                     <h2 className="font-semibold">许璨雅</h2>
-                    <p className="text-sm text-foreground/60">个人作品集</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">个人作品集</p>
                   </div>
                 </div>
               </div>
               
-              <div className="rounded-xl bg-card p-4">
-                <div className="flex items-center space-x-2 text-sm text-foreground/70 mb-2">
+              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                   <span>{currentVideo?.views}</span>
                   <span>•</span>
                   <span>{currentVideo?.uploadTime}</span>
@@ -169,7 +171,7 @@ export default function Home() {
           </div>
           
           {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-card overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}

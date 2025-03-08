@@ -2,58 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 255, 255, 255;
-    --foreground: 15, 15, 15;
-    
-    --card: 255, 255, 255;
-    --card-foreground: 15, 15, 15;
-    
-    --border: 230, 230, 230;
-    --input: 230, 230, 230;
-    
-    --primary: 15, 15, 15;
-    --primary-foreground: 255, 255, 255;
-    
-    --secondary: 245, 245, 245;
-    --secondary-foreground: 15, 15, 15;
-    
-    --accent: 230, 230, 230;
-    --accent-foreground: 15, 15, 15;
-    
-    --ring: 0, 0, 0;
-    
-    --radius: 0.5rem;
-  }
+/* 暗色模式样式 */
+.dark {
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  --tw-border-opacity: 1;
 
-  .dark {
-    --background: 15, 15, 15;
-    --foreground: 255, 255, 255;
-    
-    --card: 35, 35, 35;
-    --card-foreground: 255, 255, 255;
-    
-    --border: 48, 48, 48;
-    --input: 48, 48, 48;
-    
-    --primary: 255, 255, 255;
-    --primary-foreground: 15, 15, 15;
-    
-    --secondary: 35, 35, 35;
-    --secondary-foreground: 255, 255, 255;
-    
-    --accent: 48, 48, 48;
-    --accent-foreground: 255, 255, 255;
-    
-    --ring: 212, 212, 212;
-  }
+  background-color: #111111;
+  color: #ffffff;
 }
 
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-  }
+/* 亮色模式样式 */
+:root:not(.dark) {
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  --tw-border-opacity: 1;
+
+  background-color: #ffffff;
+  color: #111111;
 }
 
 /* 自定义YouTube风格组件 */
@@ -67,15 +33,15 @@
   }
   
   .yt-button-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-accent;
+    @apply bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600;
   }
   
   .yt-nav-button {
-    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-secondary;
+    @apply rounded-lg p-2 transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700;
   }
   
   .yt-video-card {
-    @apply overflow-hidden rounded-xl bg-card shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200;
   }
 }
 
@@ -90,18 +56,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-accent rounded-full;
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-foreground/40;
-}
-
-/* 确保暗模式下正确显示 */
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-accent;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-foreground/30;
+  @apply bg-gray-400 dark:bg-gray-600;
 }
