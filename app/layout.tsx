@@ -24,4 +24,21 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var
+                  var storedTheme = localStorage.getItem('theme');
+                  if (storedTheme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (err) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="bg-white dark:bg-gray-900 transition-colors duration-200">
+        {children}
+      </body>
+    </html>
+  );
+}
