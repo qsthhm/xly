@@ -168,7 +168,8 @@ function ClientPage() {
             </span>
           </div>
           
-          <div className="flex items-center space-x-6">
+          {/* 减小导航项之间的间距 */}
+          <div className="flex items-center space-x-3">
             <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors">
               简历
             </a>
