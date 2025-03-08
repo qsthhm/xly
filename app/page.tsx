@@ -83,6 +83,20 @@ function ClientPage() {
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+  // 监听滚动事件
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -133,8 +147,11 @@ function ClientPage() {
 
   return (
     <main className="min-h-screen bg-[#F0EFE7] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-      {/* 更新后的导航栏 - 使用纯色填充背景，并确保没有透明度 */}
-      <nav className="sticky top-0 z-10 bg-[#F0EFE7] dark:bg-gray-900" style={{ backgroundColor: '#F0EFE7' }}>
+      {/* 导航栏 - 滚动时才添加背景色 */}
+      <nav 
+        className={`sticky top-0 z-10 transition-colors ${isScrolled ? 'bg-[#F0EFE7]' : ''}`} 
+        style={{ backgroundColor: isScrolled ? '#F0EFE7' : 'transparent' }}
+      >
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
@@ -183,13 +200,13 @@ function ClientPage() {
                   {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
-                  {/* 视频信息 - 移动端增大字号 */}
+                  {/* 视频信息 */}
                   <div className="text-gray-900 dark:text-gray-300">
-                    <div className="flex items-center space-x-2 text-base sm:text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                       <span>{currentVideo?.category === 'packaging' ? '包装项目' : 
                             currentVideo?.category === 'editing' ? '剪辑项目' : '其他'}</span>
                     </div>
-                    <p className="whitespace-pre-line leading-relaxed text-base sm:text-base">{currentVideo?.description}</p>
+                    <p className="whitespace-pre-line leading-relaxed">{currentVideo?.description}</p>
                   </div>
                 </div>
               </>
