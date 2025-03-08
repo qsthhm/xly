@@ -13,7 +13,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const containerRef = useRef<HTMLDivElement>(null);
   const playerInstanceRef = useRef<any>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   
   // 清理旧播放器并创建新播放器
   const recreatePlayer = () => {
@@ -43,12 +42,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       // 初始化播放器
       if (typeof window.TCPlayer === 'function') {
         try {
-          // 显示加载状态2秒
-          setIsLoading(true);
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 2000);
-          
           playerInstanceRef.current = window.TCPlayer('player-container-id', {
             fileID: fileId,
             appID: appId,
@@ -57,7 +50,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
           });
         } catch (error) {
           console.error('播放器初始化错误:', error);
-          setIsLoading(false);
         }
       }
     }
@@ -100,16 +92,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
-      
-      {/* 加载状态 - 只显示2秒 */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-10">
-          <div className="flex flex-col items-center">
-            <div className="w-10 h-10 border-4 border-[#C15F3C] border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-2 text-white">视频加载中...</p>
-          </div>
-        </div>
-      )}
       
       {/* 播放器容器 */}
       <div ref={containerRef} className="w-full h-full"></div>
