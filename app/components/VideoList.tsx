@@ -107,16 +107,16 @@ export default function VideoList({
               </div>
             </div>
             
-            {/* 文字区域 - 内容紧凑排列，整体居中 */}
+            {/* 文字区域 - 垂直居中，标题和标签之间间距更小，标签字号更大 */}
             <div className="ml-2.5 flex-grow min-w-0 flex items-center">
               <div className="flex flex-col">
                 <h3 className={`text-xs md:text-sm font-medium line-clamp-2 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
                   {video.title}
                 </h3>
                 
-                {/* 紧凑的间距 */}
-                <div className="mt-1">
-                  <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                {/* 极小的间距 */}
+                <div style={{ marginTop: '2px' }}>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     {categoryMap[video.category || 'other'] || '其他'}
                   </span>
                 </div>
