@@ -38,7 +38,7 @@ const ALL_VIDEOS: Video[] = [
     description: '我是谁 我擅长什么 我能做什么',
     psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjgwMzg4NjU3NyIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDE0Mjc5OTUsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.68gBjZa3oQwO3hxEtVcoYVTEfGhFfk6BhuN_3iteZ8w', 
     category: 'packaging',
-    tag: '#快速认识我'
+    tag: '剪辑 · 短视频'
   },
   {
     id: '1397757906318451154', 
@@ -47,7 +47,7 @@ const ALL_VIDEOS: Video[] = [
     description: '我是谁 我擅长什么 我能做什么',
     psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMxMDM2NDc5MCwiZmlsZUlkIjoiMTM5Nzc1NzkwNjMxODQ1MTE1NCIsImN1cnJlbnRUaW1lU3RhbXAiOjE3NDE0MjQ3ODYsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiT3JpZ2luYWwiLCJpbWFnZVNwcml0ZURlZmluaXRpb24iOjEwfSwidXJsQWNjZXNzSW5mbyI6eyJkb21haW4iOiIxMzEwMzY0NzkwLnZvZC1xY2xvdWQuY29tIiwic2NoZW1lIjoiSFRUUFMifX0.tOgcpWDNrGHEuPr_qiuleOIktZwznrwYOMUmUXretpI',
     category: 'packaging',
-    tag: '#房地产 #展馆'
+    tag: '剪辑 · 短视频'
   },
   {
     id: '1397757906314451130', 
@@ -120,7 +120,6 @@ function ClientPage() {
 
   return (
     <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
-      {/* 导航栏 - 移除吸顶效果 */}
       <nav className="bg-[#F0EFE7] dark:bg-[#141414]">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-2">
@@ -134,7 +133,7 @@ function ClientPage() {
               />
             </div>
             <span className="text-base font-medium text-gray-900 dark:text-gray-200">
-              许璐雅 · 个人作品集
+              许璐雅 · 视频作品集
             </span>
           </div>
           
@@ -168,13 +167,12 @@ function ClientPage() {
                   />
                 </div>
                 
-                {/* 调整内容顺序：减小标题和标签之间的间距 */}
+             
                 <div className="mt-5">
                   {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
                   
-                  {/* 使用自定义标签 - 减小间距至8px */}
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-3">
                     <span>{currentVideo.tag}</span>
                   </div>
                 </div>
@@ -203,36 +201,21 @@ export default function Home() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] flex items-center justify-center">
-        <div className="text-center flex flex-col items-center">
-          {/* 动态波浪加载效果 */}
-          <div className="flex space-x-1 mb-4">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div 
-                key={i} 
-                className="w-3 h-12 bg-[#C15F3C] dark:bg-[#C15F3C]/80 rounded-full"
-                style={{
-                  animation: 'wave 1s ease-in-out infinite',
-                  animationDelay: `${i * 0.1}s`,
-                  transform: 'translateY(0)',
-                }}
-              ></div>
-            ))}
+        {/* 极简的网站加载骨架屏 */}
+        <div className="container mx-auto px-4">
+          {/* 顶部导航骨架 */}
+          <div className="w-full h-12 mb-6"></div>
+          
+          {/* 内容区骨架屏 */}
+          <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
+            <div className="w-full lg:w-3/4">
+              {/* 使用骨架屏组件 */}
+              <VideoSkeletonLoader />
+            </div>
+            
+            {/* 右侧列表骨架 */}
+            <div className="w-full lg:w-1/4 rounded-xl bg-[#DEDCD1] dark:bg-[#202020] h-64"></div>
           </div>
-          
-          {/* 显示"大雅"字样 - 作为品牌标识 */}
-          <div className="text-3xl font-bold mb-3 text-[#C15F3C] dark:text-[#C15F3C]/80" style={{ fontFamily: "'SimSun', serif" }}>大雅</div>
-          
-          {/* 加载文字 */}
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            <span className="inline-block">臻</span>
-            <span className="inline-block" style={{ animationDelay: '0.1s' }}>品</span>
-            <span className="inline-block" style={{ animationDelay: '0.2s' }}>作</span>
-            <span className="inline-block" style={{ animationDelay: '0.3s' }}>品</span>
-            <span className="inline-block" style={{ animationDelay: '0.4s' }}>加</span>
-            <span className="inline-block" style={{ animationDelay: '0.5s' }}>载</span>
-            <span className="inline-block" style={{ animationDelay: '0.6s' }}>中</span>
-            <span className="inline-block animate-bounce" style={{ animationDelay: '0.8s' }}>...</span>
-          </p>
         </div>
       </div>
     }>

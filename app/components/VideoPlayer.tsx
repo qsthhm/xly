@@ -117,52 +117,24 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         onLoad={handleScriptLoad}
       />
       
-      {/* 加载状态 - 改进动画 */}
+      {/* 加载状态 - 简化为单个转圈动画 */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/70 backdrop-blur-sm z-10 transition-opacity duration-300">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/70 z-10">
           <div className="flex flex-col items-center">
-            <div className="relative">
-              {/* 主圆环动画 */}
-              <div className="w-16 h-16 border-4 border-[#C15F3C]/20 dark:border-[#C15F3C]/30 border-t-[#C15F3C] dark:border-t-[#C15F3C] rounded-full animate-spin"></div>
-              
-              {/* 内部圆环动画 - 反向旋转 */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 border-4 border-[#C15F3C]/30 dark:border-[#C15F3C]/40 border-b-[#C15F3C] dark:border-b-[#C15F3C] rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }}></div>
-              
-              {/* 中心脉冲点 */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#C15F3C] rounded-full animate-ping opacity-75"></div>
-            </div>
-            
-            {/* 加载文字 - 添加文字动画 */}
-            <div className="mt-4 text-white flex items-center space-x-1">
-              <span>视频加载中</span>
-              <span className="inline-block w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
-              <span className="inline-block w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-              <span className="inline-block w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
-            </div>
+            <div className="w-12 h-12 border-4 border-[#DEDCD1]/30 dark:border-[#202020]/30 border-t-[#C15F3C] rounded-full animate-spin"></div>
           </div>
         </div>
       )}
       
-      {/* 错误状态 - 改进UI */}
+      {/* 错误状态 - 保持简洁 */}
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm z-10 transition-opacity duration-300">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-xs text-center shadow-xl transform transition-all duration-300 animate-fadeIn">
-            {/* 错误图标 */}
-            <div className="mx-auto flex items-center justify-center w-14 h-14 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            
-            <p className="text-gray-800 dark:text-gray-200 mb-5 font-medium">{error}</p>
-            
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80 z-10">
+          <div className="bg-white dark:bg-gray-800 p-5 rounded-lg max-w-xs text-center">
+            <p className="text-gray-800 dark:text-gray-200 mb-4">{error}</p>
             <button 
               onClick={recreatePlayer}
-              className="px-4 py-2 bg-[#C15F3C] text-white text-sm rounded-full hover:bg-[#A94F32] transition-colors duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center mx-auto"
+              className="px-4 py-2 bg-[#C15F3C] text-white text-sm rounded-lg hover:bg-[#A94F32] transition-colors"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
               重新加载
             </button>
           </div>

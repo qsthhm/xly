@@ -3,8 +3,8 @@ import './globals.css';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: '个人作品集 | 视频展示',
-  description: '使用腾讯云VOD的个人视频作品集展示',
+  title: '许璐雅-视频作品集',
+  description: '许璐雅的个人视频作品集展示，求职作品',
 };
 
 export default function RootLayout({
