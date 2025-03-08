@@ -76,7 +76,7 @@ export default function VideoList({
             }`}
             onClick={() => onSelectVideo(video.id)}
           >
-            <div className="relative w-40 h-22 flex-shrink-0 rounded-lg overflow-hidden shadow-sm">
+            <div className="relative w-40 aspect-video flex-shrink-0 rounded-lg overflow-hidden">
               {/* 占位图或实际缩略图 */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 animate-pulse"></div>
               
@@ -84,8 +84,8 @@ export default function VideoList({
               {/* <Image
                 src={video.thumbnail}
                 alt={video.title}
-                width={160}
-                height={90}
+                layout="fill"
+                objectFit="cover"
                 className="object-cover"
                 loading="lazy"
               /> */}
@@ -99,7 +99,7 @@ export default function VideoList({
             <div className="ml-3 flex-grow overflow-hidden">
               <h3 className={`text-sm font-medium line-clamp-2 mb-1 ${video.id === currentVideoId ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{video.title}</h3>
               <div className="flex flex-col space-y-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">许璨雅</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">许璐雅</p>
                 <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                   <span>{video.views || "1.2万次观看"}</span>
                   <span className="mx-1">•</span>

@@ -138,17 +138,31 @@ function ClientPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-      {/* YouTube风格的顶部导航栏 */}
-      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm shadow-sm">
+    <main className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 text-gray-900 dark:text-white">
+      {/* 更新后的导航栏 */}
+      <nav className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 bg-[#F4F2EB] dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-3">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <span className="text-xl font-bold text-gray-900 dark:text-white">许璨雅 个人作品集</span>
-            </div>
+          <div className="flex items-center space-x-2">
+            <img 
+              src="/img/logo.png" 
+              alt="许璐雅头像" 
+              className="w-8 h-8 rounded-full object-cover" 
+              onError={(e) => {
+                e.currentTarget.src = 'https://via.placeholder.com/32';
+              }}
+            />
+            <span className="text-base font-medium text-[#333] dark:text-white">
+              许璐雅 · 个人作品集
+            </span>
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-6">
+            <a href="#" className="text-sm text-[#333] dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              简历
+            </a>
+            <a href="#" className="text-sm text-[#333] dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              联系我
+            </a>
             <ThemeToggle />
           </div>
         </div>
@@ -179,7 +193,7 @@ function ClientPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-white">许璨雅</h2>
+                    <h2 className="font-semibold text-gray-900 dark:text-white">许璐雅</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400">个人作品集</p>
                   </div>
                 </div>
@@ -197,7 +211,7 @@ function ClientPage() {
           </div>
           
           {/* 右侧视频列表 */}
-          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto shadow-md border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-lg" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+          <div className="w-full lg:w-1/3 rounded-xl bg-white dark:bg-gray-800 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
               currentVideoId={currentVideo?.id || ''}
@@ -216,7 +230,7 @@ function ClientPage() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F2EB] dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">加载中...</span>
