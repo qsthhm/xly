@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import ContactModal from './components/ContactModal';
 
 // 动态导入主题切换组件
 const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
@@ -60,6 +61,8 @@ const SkillSection = ({ title, description }: SkillSectionProps) => (
 
 export default function Resume() {
   const [mounted, setMounted] = useState(false);
+  // 添加联系人弹窗状态
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -94,9 +97,12 @@ export default function Resume() {
             <Link href="/" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
               作品集
             </Link>
-            <a href="#contact" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3">
+            <button 
+              onClick={() => setContactModalOpen(true)}
+              className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3"
+            >
               联系我
-            </a>
+            </button>
             <ThemeToggle />
           </div>
         </div>
@@ -239,13 +245,19 @@ export default function Resume() {
             />
             
             <div className="mt-8">
-              <a href="/" className="inline-block px-6 py-3 bg-[#C15F3C] text-white rounded-lg hover:bg-[#A94F32] transition-colors">
+              <Link href="/" className="inline-block px-6 py-3 bg-[#C15F3C] text-white rounded-lg hover:bg-[#A94F32] transition-colors">
                 查看作品集
-              </a>
+              </Link>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* 添加联系人弹窗 */}
+      <ContactModal 
+        isOpen={contactModalOpen} 
+        onClose={() => setContactModalOpen(false)} 
+      />
     </main>
   );
 }

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
+import ContactModal from './components/ContactModal';
 
 // 动态导入主题切换组件
 const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
@@ -72,6 +73,8 @@ function ClientPage() {
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
+  // 添加联系人弹窗状态
+  const [contactModalOpen, setContactModalOpen] = useState(false);
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -140,12 +143,15 @@ function ClientPage() {
           
           {/* 导航项 - 调整模式切换按钮的距离 */}
           <div className="flex items-center">
-          <Link href="/resume" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
-    简历
-  </Link>
-            <a href="#" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3">
+            <Link href="/resume" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
+              简历
+            </Link>
+            <button 
+              onClick={() => setContactModalOpen(true)} 
+              className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3"
+            >
               联系我
-            </a>
+            </button>
             <ThemeToggle />
           </div>
         </div>
@@ -193,6 +199,12 @@ function ClientPage() {
           </div>
         </div>
       </div>
+      
+      {/* 添加联系人弹窗 */}
+      <ContactModal 
+        isOpen={contactModalOpen} 
+        onClose={() => setContactModalOpen(false)} 
+      />
     </main>
   );
 }
