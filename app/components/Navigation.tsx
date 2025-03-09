@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 // 动态导入主题切换组件
@@ -25,7 +25,6 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   const [mounted, setMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
   
   useEffect(() => {
     setMounted(true);
@@ -72,18 +71,13 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     }, 800);
   };
   
-  // 处理到简历页面的导航
-  const navigateToResume = () => {
-    router.push('/resume');
-  };
-  
   if (!mounted) return null;
   
   return (
     <nav className="bg-[#F0EFE7] dark:bg-[#141414] sticky top-0 z-30">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* 左侧Logo和标题 */}
-        <Link 
+        <a 
           href="/" 
           onClick={handleLogoClick}
           className="flex items-center space-x-2"
@@ -100,7 +94,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           <span className="text-base font-medium text-gray-900 dark:text-gray-200">
             许璐雅
           </span>
-        </Link>
+        </a>
         
         {/* 桌面端导航菜单 */}
         <div className="hidden md:flex items-center space-x-8">
