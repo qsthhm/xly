@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
-import VideoPlayer2 from './components/VideoPlayer2';
+import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
@@ -62,46 +62,38 @@ function ClientPage() {
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [key, setKey] = useState(Date.now());
   
-  // 使用重新渲染标识
-  const [renderKey, setRenderKey] = useState(Date.now());
-  const [returnedFromResume, setReturnedFromResume] = useState(false);
-  
-  // 从URL获取初始参数，并检查从简历页返回标记
+  // 从URL获取初始参数
   useEffect(() => {
-    const loadInitialState = () => {
-      try {
-        // 检查是否从简历页返回
-        const fromResume = localStorage.getItem('returningToHome');
-        if (fromResume === 'true') {
-          console.log('检测到从简历页返回');
-          setReturnedFromResume(true);
-          // 清除标记
-          localStorage.removeItem('returningToHome');
-          // 强制重新渲染
-          setRenderKey(Date.now());
-        }
-        
-        // 在客户端运行时从URL获取参数
-        const url = new URL(window.location.href);
-        const videoId = url.searchParams.get('v');
-        
-        if (videoId) {
-          // 检查URL中的视频ID是否存在于视频列表中
-          const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
-          if (videoExists) {
-            setCurrentVideoId(videoId);
-          }
-        }
-      } catch (error) {
-        console.error('初始化参数错误:', error);
-      } finally {
-        // 初始化完成后关闭加载状态
-        setIsLoading(false);
-      }
-    };
+    // 检查是否需要刷新
+    const needsRefresh = localStorage.getItem('needsRefresh');
+    if (needsRefresh === 'true') {
+      // 清除标记
+      localStorage.removeItem('needsRefresh');
+      // 刷新页面
+      window.location.reload();
+      return;
+    }
     
-    loadInitialState();
+    try {
+      // 在客户端运行时从URL获取参数
+      const url = new URL(window.location.href);
+      const videoId = url.searchParams.get('v');
+      
+      if (videoId) {
+        // 检查URL中的视频ID是否存在于视频列表中
+        const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
+        if (videoExists) {
+          setCurrentVideoId(videoId);
+        }
+      }
+    } catch (error) {
+      console.error('初始化参数错误:', error);
+    } finally {
+      // 初始化完成后关闭加载状态
+      setIsLoading(false);
+    }
   }, []);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
@@ -120,15 +112,12 @@ function ClientPage() {
   
   // 处理视频选择
   const handleSelectVideo = useCallback((id: string) => {
-    if (id !== currentVideoId) {
-      setCurrentVideoId(id);
-      // 选择新视频时更新渲染标识
-      setRenderKey(Date.now());
-      
-      // 更新URL，但不包含分类参数
-      router.push(`?v=${id}`, { scroll: false });
-    }
-  }, [currentVideoId, router]);
+    setCurrentVideoId(id);
+    setKey(Date.now()); // 更新key强制重新渲染视频播放器
+    
+    // 更新URL，但不包含分类参数
+    router.push(`?v=${id}`, { scroll: false });
+  }, [router]);
   
   // 修改分类切换处理函数，不改变URL
   const handleCategoryChange = useCallback((category: string) => {
@@ -154,8 +143,8 @@ function ClientPage() {
             ) : (
               <>
                 <div className="rounded-xl overflow-hidden">
-                  <VideoPlayer2 
-                    key={`${renderKey}-${currentVideo.id}`}
+                  <VideoPlayer 
+                    key={`video-${currentVideo.id}-${key}`}
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}
