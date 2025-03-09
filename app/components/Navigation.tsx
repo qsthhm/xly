@@ -50,25 +50,42 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   
   // 处理Logo点击跳转
   const handleLogoClick = (e: React.MouseEvent) => {
-    // 如果已经在首页，不执行任何操作
+    e.preventDefault(); // 阻止默认行为
+    
+    // 如果已经在首页，不需要导航
     if (pathname === '/') {
       return;
     }
     
-    // 如果当前在简历页，强制页面刷新
+    // 如果是从简历页返回，彻底清理播放器实例并刷新页面
     if (pathname === '/resume') {
+      // 尝试清理播放器实例
+      if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
+        try {
+          window.__tcplayers.forEach(player => {
+            if (player && typeof player.dispose === 'function') {
+              player.dispose();
+            }
+          });
+          window.__tcplayers = [];
+        } catch (err) {
+          console.error('清理播放器失败:', err);
+        }
+      }
+      
+      // 设置导航标记
+      sessionStorage.setItem('forcedRefresh', 'true');
+      
+      // 强制刷新页面
       window.location.href = '/';
-      e.preventDefault();
       return;
     }
     
-    // 其他情况，使用router
+    // 其他情况，使用router导航
     router.push('/');
     
-    // 无论在哪个页面，都播放图标旋转动画
+    // 显示动画效果
     setIsAnimating(true);
-    
-    // 动画完成后停止
     setTimeout(() => {
       setIsAnimating(false);
     }, 800);
@@ -80,8 +97,8 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     <nav className="bg-[#F0EFE7] dark:bg-[#141414] sticky top-0 z-30">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* 左侧Logo和标题 */}
-        <Link 
-          href="/" 
+        <a 
+          href="/"
           onClick={handleLogoClick}
           className="flex items-center space-x-2"
         >
@@ -97,7 +114,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           <span className="text-base font-medium text-gray-900 dark:text-gray-200">
             许璐雅
           </span>
-        </Link>
+        </a>
         
         {/* 桌面端导航菜单 */}
         <div className="hidden md:flex items-center space-x-8">
