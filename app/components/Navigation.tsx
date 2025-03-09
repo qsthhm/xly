@@ -52,8 +52,10 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault(); // 阻止默认行为
     
-    // 如果已经在首页，不需要导航
+    // 如果已经在首页，使用强制刷新
     if (pathname === '/') {
+      // 强制刷新页面，确保视频重新加载
+      window.location.href = '/';
       return;
     }
     
@@ -81,8 +83,8 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       return;
     }
     
-    // 其他情况，使用router导航
-    router.push('/');
+    // 其他情况，强制刷新
+    window.location.href = '/';
     
     // 显示动画效果
     setIsAnimating(true);
@@ -118,8 +120,12 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         
         {/* 桌面端导航菜单 */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link 
-            href="/" 
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/';
+            }}
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
               pathname === '/' 
                 ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
@@ -127,7 +133,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             }`}
           >
             作品
-          </Link>
+          </a>
           <Link 
             href="/resume" 
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
@@ -173,8 +179,13 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#F0EFE7] dark:bg-[#141414] border-t border-gray-200 dark:border-gray-800">
           <div className="container mx-auto py-2 px-4 flex flex-col space-y-3">
-            <Link 
-              href="/" 
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/';
+                setMobileMenuOpen(false);
+              }}
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
                 pathname === '/' 
                   ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
@@ -182,7 +193,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               }`}
             >
               作品
-            </Link>
+            </a>
             <Link 
               href="/resume" 
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${

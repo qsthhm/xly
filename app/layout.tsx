@@ -15,13 +15,11 @@ export default function RootLayout({
   return (
     <html lang="zh" suppressHydrationWarning>
       <head>
-        {/* 播放器CSS */}
         <link 
           href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
           rel="stylesheet"
         />
-        
-        {/* 主题处理 */}
+        {/* 内联脚本确保主题加载时不闪烁 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -39,15 +37,32 @@ export default function RootLayout({
           }}
         />
         
-        {/* 内联加载腾讯云播放器脚本 */}
+        {/* 预加载播放器脚本 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var script = document.createElement('script');
-                script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
-                script.async = false;
-                document.head.appendChild(script);
+                // 预加载腾讯播放器
+                if (!document.getElementById('tcplayer-script')) {
+                  var script = document.createElement('script');
+                  script.id = 'tcplayer-script';
+                  script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
+                  script.async = false;
+                  document.head.appendChild(script);
+                }
+                
+                // 初始化页面加载时自动播放第一个视频
+                window.addEventListener('DOMContentLoaded', function() {
+                  setTimeout(function() {
+                    if (window.location.pathname === '/' && !window.location.search) {
+                      // 在首页且没有查询参数时尝试播放第一个视频
+                      var videoElement = document.querySelector('video');
+                      if (videoElement && videoElement.__tcplayer__ && typeof videoElement.__tcplayer__.play === 'function') {
+                        videoElement.__tcplayer__.play();
+                      }
+                    }
+                  }, 1500);
+                });
               })();
             `,
           }}

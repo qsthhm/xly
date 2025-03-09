@@ -12,6 +12,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const attemptPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
   // 完全清理现有播放器
   const cleanupPlayer = () => {
@@ -32,9 +33,27 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       playerRef.current = null;
     }
     
+    // 清理重试计时器
+    if (attemptPlayRef.current) {
+      clearInterval(attemptPlayRef.current);
+      attemptPlayRef.current = null;
+    }
+    
     // 移除全局播放器数组中的残留实例
     if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
       window.__tcplayers = [];
+    }
+  };
+  
+  // 尝试播放函数
+  const attemptPlay = () => {
+    if (playerRef.current && typeof playerRef.current.play === 'function') {
+      try {
+        playerRef.current.play();
+        console.log('尝试播放视频:', fileId);
+      } catch (err) {
+        console.error('播放视频失败:', err);
+      }
     }
   };
   
@@ -66,7 +85,15 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
       video.setAttribute('x5-playsinline', '');
+      video.setAttribute('autoplay', '');
+      video.setAttribute('muted', '');
       containerRef.current.appendChild(video);
+      
+      // 添加自动播放事件
+      video.addEventListener('canplay', () => {
+        video.muted = false; // 取消静音
+        video.play().catch(err => console.log('自动播放失败:', err));
+      });
     }
     
     // 初始化播放器函数
@@ -103,11 +130,20 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
           });
           
           // 手动播放尝试
-          setTimeout(() => {
-            if (playerRef.current && typeof playerRef.current.play === 'function') {
-              playerRef.current.play();
-            }
+          attemptPlay();
+          
+          // 设置重复尝试播放的计时器
+          attemptPlayRef.current = setInterval(() => {
+            attemptPlay();
           }, 1000);
+          
+          // 10秒后清除重试计时器
+          setTimeout(() => {
+            if (attemptPlayRef.current) {
+              clearInterval(attemptPlayRef.current);
+              attemptPlayRef.current = null;
+            }
+          }, 10000);
         }
         
         // 无论如何，3秒后关闭加载状态
