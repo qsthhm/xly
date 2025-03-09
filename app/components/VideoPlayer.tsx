@@ -77,7 +77,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
           fileID: fileId,
           appID: appId,
           psign: psign || '',
-          autoplay: false, // 设为false，不自动播放
+          autoplay: true, // 设为true，启用自动播放
           controls: true,  // 启用控件
           playbackRates: [0.5, 1, 1.25, 1.5, 2], // 播放速率选项
           poster: { // 启用封面
