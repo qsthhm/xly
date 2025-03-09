@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
-import VideoPlayer from './components/VideoPlayer';
+import VideoPlayer2 from './components/VideoPlayer2';
 import VideoList from './components/VideoList';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
@@ -62,12 +62,26 @@ function ClientPage() {
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [remountKey, setRemountKey] = useState(0);
   
-  // 从URL获取初始参数，并处理重新挂载
+  // 使用重新渲染标识
+  const [renderKey, setRenderKey] = useState(Date.now());
+  const [returnedFromResume, setReturnedFromResume] = useState(false);
+  
+  // 从URL获取初始参数，并检查从简历页返回标记
   useEffect(() => {
     const loadInitialState = () => {
       try {
+        // 检查是否从简历页返回
+        const fromResume = localStorage.getItem('returningToHome');
+        if (fromResume === 'true') {
+          console.log('检测到从简历页返回');
+          setReturnedFromResume(true);
+          // 清除标记
+          localStorage.removeItem('returningToHome');
+          // 强制重新渲染
+          setRenderKey(Date.now());
+        }
+        
         // 在客户端运行时从URL获取参数
         const url = new URL(window.location.href);
         const videoId = url.searchParams.get('v');
@@ -88,9 +102,6 @@ function ClientPage() {
     };
     
     loadInitialState();
-    
-    // 每次组件挂载时，通过改变key来强制刷新播放器
-    setRemountKey(prev => prev + 1);
   }, []);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
@@ -109,14 +120,15 @@ function ClientPage() {
   
   // 处理视频选择
   const handleSelectVideo = useCallback((id: string) => {
-    setCurrentVideoId(id);
-    
-    // 选择新视频时，通过改变key来强制刷新播放器
-    setRemountKey(prev => prev + 1);
-    
-    // 更新URL，但不包含分类参数
-    router.push(`?v=${id}`, { scroll: false });
-  }, [router]);
+    if (id !== currentVideoId) {
+      setCurrentVideoId(id);
+      // 选择新视频时更新渲染标识
+      setRenderKey(Date.now());
+      
+      // 更新URL，但不包含分类参数
+      router.push(`?v=${id}`, { scroll: false });
+    }
+  }, [currentVideoId, router]);
   
   // 修改分类切换处理函数，不改变URL
   const handleCategoryChange = useCallback((category: string) => {
@@ -142,9 +154,8 @@ function ClientPage() {
             ) : (
               <>
                 <div className="rounded-xl overflow-hidden">
-                  {/* 使用remountKey强制重新挂载组件 */}
-                  <VideoPlayer 
-                    key={`video-${currentVideo.id}-${remountKey}`}
+                  <VideoPlayer2 
+                    key={`${renderKey}-${currentVideo.id}`}
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}

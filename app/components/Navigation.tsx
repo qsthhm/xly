@@ -56,6 +56,9 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       return;
     }
     
+    // 设置页面返回标记
+    localStorage.setItem('returningToHome', 'true');
+    
     // 开始动画
     setIsAnimating(true);
     
@@ -63,6 +66,12 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     setTimeout(() => {
       setIsAnimating(false);
     }, 800);
+  };
+  
+  // 处理简历页面链接点击
+  const handleResumeClick = () => {
+    // 设置即将前往简历页面的标记
+    localStorage.setItem('fromHomePage', 'true');
   };
   
   if (!mounted) return null;
@@ -104,6 +113,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           </Link>
           <Link 
             href="/resume" 
+            onClick={handleResumeClick}
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
               pathname === '/resume' 
                 ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
@@ -159,6 +169,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             </Link>
             <Link 
               href="/resume" 
+              onClick={handleResumeClick}
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
                 pathname === '/resume' 
                   ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
