@@ -62,6 +62,7 @@ function ClientPage() {
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [playerKey, setPlayerKey] = useState(1); // 添加一个key来控制播放器的重新渲染
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -82,6 +83,9 @@ function ClientPage() {
     } finally {
       // 初始化完成后关闭加载状态
       setIsLoading(false);
+      
+      // 强制重新渲染播放器
+      setPlayerKey(prev => prev + 1);
     }
   }, []);
   
@@ -99,13 +103,18 @@ function ClientPage() {
     [currentVideoId]
   );
   
-  // 处理视频选择 - 恢复原始逻辑
+  // 处理视频选择 - 修改以强制重新渲染播放器
   const handleSelectVideo = useCallback((id: string) => {
-    setCurrentVideoId(id);
-    
-    // 更新URL，但不包含分类参数
-    router.push(`?v=${id}`, { scroll: false });
-  }, [router]);
+    if (id !== currentVideoId) {
+      setCurrentVideoId(id);
+      
+      // 强制重新渲染播放器
+      setPlayerKey(prev => prev + 1);
+      
+      // 更新URL，但不包含分类参数
+      router.push(`?v=${id}`, { scroll: false });
+    }
+  }, [currentVideoId, router]);
   
   // 修改分类切换处理函数，不改变URL
   const handleCategoryChange = useCallback((category: string) => {
@@ -132,6 +141,7 @@ function ClientPage() {
               <>
                 <div className="rounded-xl overflow-hidden">
                   <VideoPlayer 
+                    key={`${playerKey}-${currentVideo.id}`} // 使用key强制重新渲染
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}

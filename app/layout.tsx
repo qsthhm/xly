@@ -36,6 +36,12 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* 预加载腾讯云播放器脚本 */}
+        <link 
+          rel="preload"
+          href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.v4.9.0.min.js"
+          as="script"
+        />
       </head>
       <body className="bg-[#F4F2EB] dark:bg-gray-900 transition-colors duration-200">
         {children}
@@ -50,6 +56,12 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "qkw1zks8n8");
           `}
         </Script>
+        
+        {/* 预加载腾讯云播放器脚本 */}
+        <Script
+          src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.v4.9.0.min.js"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );
