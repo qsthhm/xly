@@ -11,7 +11,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // 移除isLoading状态，使用播放器内置的加载动画
   
   // 清理播放器
   const cleanupPlayer = () => {
@@ -39,9 +39,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     
     // 先清理现有播放器
     cleanupPlayer();
-    
-    // 设置初始加载状态
-    setIsLoading(true);
     
     // 清空容器内容
     if (containerRef.current) {
@@ -91,21 +88,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
           // 只监听最基本的事件，不干预播放器行为
           playerRef.current.on('error', (err: any) => {
             console.error('播放器错误:', err);
-            setIsLoading(false);
           });
-          
-          playerRef.current.on('loadedmetadata', () => {
-            setIsLoading(false);
-          });
-          
-          // 备用：如果3秒后仍未加载，关闭加载状态
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 3000);
         }
       } catch (err) {
         console.error('播放器初始化错误:', err);
-        setIsLoading(false);
       }
     };
     
@@ -140,7 +126,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         // 最多等待5秒
         setTimeout(() => {
           clearInterval(checkTCPlayer);
-          setIsLoading(false);
         }, 5000);
       }
     }
@@ -154,13 +139,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   return (
     <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
       <div ref={containerRef} className="w-full h-full"></div>
-      
-      {/* 加载状态 */}
-      {isLoading && (
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/30">
-          <div className="w-12 h-12 border-4 border-gray-500/30 dark:border-gray-300/30 border-t-[#C15F3C] dark:border-t-[#C15F3C] rounded-full animate-spin"></div>
-        </div>
-      )}
     </div>
   );
 }
