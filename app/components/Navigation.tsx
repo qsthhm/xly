@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 // 动态导入主题切换组件
@@ -23,7 +23,9 @@ interface NavigationProps {
 export default function Navigation({ onContactClick }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   
   useEffect(() => {
     setMounted(true);
@@ -46,6 +48,25 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
+  // 处理Logo点击跳转, 只在已经在首页时不触发刷新
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (pathname === '/') {
+      // 已经在首页, 防止刷新
+      return;
+    }
+    
+    // 开始动画
+    setIsAnimating(true);
+    
+    // 导航到首页
+    router.push('/');
+    
+    // 3秒后停止动画
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 800);
+  };
+  
   if (!mounted) return null;
   
   return (
@@ -54,9 +75,10 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         {/* 左侧Logo和标题 */}
         <Link 
           href="/" 
+          onClick={handleLogoClick}
           className="flex items-center space-x-2 group"
         >
-          <div className="relative w-8 h-8 rounded-full overflow-hidden group-hover:animate-spin">
+          <div className={`relative w-8 h-8 rounded-full overflow-hidden ${isAnimating ? 'animate-spin' : 'group-hover:animate-spin'}`}>
             <Image 
               src="/img/logo.png" 
               alt="许璐雅头像" 
@@ -76,7 +98,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             href="/" 
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
               pathname === '/' 
-                ? 'text-[#C15F3C] dark:text-[#C15F3C]' 
+                ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
                 : 'text-gray-900 dark:text-gray-200'
             }`}
           >
@@ -86,7 +108,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             href="/resume" 
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
               pathname === '/resume' 
-                ? 'text-[#C15F3C] dark:text-[#C15F3C]' 
+                ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
                 : 'text-gray-900 dark:text-gray-200'
             }`}
           >
@@ -131,7 +153,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               href="/" 
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
                 pathname === '/' 
-                  ? 'text-[#C15F3C] dark:text-[#C15F3C]' 
+                  ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
                   : 'text-gray-900 dark:text-gray-200'
               }`}
             >
@@ -141,7 +163,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               href="/resume" 
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
                 pathname === '/resume' 
-                  ? 'text-[#C15F3C] dark:text-[#C15F3C]' 
+                  ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
                   : 'text-gray-900 dark:text-gray-200'
               }`}
             >
