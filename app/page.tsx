@@ -62,9 +62,9 @@ function ClientPage() {
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [pageLoaded, setPageLoaded] = useState(false);
+  const [remountKey, setRemountKey] = useState(0);
   
-  // 从URL获取初始参数
+  // 从URL获取初始参数，并处理重新挂载
   useEffect(() => {
     const loadInitialState = () => {
       try {
@@ -84,15 +84,13 @@ function ClientPage() {
       } finally {
         // 初始化完成后关闭加载状态
         setIsLoading(false);
-        
-        // 设置页面已加载标志
-        setTimeout(() => {
-          setPageLoaded(true);
-        }, 100);
       }
     };
     
     loadInitialState();
+    
+    // 每次组件挂载时，通过改变key来强制刷新播放器
+    setRemountKey(prev => prev + 1);
   }, []);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
@@ -112,6 +110,9 @@ function ClientPage() {
   // 处理视频选择
   const handleSelectVideo = useCallback((id: string) => {
     setCurrentVideoId(id);
+    
+    // 选择新视频时，通过改变key来强制刷新播放器
+    setRemountKey(prev => prev + 1);
     
     // 更新URL，但不包含分类参数
     router.push(`?v=${id}`, { scroll: false });
@@ -141,14 +142,13 @@ function ClientPage() {
             ) : (
               <>
                 <div className="rounded-xl overflow-hidden">
-                  {pageLoaded && (
-                    <VideoPlayer 
-                      key={`video-${currentVideo.id}`}
-                      fileId={currentVideo.id} 
-                      appId={TENCENT_APP_ID}
-                      psign={currentVideo.psign || ''}
-                    />
-                  )}
+                  {/* 使用remountKey强制重新挂载组件 */}
+                  <VideoPlayer 
+                    key={`video-${currentVideo.id}-${remountKey}`}
+                    fileId={currentVideo.id} 
+                    appId={TENCENT_APP_ID}
+                    psign={currentVideo.psign || ''}
+                  />
                 </div>
                 
                 <div className="mt-5">
