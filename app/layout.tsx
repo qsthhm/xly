@@ -15,11 +15,13 @@ export default function RootLayout({
   return (
     <html lang="zh" suppressHydrationWarning>
       <head>
+        {/* 播放器CSS */}
         <link 
           href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
           rel="stylesheet"
         />
-        {/* 内联脚本确保主题加载时不闪烁 */}
+        
+        {/* 主题处理 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -36,12 +38,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* 预加载腾讯云播放器脚本 */}
-        <link 
-          rel="preload"
-          href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.v4.9.0.min.js"
-          as="script"
-        />
       </head>
       <body className="bg-[#F4F2EB] dark:bg-gray-900 transition-colors duration-200">
         {children}
@@ -56,12 +52,6 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "qkw1zks8n8");
           `}
         </Script>
-        
-        {/* 预加载腾讯云播放器脚本 */}
-        <Script
-          src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.v4.9.0.min.js"
-          strategy="beforeInteractive"
-        />
       </body>
     </html>
   );
