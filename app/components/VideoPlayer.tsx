@@ -15,7 +15,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [initAttempts, setInitAttempts] = useState(0); // 添加初始化尝试次数
   
   // 清理旧播放器并创建新播放器
   const recreatePlayer = () => {
@@ -75,21 +74,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
           console.error('播放器初始化错误:', error);
           setError('播放器初始化失败');
           setIsLoading(false);
-          
-          // 重试逻辑
-          if (initAttempts < 2) { // 最多尝试2次
-            setTimeout(() => {
-              setInitAttempts(prev => prev + 1);
-              recreatePlayer();
-            }, 1000); // 1秒后重试
-          }
         }
-      } else if (initAttempts < 2) {
-        // TCPlayer未加载，尝试重试
-        setTimeout(() => {
-          setInitAttempts(prev => prev + 1);
-          recreatePlayer();
-        }, 1000);
       }
     }
   };
@@ -103,7 +88,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [scriptLoaded, fileId, appId, psign, initAttempts]);
+  }, [scriptLoaded, fileId, appId, psign]);
 
   // 组件卸载时清理
   useEffect(() => {
@@ -127,7 +112,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     <div className="relative w-full aspect-video rounded-xl overflow-hidden">
       <Script
         src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
-        strategy="beforeInteractive" // 修改为beforeInteractive以更早加载
+        strategy="afterInteractive"
         onLoad={handleScriptLoad}
       />
       

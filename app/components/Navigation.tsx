@@ -48,20 +48,18 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // 处理Logo点击跳转, 只在已经在首页时不触发刷新
+  // 处理Logo点击跳转, 只在已经在首页时不触发动画
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
-      // 已经在首页, 防止刷新
+      // 已经在首页, 不做任何操作
+      e.preventDefault();
       return;
     }
     
     // 开始动画
     setIsAnimating(true);
     
-    // 导航到首页
-    router.push('/');
-    
-    // 3秒后停止动画
+    // 动画完成后停止
     setTimeout(() => {
       setIsAnimating(false);
     }, 800);
@@ -76,9 +74,9 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         <Link 
           href="/" 
           onClick={handleLogoClick}
-          className="flex items-center space-x-2 group"
+          className="flex items-center space-x-2"
         >
-          <div className={`relative w-8 h-8 rounded-full overflow-hidden ${isAnimating ? 'animate-spin' : 'group-hover:animate-spin'}`}>
+          <div className={`relative w-8 h-8 rounded-full overflow-hidden ${isAnimating ? 'logo-animate' : 'logo-hover-rotate'}`}>
             <Image 
               src="/img/logo.png" 
               alt="许璐雅头像" 
