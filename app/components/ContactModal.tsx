@@ -13,8 +13,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [emailButtonText, setEmailButtonText] = useState('709020257@qq.com');
   const [phoneButtonIcon, setPhoneButtonIcon] = useState('phone');
   const [emailButtonIcon, setEmailButtonIcon] = useState('email');
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   const modalRef = useRef<HTMLDivElement>(null);
+  
+  // 重置图片加载状态当模态框打开时
+  useEffect(() => {
+    if (isOpen) {
+      setImageLoaded(false);
+    }
+  }, [isOpen]);
   
   // 处理视频播放暂停
   useEffect(() => {
@@ -128,15 +136,25 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         <div className="text-center mb-4">
           <h3 className="font-medium text-base text-gray-900 dark:text-gray-100 mb-5">扫一扫加我微信</h3>
           
-          {/* 二维码图片 */}
+          {/* 二维码图片容器 */}
           <div className="flex justify-center mb-4">
             <div className="relative w-48 h-48 bg-white p-2 rounded-lg">
+              {/* 骨架屏 - 当图片未加载完成时显示 */}
+              {!imageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+                  <div className="w-10 h-10 border-4 border-gray-200 border-t-[#C15F3C] rounded-full animate-spin"></div>
+                </div>
+              )}
+              
+              {/* 实际图片 - 加载完成后显示 */}
               <Image 
                 src="/img/wechat.png" 
                 alt="微信二维码" 
                 width={192}
                 height={192}
-                className="object-contain"
+                className={`object-contain transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                onLoadingComplete={() => setImageLoaded(true)}
+                priority
               />
             </div>
           </div>
