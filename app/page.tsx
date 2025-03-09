@@ -63,6 +63,7 @@ function ClientPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [key, setKey] = useState(Date.now());
+  const [forceRender, setForceRender] = useState(0); // 添加强制渲染状态
   
   // 从URL获取初始参数
   useEffect(() => {
@@ -112,11 +113,28 @@ function ClientPage() {
   
   // 处理视频选择
   const handleSelectVideo = useCallback((id: string) => {
-    setCurrentVideoId(id);
-    setKey(Date.now()); // 更新key强制重新渲染视频播放器
+    console.log('选择新视频:', id);
     
-    // 更新URL，但不包含分类参数
-    router.push(`?v=${id}`, { scroll: false });
+    // 先设置加载中状态
+    setIsLoading(true);
+    
+    // 设置当前视频ID
+    setCurrentVideoId(id);
+    
+    // 强制重新渲染视频播放器（两步更新确保完全重载）
+    setKey(Date.now());
+    
+    // 使用setTimeout确保DOM完全更新
+    setTimeout(() => {
+      setForceRender(prev => prev + 1);
+      // 更新URL
+      router.push(`?v=${id}`, { scroll: false });
+      
+      // 200ms后完成加载
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 200);
+    }, 100);
   }, [router]);
   
   // 修改分类切换处理函数，不改变URL
@@ -144,7 +162,7 @@ function ClientPage() {
               <>
                 <div className="rounded-xl overflow-hidden">
                   <VideoPlayer 
-                    key={`video-${currentVideo.id}-${key}`}
+                    key={`${currentVideo.id}-${key}-${forceRender}`} // 更新key添加forceRender
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}
