@@ -56,10 +56,11 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       return;
     }
     
-    // 检查是否从简历页返回
+    // 如果是从简历页返回，使用window.location.href强制刷新
     if (pathname === '/resume') {
-      // 设置标记 - 将要从简历页返回首页
-      localStorage.setItem('needsRefresh', 'true');
+      e.preventDefault();
+      window.location.href = '/';
+      return;
     }
     
     // 开始动画
@@ -69,6 +70,11 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     setTimeout(() => {
       setIsAnimating(false);
     }, 800);
+  };
+  
+  // 处理到简历页面的导航
+  const navigateToResume = () => {
+    router.push('/resume');
   };
   
   if (!mounted) return null;

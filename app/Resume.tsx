@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
 
@@ -60,6 +61,11 @@ export default function Resume() {
   const handleContactClick = useCallback(() => {
     setContactModalOpen(true);
   }, []);
+
+  // 处理返回作品集按钮点击 - 使用window.location强制刷新
+  const handleBackToHome = () => {
+    window.location.href = '/';
+  };
 
   if (!mounted) {
     return null;
@@ -206,9 +212,13 @@ export default function Resume() {
             />
             
             <div className="mt-8">
-              <Link href="/" className="inline-block px-6 py-3 bg-[#C15F3C] text-white rounded-lg hover:bg-[#A94F32] transition-colors">
+              {/* 替换Link组件为按钮，使用window.location.href强制刷新页面 */}
+              <button 
+                onClick={handleBackToHome}
+                className="inline-block px-6 py-3 bg-[#C15F3C] text-white rounded-lg hover:bg-[#A94F32] transition-colors"
+              >
                 查看作品集
-              </Link>
+              </button>
             </div>
           </div>
         </div>

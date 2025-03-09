@@ -10,7 +10,7 @@ interface ContactModalProps {
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [phoneButtonText, setPhoneButtonText] = useState('复制我的手机号');
-  const [emailButtonText, setEmailButtonText] = useState('复制我的 Email');
+  const [emailButtonText, setEmailButtonText] = useState('709020257@qq.com');
   const [phoneButtonIcon, setPhoneButtonIcon] = useState('phone');
   const [emailButtonIcon, setEmailButtonIcon] = useState('email');
   
@@ -60,13 +60,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   
   // 复制邮箱
   const copyEmail = () => {
-    navigator.clipboard.writeText('lrdbufl@gmail.com').then(() => {
-      setEmailButtonText('已复制lrdbufl@gmail.com');
+    navigator.clipboard.writeText('709020257@qq.com').then(() => {
+      setEmailButtonText('已复制709020257@qq.com');
       setEmailButtonIcon('check');
       
       // 3秒后恢复原样
       setTimeout(() => {
-        setEmailButtonText('复制我的 Email');
+        setEmailButtonText('709020257@qq.com');
         setEmailButtonIcon('email');
       }, 3000);
     });
@@ -132,7 +132,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <div className="flex justify-center mb-4">
             <div className="relative w-48 h-48 bg-white p-2 rounded-lg">
               <Image 
-                src="/img/wechat-qr.jpg" 
+                src="/img/wechat.png" 
                 alt="微信二维码" 
                 width={192}
                 height={192}
