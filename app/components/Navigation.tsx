@@ -27,6 +27,13 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   const pathname = usePathname();
   const router = useRouter();
   
+  // 获取当前页面名称
+  const getCurrentPageName = () => {
+    if (pathname === '/') return '作品';
+    if (pathname === '/resume') return '简历';
+    return '';
+  };
+  
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -95,6 +102,8 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   
   if (!mounted) return null;
   
+  const pageName = getCurrentPageName();
+  
   return (
     <nav className="bg-[#F0EFE7] dark:bg-[#141414] sticky top-0 z-30">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
@@ -113,9 +122,19 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               priority
             />
           </div>
-          <span className="text-base font-medium text-gray-900 dark:text-gray-200">
-            许璐雅
-          </span>
+          <div className="flex items-center">
+            <span className="text-base font-medium text-gray-900 dark:text-gray-200">
+              许璐雅
+            </span>
+            {pageName && (
+              <>
+                <span className="mx-1.5 text-gray-400 dark:text-gray-500">·</span>
+                <span className="text-base text-gray-900 dark:text-gray-200">
+                  {pageName}
+                </span>
+              </>
+            )}
+          </div>
         </a>
         
         {/* 桌面端导航菜单 */}
