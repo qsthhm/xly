@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface VideoPlayerProps {
   fileId: string;
@@ -10,86 +10,86 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
+  
   // 初始化播放器
   useEffect(() => {
-    // 确保只在客户端执行
+    // 确保容器存在
     if (!containerRef.current) return;
     
     const initPlayer = () => {
+      // 确保再次检查，因为回调时可能已经卸载组件
+      if (!containerRef.current) return;
+      
       // 清空容器
       containerRef.current.innerHTML = '';
       
-      // 创建video元素
-      const videoElement = document.createElement('video');
-      videoElement.id = 'player-container-id';
-      videoElement.className = 'w-full h-full';
-      videoElement.setAttribute('preload', 'auto');
-      videoElement.setAttribute('playsinline', '');
-      containerRef.current.appendChild(videoElement);
+      // 创建视频元素
+      const video = document.createElement('video');
+      video.id = `player-${Math.random().toString(36).substring(2, 9)}`;
+      video.className = 'w-full h-full';
+      video.setAttribute('preload', 'auto');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      containerRef.current.appendChild(video);
       
       // 初始化播放器
-      try {
-        if (typeof window.TCPlayer === 'function') {
-          const player = window.TCPlayer('player-container-id', {
+      if (window.TCPlayer) {
+        try {
+          window.TCPlayer(video.id, {
             fileID: fileId,
             appID: appId,
-            psign: psign,
+            psign: psign || '',
             autoplay: true
           });
-          
-          // 监听事件
-          player.on('loadedmetadata', () => {
-            setIsLoading(false);
-          });
-          
-          player.on('playing', () => {
-            setIsLoading(false);
-          });
-          
-          player.on('error', () => {
-            setIsLoading(false);
-          });
-          
-          // 5秒后无论如何都隐藏加载状态
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 5000);
+        } catch (err) {
+          console.error('播放器初始化失败:', err);
         }
-      } catch (err) {
-        console.error('播放器初始化错误:', err);
-        setIsLoading(false);
       }
     };
     
-    const tcPlayerScript = document.createElement('script');
-    tcPlayerScript.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
-    tcPlayerScript.async = true;
+    // 加载腾讯云播放器
+    const scriptId = 'tcplayer-script';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
     
-    tcPlayerScript.onload = () => {
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
+      script.async = false;
+      script.onload = initPlayer;
+      document.head.appendChild(script);
+    } else {
+      // 如果脚本已加载，直接初始化播放器
       initPlayer();
-    };
+    }
     
-    document.body.appendChild(tcPlayerScript);
-    
+    // 清理函数
     return () => {
-      // 清理
-      document.body.removeChild(tcPlayerScript);
+      if (!containerRef.current) return;
+      
+      const videoElement = containerRef.current.querySelector('video');
+      if (videoElement && window.TCPlayer) {
+        try {
+          // 尝试获取实例并销毁
+          const playerInstance = (videoElement as any).__tcplayer__;
+          if (playerInstance && typeof playerInstance.dispose === 'function') {
+            playerInstance.dispose();
+          }
+        } catch (err) {
+          console.error('销毁播放器失败:', err);
+        }
+      }
     };
   }, [fileId, appId, psign]);
-
+  
   return (
-    <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black">
-      {/* 播放器容器 */}
-      <div ref={containerRef} className="w-full h-full bg-black"></div>
+    <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
+      <div ref={containerRef} className="w-full h-full"></div>
       
-      {/* 加载状态 */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/40">
-          <div className="w-12 h-12 border-4 border-gray-500/30 dark:border-gray-300/30 border-t-[#C15F3C] dark:border-t-[#C15F3C] rounded-full animate-spin"></div>
-        </div>
-      )}
+      {/* 静态加载提示，不会自动隐藏 */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-gray-500/30 dark:border-gray-300/30 border-t-[#C15F3C] dark:border-t-[#C15F3C] rounded-full animate-spin"></div>
+      </div>
     </div>
   );
 }
