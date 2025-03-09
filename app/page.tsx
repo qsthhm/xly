@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
@@ -56,6 +56,7 @@ const TENCENT_APP_ID = '1310364790';
 // 客户端组件，处理URL参数
 function ClientPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   
   // 使用客户端状态
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
@@ -63,27 +64,23 @@ function ClientPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   
-  // 从URL获取初始参数
+  // 当URL中的视频ID变化时更新当前视频
   useEffect(() => {
-    try {
-      // 在客户端运行时从URL获取参数
-      const url = new URL(window.location.href);
-      const videoId = url.searchParams.get('v');
-      
-      if (videoId) {
-        // 检查URL中的视频ID是否存在于视频列表中
-        const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
-        if (videoExists) {
-          setCurrentVideoId(videoId);
-        }
+    const videoId = searchParams.get('v');
+    
+    if (videoId) {
+      // 检查URL中的视频ID是否存在于视频列表中
+      const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
+      if (videoExists) {
+        setCurrentVideoId(videoId);
       }
-    } catch (error) {
-      console.error('初始化参数错误:', error);
-    } finally {
-      // 初始化完成后关闭加载状态
-      setIsLoading(false);
+    } else if (ALL_VIDEOS.length > 0) {
+      // 如果URL中没有视频ID，使用第一个视频
+      setCurrentVideoId(ALL_VIDEOS[0].id);
     }
-  }, []);
+    
+    setIsLoading(false);
+  }, [searchParams]);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
   const filteredVideos = useMemo(() => 
@@ -101,10 +98,9 @@ function ClientPage() {
   
   // 处理视频选择
   const handleSelectVideo = useCallback((id: string) => {
-    setCurrentVideoId(id);
-    
-    // 更新URL，但不包含分类参数
+    // 更新URL参数
     router.push(`?v=${id}`, { scroll: false });
+    // 不再需要手动设置currentVideoId，因为URL变化会触发上面的useEffect
   }, [router]);
   
   // 修改分类切换处理函数，不改变URL
