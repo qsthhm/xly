@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 // 动态导入主题切换组件
@@ -25,6 +25,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   const [mounted, setMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   
   useEffect(() => {
     setMounted(true);
@@ -47,22 +48,24 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // 处理Logo点击跳转, 只在已经在首页时不触发动画
+  // 处理Logo点击跳转
   const handleLogoClick = (e: React.MouseEvent) => {
+    // 如果已经在首页，不执行任何操作
     if (pathname === '/') {
-      // 已经在首页, 不做任何操作
-      e.preventDefault();
       return;
     }
     
-    // 如果是从简历页返回，使用window.location.href强制刷新
+    // 如果当前在简历页，强制页面刷新
     if (pathname === '/resume') {
-      e.preventDefault();
       window.location.href = '/';
+      e.preventDefault();
       return;
     }
     
-    // 开始动画
+    // 其他情况，使用router
+    router.push('/');
+    
+    // 无论在哪个页面，都播放图标旋转动画
     setIsAnimating(true);
     
     // 动画完成后停止
@@ -77,7 +80,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     <nav className="bg-[#F0EFE7] dark:bg-[#141414] sticky top-0 z-30">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* 左侧Logo和标题 */}
-        <a 
+        <Link 
           href="/" 
           onClick={handleLogoClick}
           className="flex items-center space-x-2"
@@ -94,7 +97,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           <span className="text-base font-medium text-gray-900 dark:text-gray-200">
             许璐雅
           </span>
-        </a>
+        </Link>
         
         {/* 桌面端导航菜单 */}
         <div className="hidden md:flex items-center space-x-8">
