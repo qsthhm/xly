@@ -138,7 +138,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         </a>
         
         {/* 桌面端导航菜单 */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           <a
             href="/"
             onClick={(e) => {
