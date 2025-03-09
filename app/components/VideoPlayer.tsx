@@ -12,18 +12,11 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const attemptPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
-  // 完全清理现有播放器
+  // 清理播放器
   const cleanupPlayer = () => {
     if (playerRef.current) {
       try {
-        // 暂停播放，避免声音继续播放
-        if (typeof playerRef.current.pause === 'function') {
-          playerRef.current.pause();
-        }
-        
-        // 销毁播放器实例
         if (typeof playerRef.current.dispose === 'function') {
           playerRef.current.dispose();
         }
@@ -33,27 +26,9 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       playerRef.current = null;
     }
     
-    // 清理重试计时器
-    if (attemptPlayRef.current) {
-      clearInterval(attemptPlayRef.current);
-      attemptPlayRef.current = null;
-    }
-    
-    // 移除全局播放器数组中的残留实例
+    // 确保全局播放器数组被清理
     if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
-      window.__tcplayers = [];
-    }
-  };
-  
-  // 尝试播放函数
-  const attemptPlay = () => {
-    if (playerRef.current && typeof playerRef.current.play === 'function') {
-      try {
-        playerRef.current.play();
-        console.log('尝试播放视频:', fileId);
-      } catch (err) {
-        console.error('播放视频失败:', err);
-      }
+      window.__tcplayers = window.__tcplayers.filter(p => p && p !== playerRef.current);
     }
   };
   
@@ -73,10 +48,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       containerRef.current.innerHTML = '';
     }
     
-    // 为每个视频生成唯一ID
+    // 为视频生成唯一ID
     const playerId = `player-${fileId}-${Math.random().toString(36).substring(2, 9)}`;
     
-    // 创建video元素
+    // 创建video元素 - 使用与腾讯示例代码相同的属性
     if (containerRef.current) {
       const video = document.createElement('video');
       video.id = playerId;
@@ -85,15 +60,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       video.setAttribute('playsinline', '');
       video.setAttribute('webkit-playsinline', '');
       video.setAttribute('x5-playsinline', '');
-      video.setAttribute('autoplay', '');
-      video.setAttribute('muted', '');
       containerRef.current.appendChild(video);
-      
-      // 添加自动播放事件
-      video.addEventListener('canplay', () => {
-        video.muted = false; // 取消静音
-        video.play().catch(err => console.log('自动播放失败:', err));
-      });
     }
     
     // 初始化播放器函数
@@ -105,58 +72,44 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         const videoElement = document.getElementById(playerId);
         if (!videoElement) return;
         
-        // 初始化播放器
+        // 初始化播放器 - 使用腾讯推荐的配置
         playerRef.current = window.TCPlayer(playerId, {
           fileID: fileId,
           appID: appId,
           psign: psign || '',
-          autoplay: true
+          autoplay: false, // 设为false，不自动播放
+          controls: true,  // 启用控件
+          playbackRates: [0.5, 1, 1.25, 1.5, 2], // 播放速率选项
+          poster: { // 启用封面
+            style: "cover",
+            src: ""  // 会自动使用视频的第一帧
+          }
         });
         
-        // 监听事件
+        // 监听基本事件
         if (playerRef.current) {
-          // 各种可能表明视频已加载的事件
-          const events = ['loadeddata', 'loadedmetadata', 'canplay', 'canplaythrough', 'play', 'playing'];
-          
-          events.forEach(event => {
-            playerRef.current.on(event, () => {
-              setIsLoading(false);
-            });
-          });
-          
-          // 错误处理
-          playerRef.current.on('error', () => {
+          // 只监听最基本的事件，不干预播放器行为
+          playerRef.current.on('error', (err: any) => {
+            console.error('播放器错误:', err);
             setIsLoading(false);
           });
           
-          // 手动播放尝试
-          attemptPlay();
+          playerRef.current.on('loadedmetadata', () => {
+            setIsLoading(false);
+          });
           
-          // 设置重复尝试播放的计时器
-          attemptPlayRef.current = setInterval(() => {
-            attemptPlay();
-          }, 1000);
-          
-          // 10秒后清除重试计时器
+          // 备用：如果3秒后仍未加载，关闭加载状态
           setTimeout(() => {
-            if (attemptPlayRef.current) {
-              clearInterval(attemptPlayRef.current);
-              attemptPlayRef.current = null;
-            }
-          }, 10000);
+            setIsLoading(false);
+          }, 3000);
         }
-        
-        // 无论如何，3秒后关闭加载状态
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 3000);
       } catch (err) {
         console.error('播放器初始化错误:', err);
         setIsLoading(false);
       }
     };
     
-    // 尝试加载腾讯云播放器
+    // 加载腾讯云播放器
     if (typeof window.TCPlayer === 'function') {
       // 如果已加载，直接初始化
       initPlayer();
@@ -169,10 +122,8 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         script = document.createElement('script');
         script.id = scriptId;
         script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
-        script.async = false;
         
         script.onload = () => {
-          // 脚本加载完成后初始化
           initPlayer();
         };
         
@@ -204,7 +155,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden">
       <div ref={containerRef} className="w-full h-full"></div>
       
-      {/* 加载状态 - 只在isLoading为true时显示 */}
+      {/* 加载状态 */}
       {isLoading && (
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/30">
           <div className="w-12 h-12 border-4 border-gray-500/30 dark:border-gray-300/30 border-t-[#C15F3C] dark:border-t-[#C15F3C] rounded-full animate-spin"></div>

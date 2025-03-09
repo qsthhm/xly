@@ -15,10 +15,12 @@ export default function RootLayout({
   return (
     <html lang="zh" suppressHydrationWarning>
       <head>
+        {/* 腾讯播放器CSS */}
         <link 
           href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.9.0/tcplayer.min.css" 
           rel="stylesheet"
         />
+        
         {/* 内联脚本确保主题加载时不闪烁 */}
         <script
           dangerouslySetInnerHTML={{
@@ -36,40 +38,16 @@ export default function RootLayout({
             `,
           }}
         />
-        
-        {/* 预加载播放器脚本 */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                // 预加载腾讯播放器
-                if (!document.getElementById('tcplayer-script')) {
-                  var script = document.createElement('script');
-                  script.id = 'tcplayer-script';
-                  script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
-                  script.async = false;
-                  document.head.appendChild(script);
-                }
-                
-                // 初始化页面加载时自动播放第一个视频
-                window.addEventListener('DOMContentLoaded', function() {
-                  setTimeout(function() {
-                    if (window.location.pathname === '/' && !window.location.search) {
-                      // 在首页且没有查询参数时尝试播放第一个视频
-                      var videoElement = document.querySelector('video');
-                      if (videoElement && videoElement.__tcplayer__ && typeof videoElement.__tcplayer__.play === 'function') {
-                        videoElement.__tcplayer__.play();
-                      }
-                    }
-                  }, 1500);
-                });
-              })();
-            `,
-          }}
-        />
       </head>
       <body className="bg-[#F4F2EB] dark:bg-gray-900 transition-colors duration-200">
         {children}
+        
+        {/* 预加载腾讯播放器脚本 */}
+        <Script 
+          id="tcplayer-script"
+          src="https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js"
+          strategy="beforeInteractive"
+        />
         
         {/* Clarity 统计代码 */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
