@@ -38,6 +38,20 @@ export default function RootLayout({
             `,
           }}
         />
+        
+        {/* 内联加载腾讯云播放器脚本 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var script = document.createElement('script');
+                script.src = 'https://vod-tool.vod-qcloud.com/dist/static/js/tcplayer.v4.9.1.min.js';
+                script.async = false;
+                document.head.appendChild(script);
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="bg-[#F4F2EB] dark:bg-gray-900 transition-colors duration-200">
         {children}

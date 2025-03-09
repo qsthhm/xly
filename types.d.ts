@@ -2,4 +2,7 @@ interface Window {
   TCPlayer: any;
 }
 
-// 确保VideoPlayer组件能够正确使用window.TCPlayer
+// 扩展HTMLElement，添加腾讯云播放器属性
+interface HTMLElement {
+  __tcplayer__?: any;
+}
