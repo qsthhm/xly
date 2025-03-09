@@ -204,7 +204,7 @@ export default function Resume() {
           <Experience 
             period="2017.7 - 2017.9"
             company="华南农业大学"
-            location"实习 UI/UX 设计师，广州"
+            location="实习 UI/UX 设计师，广州"
             title=""
             descriptions={[
               "在农教台学习实践过程的页面构建，根据原型图定完成考勤 App 界面设计；",

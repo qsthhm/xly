@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
