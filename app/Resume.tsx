@@ -1,20 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import ContactModal from './components/ContactModal';
-
-// 动态导入主题切换组件
-const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
-  ssr: false,
-  loading: () => (
-    <button className="flex items-center justify-center w-9 h-9 rounded-full">
-      <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-    </button>
-  )
-});
+import Navigation from './components/Navigation';
 
 // 主要经历组件
 interface ExperienceProps {
@@ -61,11 +50,15 @@ const SkillSection = ({ title, description }: SkillSectionProps) => (
 
 export default function Resume() {
   const [mounted, setMounted] = useState(false);
-  // 添加联系人弹窗状态
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+  
+  // 处理联系按钮点击
+  const handleContactClick = useCallback(() => {
+    setContactModalOpen(true);
   }, []);
 
   if (!mounted) {
@@ -74,39 +67,7 @@ export default function Resume() {
 
   return (
     <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
-      {/* 导航栏 */}
-      <nav className="bg-[#F0EFE7] dark:bg-[#141414]">
-        <div className="container mx-auto flex items-center justify-between px-4 py-3">
-          <div className="flex items-center space-x-2">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden">
-              <Image 
-                src="/img/logo.png" 
-                alt="许璐雅头像" 
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-            <span className="text-base font-medium text-gray-900 dark:text-gray-200">
-              许璐雅 · 简历
-            </span>
-          </div>
-          
-          {/* 导航项 */}
-          <div className="flex items-center">
-            <Link href="/" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
-              作品集
-            </Link>
-            <button 
-              onClick={() => setContactModalOpen(true)}
-              className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3"
-            >
-              联系我
-            </button>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <Navigation onContactClick={handleContactClick} />
 
       {/* 简历内容 */}
       <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -253,7 +214,7 @@ export default function Resume() {
         </div>
       </div>
       
-      {/* 添加联系人弹窗 */}
+      {/* 联系人弹窗 */}
       <ContactModal 
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 

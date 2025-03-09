@@ -46,7 +46,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   
   // 复制手机号
   const copyPhone = () => {
-    navigator.clipboard.writeText('18925001685').then(() => {
+    navigator.clipboard.writeText('18801964297').then(() => {
       setPhoneButtonText('已复制18925001685');
       setPhoneButtonIcon('check');
       

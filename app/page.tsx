@@ -1,24 +1,12 @@
 'use client';
 
-import { useState, useEffect, Suspense, useMemo } from 'react';
+import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import Link from 'next/link';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
 import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
 import ContactModal from './components/ContactModal';
-
-// 动态导入主题切换组件
-const ThemeToggle = dynamic(() => import('./components/ThemeToggle'), {
-  ssr: false,
-  loading: () => (
-    <button className="flex items-center justify-center w-9 h-9 rounded-full">
-      <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-    </button>
-  )
-});
+import Navigation from './components/Navigation';
 
 // 视频数据类型
 interface Video {
@@ -31,7 +19,7 @@ interface Video {
   tag: string;
 }
 
-// 视频数据 - 更新为新的数据
+// 视频数据
 const ALL_VIDEOS: Video[] = [
   {
     id: '1397757906803886577', 
@@ -73,25 +61,36 @@ function ClientPage() {
   const [currentVideoId, setCurrentVideoId] = useState<string>(ALL_VIDEOS[0].id);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
-  // 添加联系人弹窗状态
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [forceRefresh, setForceRefresh] = useState(0); // 添加强制刷新计数器
   
   // 从URL获取初始参数
   useEffect(() => {
-    // 在客户端运行时从URL获取参数
-    const url = new URL(window.location.href);
-    const videoId = url.searchParams.get('v');
-    
-    if (videoId) {
-      // 检查URL中的视频ID是否存在于视频列表中
-      const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
-      if (videoExists) {
-        setCurrentVideoId(videoId);
+    const loadInitialState = () => {
+      try {
+        // 在客户端运行时从URL获取参数
+        const url = new URL(window.location.href);
+        const videoId = url.searchParams.get('v');
+        
+        if (videoId) {
+          // 检查URL中的视频ID是否存在于视频列表中
+          const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
+          if (videoExists) {
+            setCurrentVideoId(videoId);
+          }
+        }
+      } catch (error) {
+        console.error('初始化参数错误:', error);
+      } finally {
+        // 初始化完成后关闭加载状态
+        setIsLoading(false);
       }
-    }
+    };
     
-    // 初始化完成后关闭加载状态
-    setIsLoading(false);
+    loadInitialState();
+    
+    // 这个组件挂载时强制刷新视频播放器
+    setForceRefresh(prev => prev + 1);
   }, []);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
@@ -109,58 +108,31 @@ function ClientPage() {
   );
   
   // 处理视频选择
-  const handleSelectVideo = (id: string) => {
+  const handleSelectVideo = useCallback((id: string) => {
     setCurrentVideoId(id);
     
     // 更新URL，但不包含分类参数
     router.push(`?v=${id}`, { scroll: false });
-  };
+  }, [router]);
   
   // 修改分类切换处理函数，不改变URL
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     setCurrentCategory(category);
-    // 不再更新URL
-  };
+  }, []);
+  
+  // 处理联系按钮点击
+  const handleContactClick = useCallback(() => {
+    setContactModalOpen(true);
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
-      <nav className="bg-[#F0EFE7] dark:bg-[#141414]">
-        <div className="container mx-auto flex items-center justify-between px-4 py-3">
-          <div className="flex items-center space-x-2">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden">
-              <Image 
-                src="/img/logo.png" 
-                alt="许璐雅头像" 
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-            <span className="text-base font-medium text-gray-900 dark:text-gray-200">
-              许璐雅 · 视频作品集
-            </span>
-          </div>
-          
-          {/* 导航项 - 调整模式切换按钮的距离 */}
-          <div className="flex items-center">
-            <Link href="/resume" className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-5">
-              简历
-            </Link>
-            <button 
-              onClick={() => setContactModalOpen(true)} 
-              className="text-base text-gray-900 dark:text-gray-200 hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors mr-3"
-            >
-              联系我
-            </button>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <Navigation onContactClick={handleContactClick} />
 
       {/* 添加底部间距 */}
       <div className="container mx-auto px-4 pt-3 pb-10">
         <div className="flex flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
-          {/* 视频播放区域 - 移除边框 */}
+          {/* 视频播放区域 */}
           <div className="w-full lg:w-3/4">
             {isLoading ? (
               <VideoSkeletonLoader />
@@ -168,13 +140,13 @@ function ClientPage() {
               <>
                 <div className="rounded-xl overflow-hidden">
                   <VideoPlayer 
+                    key={`video-${currentVideo.id}-${forceRefresh}`} // 添加key来强制重新渲染
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}
                   />
                 </div>
                 
-             
                 <div className="mt-5">
                   {/* 视频标题 */}
                   <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-200">{currentVideo?.title}</h1>
@@ -187,7 +159,7 @@ function ClientPage() {
             )}
           </div>
           
-          {/* 右侧视频列表 - 更新深色模式颜色 */}
+          {/* 右侧视频列表 */}
           <div className="w-full lg:w-1/4 rounded-xl bg-white dark:bg-[#202020] overflow-y-auto" style={{ maxHeight: 'calc(100vh - 120px)' }}>
             <VideoList
               videos={filteredVideos}
@@ -200,7 +172,7 @@ function ClientPage() {
         </div>
       </div>
       
-      {/* 添加联系人弹窗 */}
+      {/* 联系人弹窗 */}
       <ContactModal 
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 
