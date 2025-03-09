@@ -6,9 +6,10 @@ import Navigation from '../components/Navigation';
 interface PasswordProtectionProps {
   children: React.ReactNode;
   password: string;
+  onContactClick: () => void;
 }
 
-export default function PasswordProtection({ children, password }: PasswordProtectionProps) {
+export default function PasswordProtection({ children, password, onContactClick }: PasswordProtectionProps) {
   const [inputPassword, setInputPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
@@ -133,7 +134,7 @@ export default function PasswordProtection({ children, password }: PasswordProte
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414]">
-        <Navigation onContactClick={() => {}} />
+        <Navigation onContactClick={onContactClick} />
         <div className="flex items-center justify-center h-[calc(100vh-64px)]">
           <div className="w-12 h-12 border-4 border-gray-300 dark:border-gray-700 border-t-[#C15F3C] rounded-full animate-spin"></div>
         </div>
@@ -164,7 +165,7 @@ export default function PasswordProtection({ children, password }: PasswordProte
   // 密码验证页面
   return (
     <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414]">
-      <Navigation onContactClick={() => {}} />
+      <Navigation onContactClick={onContactClick} />
       
       <div className="flex items-center justify-center px-4 h-[calc(100vh-64px)]">
         <div className="bg-white dark:bg-[#202020] rounded-xl p-6 shadow-lg max-w-md w-full">
