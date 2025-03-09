@@ -13,22 +13,23 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
   const playerRef = useRef<any>(null);
   // 移除isLoading状态，使用播放器内置的加载动画
   
-  // 清理播放器
+  // 清理播放器 - 简化版本
   const cleanupPlayer = () => {
-    if (playerRef.current) {
-      try {
-        if (typeof playerRef.current.dispose === 'function') {
-          playerRef.current.dispose();
-        }
-      } catch (e) {
-        console.error('播放器销毁错误:', e);
-      }
-      playerRef.current = null;
+    if (!playerRef.current) return;
+    
+    try {
+      // 尝试使用内置方法销毁播放器
+      playerRef.current.dispose?.();
+    } catch (e) {
+      console.error('播放器销毁错误:', e);
     }
     
-    // 确保全局播放器数组被清理
-    if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
-      window.__tcplayers = window.__tcplayers.filter(p => p && p !== playerRef.current);
+    // 重置引用
+    playerRef.current = null;
+    
+    // 清理全局播放器数组
+    if (window.__tcplayers?.length) {
+      window.__tcplayers = [];
     }
   };
   
