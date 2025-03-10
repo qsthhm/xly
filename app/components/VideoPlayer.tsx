@@ -76,17 +76,21 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     // 只在客户端执行且只添加一次
     if (typeof window !== 'undefined' && !window.__tcplayerRequestIntercepted) {
       const originalFetch = window.fetch;
-      window.fetch = function(url, options) {
+      
+      // 修复类型错误，使用明确的参数类型
+      window.fetch = function(input: RequestInfo | URL, init?: RequestInit) {
         // 如果是zuopin.my的请求或包含[object Object]，则拦截
         if (
-          (typeof url === 'string' && url.includes('[object'))
+          (typeof input === 'string' && input.includes('zuopin.my')) || 
+          (typeof input === 'string' && input.includes('[object'))
         ) {
           // 返回空响应，避免错误
           return Promise.resolve(new Response('', { status: 200 }));
         }
-        // 其他请求正常处理
-        return originalFetch.apply(this, arguments);
+        // 其他请求正常处理，使用正确的参数传递
+        return originalFetch.call(this, input, init);
       };
+      
       window.__tcplayerRequestIntercepted = true;
     }
   }, []);
