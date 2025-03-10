@@ -94,17 +94,23 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       });
     };
     
-    // 清理视频播放器资源，无论导航到哪里
+    // 清理视频播放器资源
     cleanupVideoPlayers();
     
-    // 当前已在首页 - 重新加载视频
-    if (pathname === '/') {
-      // 首页上点击时使用router.refresh()刷新内容而不改变URL
+    // 无论当前位置，都强制导航到首页根路径
+    // 这样可以确保从任何状态正确返回首页
+    if (window.location.pathname === '/' && window.location.search) {
+      // 如果在首页但有查询参数（比如播放列表选择的视频），清除参数
+      router.push('/');
+    } else if (pathname !== '/') {
+      // 如果不在首页，导航到首页
+      router.push('/');
+    } else {
+      // 已经在首页根路径，仅刷新内容
       router.refresh();
       
-      // 额外处理，确保首页内容重新加载
+      // 尝试重新播放第一个视频
       setTimeout(() => {
-        // 查找第一个视频并尝试播放
         const firstVideo = document.querySelector('video');
         if (firstVideo && firstVideo.__tcplayer__) {
           try {
@@ -112,12 +118,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           } catch (err) {}
         }
       }, 200);
-      
-      return;
     }
-    
-    // 不在首页 - 导航到首页
-    router.push('/');
   }, [pathname, router]);
   
   if (!mounted) return null;
