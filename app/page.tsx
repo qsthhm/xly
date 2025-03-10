@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
+import { useState, useEffect, Suspense, useMemo, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import VideoSkeletonLoader from './components/VideoSkeletonLoader';
 import VideoPlayer from './components/VideoPlayer';
@@ -53,6 +53,40 @@ const ALL_VIDEOS: Video[] = [
 // 腾讯云VOD应用ID
 const TENCENT_APP_ID = '1310364790';
 
+// 全局清理所有播放器的函数
+function cleanupAllTcPlayers() {
+  // 尝试清理腾讯播放器实例
+  if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
+    try {
+      // 复制数组，因为dispose过程中数组会被修改
+      const players = [...window.__tcplayers];
+      players.forEach(player => {
+        if (player && typeof player.dispose === 'function') {
+          player.dispose();
+        }
+      });
+      window.__tcplayers = [];
+    } catch (err) {
+      console.error('清理播放器失败:', err);
+    }
+  }
+  
+  // 查找并暂停所有视频元素
+  document.querySelectorAll('video').forEach(video => {
+    try {
+      if (video && !video.paused) {
+        video.pause();
+      }
+      // 移除视频元素上的tcplayer引用
+      if (video.__tcplayer__) {
+        delete video.__tcplayer__;
+      }
+    } catch (err) {
+      console.error('暂停视频失败:', err);
+    }
+  });
+}
+
 // 客户端组件，处理URL参数
 function ClientPage() {
   const router = useRouter();
@@ -63,6 +97,7 @@ function ClientPage() {
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [key, setKey] = useState<number>(0); // 用于强制重新渲染VideoPlayer
   
   // 当URL中的视频ID变化时更新当前视频
   useEffect(() => {
@@ -73,14 +108,26 @@ function ClientPage() {
       const videoExists = ALL_VIDEOS.some(v => v.id === videoId);
       if (videoExists) {
         setCurrentVideoId(videoId);
+        // 强制重新渲染播放器组件
+        setKey(prevKey => prevKey + 1);
       }
     } else if (ALL_VIDEOS.length > 0) {
       // 如果URL中没有视频ID，使用第一个视频
       setCurrentVideoId(ALL_VIDEOS[0].id);
+      // 强制重新渲染播放器组件
+      setKey(prevKey => prevKey + 1);
     }
     
     setIsLoading(false);
   }, [searchParams]);
+  
+  // 在组件卸载或视频ID变化前清理播放器
+  useEffect(() => {
+    return () => {
+      // 清理所有播放器
+      cleanupAllTcPlayers();
+    };
+  }, [currentVideoId]);
   
   // 使用useMemo缓存筛选结果，避免不必要的重新渲染
   const filteredVideos = useMemo(() => 
@@ -96,8 +143,11 @@ function ClientPage() {
     [currentVideoId]
   );
   
-  // 处理视频选择
+  // 处理视频选择 - 确保在选择前清理旧播放器
   const handleSelectVideo = useCallback((id: string) => {
+    // 先清理所有播放器
+    cleanupAllTcPlayers();
+    
     // 更新URL参数
     router.push(`?v=${id}`, { scroll: false });
     // 不再需要手动设置currentVideoId，因为URL变化会触发上面的useEffect
@@ -128,7 +178,7 @@ function ClientPage() {
               <>
                 <div className="rounded-xl overflow-hidden">
                   <VideoPlayer 
-                    key={currentVideo.id} // 使用视频ID作为key，确保切换视频时重新渲染
+                    key={`video-${currentVideo.id}-${key}`} // 使用组合key确保完全重新渲染
                     fileId={currentVideo.id} 
                     appId={TENCENT_APP_ID}
                     psign={currentVideo.psign || ''}
