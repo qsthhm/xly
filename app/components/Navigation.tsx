@@ -97,16 +97,32 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     // 清理视频播放器资源
     cleanupVideoPlayers();
     
-    // 无论当前位置，都强制导航到首页根路径
-    // 这样可以确保从任何状态正确返回首页
+    // 获取当前URL和查询参数
+    const currentUrl = window.location.pathname;
+    const currentSearchParams = new URLSearchParams(window.location.search);
+    const currentVideoId = currentSearchParams.get('v');
+    
+    // 判断当前位置和状态
+    const isHomePage = currentUrl === '/';
+    const isFirstVideo = currentVideoId === null || 
+                         currentVideoId === ALL_VIDEOS?.[0]?.id;
+    
+    // 特殊处理：在首页且是第一个视频的情况
+    if (isHomePage && isFirstVideo) {
+      // 强制刷新页面，确保重置所有状态
+      window.location.href = '/';
+      return;
+    }
+    
+    // 否则使用普通的客户端导航
     if (window.location.pathname === '/' && window.location.search) {
-      // 如果在首页但有查询参数（比如播放列表选择的视频），清除参数
+      // 如果在首页但有查询参数，清除参数
       router.push('/');
     } else if (pathname !== '/') {
       // 如果不在首页，导航到首页
       router.push('/');
     } else {
-      // 已经在首页根路径，仅刷新内容
+      // 已经在首页根路径，刷新内容
       router.refresh();
       
       // 尝试重新播放第一个视频
