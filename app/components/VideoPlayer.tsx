@@ -2,15 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-// 扩展 Window 接口以包含我们的自定义属性
-declare global {
-  interface Window {
-    TCPlayer: any;
-    __tcplayers?: any[];
-    __tcplayerRequestIntercepted?: boolean;
-  }
-}
-
 interface VideoPlayerProps {
   fileId: string;
   appId: string;
@@ -57,10 +48,8 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         if (video && !video.paused) {
           video.pause();
         }
-        // 使用类型断言避免 TypeScript 错误
-        const videoWithTcplayer = video as any;
-        if (videoWithTcplayer.__tcplayer__) {
-          delete videoWithTcplayer.__tcplayer__;
+        if (video.__tcplayer__) {
+          delete video.__tcplayer__;
         }
       } catch (err) {
         // 生产环境中使用更好的错误处理
@@ -76,21 +65,18 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     // 只在客户端执行且只添加一次
     if (typeof window !== 'undefined' && !window.__tcplayerRequestIntercepted) {
       const originalFetch = window.fetch;
-      
-      // 修复类型错误，使用明确的参数类型
-      window.fetch = function(input: RequestInfo | URL, init?: RequestInit) {
+      window.fetch = function(url, options) {
         // 如果是zuopin.my的请求或包含[object Object]，则拦截
         if (
-          (typeof input === 'string' && input.includes('zuopin.my')) || 
-          (typeof input === 'string' && input.includes('[object'))
+          (typeof url === 'string' && url.includes('zuopin.my')) || 
+          (typeof url === 'string' && url.includes('[object'))
         ) {
           // 返回空响应，避免错误
           return Promise.resolve(new Response('', { status: 200 }));
         }
-        // 其他请求正常处理，使用正确的参数传递
-        return originalFetch.call(this, input, init);
+        // 其他请求正常处理
+        return originalFetch.apply(this, arguments);
       };
-      
       window.__tcplayerRequestIntercepted = true;
     }
   }, []);
@@ -130,9 +116,7 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         playerRef.current.on('play', () => {
           if (userPausedRef.current) {
             setTimeout(() => {
-              if (playerRef.current && typeof playerRef.current.pause === 'function') {
-                playerRef.current.pause();
-              }
+              playerRef.current?.pause();
             }, 0);
           }
         });
@@ -220,17 +204,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       }, 100);
       
       // 最多等待5秒
-      const timeoutId = setTimeout(() => {
+      setTimeout(() => {
         clearInterval(checkTCPlayer);
         if (isLoading) setIsLoading(false); // 超时后强制更新状态
       }, 5000);
-      
-      // 清理定时器
-      return () => {
-        clearInterval(checkTCPlayer);
-        clearTimeout(timeoutId);
-        cleanupAllPlayers();
-      };
     }
     
     // 组件卸载时清理
