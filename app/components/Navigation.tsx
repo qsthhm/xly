@@ -94,17 +94,29 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       });
     };
     
-    // 当前已在首页 - 清理和重新加载视频
+    // 清理视频播放器资源，无论导航到哪里
+    cleanupVideoPlayers();
+    
+    // 当前已在首页 - 重新加载视频
     if (pathname === '/') {
-      cleanupVideoPlayers();
-      
-      // 使用Next.js路由器重新加载当前页面，但不强制刷新浏览器
+      // 首页上点击时使用router.refresh()刷新内容而不改变URL
       router.refresh();
+      
+      // 额外处理，确保首页内容重新加载
+      setTimeout(() => {
+        // 查找第一个视频并尝试播放
+        const firstVideo = document.querySelector('video');
+        if (firstVideo && firstVideo.__tcplayer__) {
+          try {
+            firstVideo.__tcplayer__.play();
+          } catch (err) {}
+        }
+      }, 200);
+      
       return;
     }
     
-    // 不在首页 - 清理并导航
-    cleanupVideoPlayers();
+    // 不在首页 - 导航到首页
     router.push('/');
   }, [pathname, router]);
   
