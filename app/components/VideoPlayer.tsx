@@ -2,6 +2,15 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
+// 扩展 Window 接口以包含我们的自定义属性
+declare global {
+  interface Window {
+    TCPlayer: any;
+    __tcplayers?: any[];
+    __tcplayerRequestIntercepted?: boolean;
+  }
+}
+
 interface VideoPlayerProps {
   fileId: string;
   appId: string;
@@ -48,8 +57,10 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         if (video && !video.paused) {
           video.pause();
         }
-        if (video.__tcplayer__) {
-          delete video.__tcplayer__;
+        // 使用类型断言避免 TypeScript 错误
+        const videoWithTcplayer = video as any;
+        if (videoWithTcplayer.__tcplayer__) {
+          delete videoWithTcplayer.__tcplayer__;
         }
       } catch (err) {
         // 生产环境中使用更好的错误处理
@@ -68,7 +79,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       window.fetch = function(url, options) {
         // 如果是zuopin.my的请求或包含[object Object]，则拦截
         if (
-          (typeof url === 'string' && url.includes('zuopin.my')) || 
           (typeof url === 'string' && url.includes('[object'))
         ) {
           // 返回空响应，避免错误
@@ -116,7 +126,9 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         playerRef.current.on('play', () => {
           if (userPausedRef.current) {
             setTimeout(() => {
-              playerRef.current?.pause();
+              if (playerRef.current && typeof playerRef.current.pause === 'function') {
+                playerRef.current.pause();
+              }
             }, 0);
           }
         });
@@ -204,10 +216,17 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
       }, 100);
       
       // 最多等待5秒
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         clearInterval(checkTCPlayer);
         if (isLoading) setIsLoading(false); // 超时后强制更新状态
       }, 5000);
+      
+      // 清理定时器
+      return () => {
+        clearInterval(checkTCPlayer);
+        clearTimeout(timeoutId);
+        cleanupAllPlayers();
+      };
     }
     
     // 组件卸载时清理
