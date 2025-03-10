@@ -102,10 +102,10 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     const currentSearchParams = new URLSearchParams(window.location.search);
     const currentVideoId = currentSearchParams.get('v');
     
-    // 判断当前位置和状态
+    // 判断当前位置和状态 - 不再使用ALL_VIDEOS
     const isHomePage = currentUrl === '/';
     const isFirstVideo = currentVideoId === null || 
-                         currentVideoId === ALL_VIDEOS?.[0]?.id;
+                         currentVideoId === '1397757906803886577'; // 第一个视频的ID硬编码
     
     // 特殊处理：在首页且是第一个视频的情况
     if (isHomePage && isFirstVideo) {
