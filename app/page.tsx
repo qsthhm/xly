@@ -7,7 +7,6 @@ import VideoPlayer from './components/VideoPlayer';
 import VideoList from './components/VideoList';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
-import useCleanupVideoOnNavigation from './hooks/useCleanupVideoOnNavigation';
 
 // 视频数据类型
 interface Video {
@@ -56,7 +55,6 @@ const TENCENT_APP_ID = '1310364790';
 
 // 客户端组件，处理URL参数
 function ClientPage() {
-  useCleanupVideoOnNavigation();
   const router = useRouter();
   const searchParams = useSearchParams();
   
