@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface VideoPlayerProps {
   fileId: string;
@@ -11,6 +11,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
+  const userPausedRef = useRef<boolean>(false); // 追踪用户是否手动暂停了视频
   
   // 彻底清理所有视频播放器
   const cleanupAllPlayers = () => {
@@ -56,6 +57,9 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         console.error('清理视频元素失败:', err);
       }
     });
+    
+    // 重置用户暂停状态
+    userPausedRef.current = false;
   };
   
   // 监听fileId变化，重新初始化
@@ -106,8 +110,32 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
         
         // 监听基本事件
         if (playerRef.current) {
+          // 监听错误
           playerRef.current.on('error', (err: any) => {
             console.error('播放器错误:', err);
+          });
+          
+          // 监听暂停事件 - 记录用户暂停状态
+          playerRef.current.on('pause', () => {
+            userPausedRef.current = true;
+          });
+          
+          // 监听播放事件 - 如果用户已暂停，则阻止自动继续播放
+          playerRef.current.on('play', () => {
+            if (userPausedRef.current) {
+              // 用户之前手动暂停过，再次暂停
+              setTimeout(() => {
+                if (playerRef.current && typeof playerRef.current.pause === 'function') {
+                  playerRef.current.pause();
+                }
+              }, 0);
+            }
+          });
+          
+          // 监听播放器就绪事件
+          playerRef.current.on('ready', () => {
+            // 重置用户暂停状态
+            userPausedRef.current = false;
           });
         }
       } catch (err) {
@@ -152,7 +180,6 @@ export default function VideoPlayer({ fileId, appId, psign = "" }: VideoPlayerPr
     
     // 组件卸载时清理
     return () => {
-      console.log("组件卸载，清理播放器:", fileId);
       cleanupAllPlayers();
     };
   }, [fileId, appId, psign]);
