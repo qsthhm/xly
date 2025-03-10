@@ -112,12 +112,14 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       // 尝试重新播放第一个视频
       setTimeout(() => {
         const firstVideo = document.querySelector('video');
-        if (firstVideo && firstVideo.__tcplayer__) {
+        if (firstVideo && firstVideo.__tcplayer__ && typeof firstVideo.__tcplayer__.play === 'function') {
           try {
             firstVideo.__tcplayer__.play();
-          } catch (err) {}
+          } catch (err) {
+            console.warn('无法播放视频，可能尚未准备好', err);
+          }
         }
-      }, 200);
+      }, 300);
     }
   }, [pathname, router]);
   
