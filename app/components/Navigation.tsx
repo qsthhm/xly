@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useCallback } from 'react';
 
 // 动态导入主题切换组件
 const ThemeToggle = dynamic(() => import('./ThemeToggle'), {
@@ -55,20 +56,19 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // 处理Logo点击跳转
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // 阻止默认行为
+  // 优雅地处理视频播放器清理和导航
+  const handleNavigateToHome = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     
-    // 如果已经在首页，使用强制刷新
-    if (pathname === '/') {
-      // 强制刷新页面，确保视频重新加载
-      window.location.href = '/';
-      return;
-    }
+    // 播放logo动画效果
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 800);
     
-    // 如果是从简历页返回，彻底清理播放器实例并刷新页面
-    if (pathname === '/resume') {
-      // 尝试清理播放器实例
+    // 清理视频播放器实例 - 这是关键部分
+    const cleanupVideoPlayers = () => {
+      // 尝试清理腾讯播放器实例
       if (window.__tcplayers && Array.isArray(window.__tcplayers)) {
         try {
           window.__tcplayers.forEach(player => {
@@ -82,23 +82,31 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         }
       }
       
-      // 设置导航标记
-      sessionStorage.setItem('forcedRefresh', 'true');
+      // 找到所有视频元素并暂停它们
+      document.querySelectorAll('video').forEach(video => {
+        try {
+          if (video && !video.paused) {
+            video.pause();
+          }
+        } catch (err) {
+          console.error('暂停视频失败:', err);
+        }
+      });
+    };
+    
+    // 当前已在首页 - 清理和重新加载视频
+    if (pathname === '/') {
+      cleanupVideoPlayers();
       
-      // 强制刷新页面
-      window.location.href = '/';
+      // 使用Next.js路由器重新加载当前页面，但不强制刷新浏览器
+      router.refresh();
       return;
     }
     
-    // 其他情况，强制刷新
-    window.location.href = '/';
-    
-    // 显示动画效果
-    setIsAnimating(true);
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 800);
-  };
+    // 不在首页 - 清理并导航
+    cleanupVideoPlayers();
+    router.push('/');
+  }, [pathname, router]);
   
   if (!mounted) return null;
   
@@ -110,7 +118,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         {/* 左侧Logo和标题 */}
         <a 
           href="/"
-          onClick={handleLogoClick}
+          onClick={handleNavigateToHome}
           className="flex items-center space-x-2"
         >
           <div className={`relative w-8 h-8 rounded-full overflow-hidden ${isAnimating ? 'logo-animate' : 'logo-hover-rotate'}`}>
@@ -141,10 +149,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         <div className="hidden md:flex items-center space-x-6">
           <a
             href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/';
-            }}
+            onClick={handleNavigateToHome}
             className={`text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
               pathname === '/' 
                 ? 'text-[#C15F3C] dark:text-[#C15F3C] font-bold' 
@@ -201,8 +206,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             <a
               href="/"
               onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/';
+                handleNavigateToHome(e);
                 setMobileMenuOpen(false);
               }}
               className={`py-2 text-base hover:text-[#C15F3C] dark:hover:text-[#C15F3C] transition-colors ${
