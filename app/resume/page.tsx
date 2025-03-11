@@ -5,8 +5,8 @@ import { useState } from 'react';
 import PasswordProtection from '../components/PasswordProtection';
 import ContactModal from '../components/ContactModal';
 
-// 动态导入NewResume组件以避免服务器端渲染
-const NewResume = dynamic(() => import('../NewResume'), {
+// 动态导入Resume组件以避免服务器端渲染
+const Resume = dynamic(() => import('../Resume'), {
   ssr: false,
 });
 
