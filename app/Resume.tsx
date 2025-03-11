@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
 
@@ -13,7 +13,7 @@ interface ExperienceProps {
   descriptions: string[];
 }
 
-const Experience: React.FC<ExperienceProps> = ({ period, company, location, title, descriptions }) => (
+const Experience = ({ period, company, location, title, descriptions }: ExperienceProps) => (
   <div className="mb-10">
     <div className="flex space-x-6">
       {/* 左侧时间 */}
@@ -49,14 +49,14 @@ interface SkillSectionProps {
   description: string;
 }
 
-const SkillSection: React.FC<SkillSectionProps> = ({ title, description }) => (
+const SkillSection = ({ title, description }: SkillSectionProps) => (
   <div className="mb-6">
     <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">{title}</h3>
     <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{description}</p>
   </div>
 );
 
-const Resume: React.FC = () => {
+export default function Resume() {
   const [mounted, setMounted] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
@@ -73,8 +73,9 @@ const Resume: React.FC = () => {
     return null;
   }
 
+  // 使用Fragment而不是JSX标签
   return (
-    <React.Fragment>
+    <>
       <Navigation onContactClick={handleContactClick} />
 
       {/* 简历内容 */}
@@ -258,8 +259,6 @@ const Resume: React.FC = () => {
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 
       />
-    </React.Fragment>
+    </>
   );
-};
-
-export default Resume;
+}
