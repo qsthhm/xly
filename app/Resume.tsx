@@ -23,18 +23,18 @@ const Experience = ({ period, company, location, title, descriptions }: Experien
       
       {/* 右侧内容 */}
       <div className="flex-1">
-        <div className="mb-2">
+        <div className="mb-3">
           <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200">{company}</h3>
           <p className="text-gray-500 dark:text-gray-400 text-base">{location}</p>
         </div>
         
-        {title && <p className="text-gray-500 dark:text-gray-400 text-base mb-2">{title}</p>}
+        {title && <p className="text-gray-500 dark:text-gray-400 text-base mb-3">{title}</p>}
         
-        <ul className="space-y-2">
+        <ul className="space-y-2.5">
           {descriptions.map((desc, index) => (
             <li key={index} className="flex items-start">
-              <span className="text-[#C15F3C] mr-2 mt-1">•</span>
-              <span className="text-gray-700 dark:text-gray-300 text-base">{desc}</span>
+              <span className="text-gray-500 mr-2 mt-1">•</span>
+              <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{desc}</span>
             </li>
           ))}
         </ul>
@@ -51,8 +51,8 @@ interface SkillSectionProps {
 
 const SkillSection = ({ title, description }: SkillSectionProps) => (
   <div className="mb-6">
-    <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-2">{title}</h3>
-    <p className="text-gray-700 dark:text-gray-300 text-base">{description}</p>
+    <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">{title}</h3>
+    <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{description}</p>
   </div>
 );
 
@@ -78,7 +78,7 @@ export default function Resume() {
       <Navigation onContactClick={handleContactClick} />
 
       {/* 简历内容 */}
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-10 max-w-4xl">
         {/* 个人信息 */}
         <div className="mb-12">
           <div className="flex justify-between items-center mb-10">
@@ -87,9 +87,9 @@ export default function Resume() {
             <a 
               href="/resume.pdf" 
               target="_blank" 
-              className="flex items-center px-4 py-2 bg-[#C15F3C] hover:bg-[#A94F32] text-white rounded-lg transition-colors"
+              className="flex items-center px-3 py-1.5 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded-full transition-colors"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               下载PDF
@@ -97,22 +97,21 @@ export default function Resume() {
           </div>
           
           <div className="space-y-8">
-            {/* 个人简介 */}
             <div>
-              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-2">个人简介</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base mb-2">
+              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">个人简介</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
                 6 年 UI/UX 设计工作经验。现就职于 SHEIN 集团担任高级交互设计师。有企业服务、供应链管和消费级电商 SaaS 产品的业务背景。
               </p>
-              <p className="text-gray-700 dark:text-gray-300 text-base">
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
                 工作期间积累了国际化、设计系统搭建、数据可视化和体验提量等实践经验，并独立把握流程中的各环节。
               </p>
             </div>
             
             {/* 教育背景 */}
             <div>
-              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-2">教育背景</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base mb-1">华北理工大学(2014-2018)</p>
-              <p className="text-gray-700 dark:text-gray-300 text-base">艺术学学士，主修现代数字媒体设计</p>
+              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">教育背景</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-1">华北理工大学(2014-2018)</p>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">艺术学学士，主修现代数字媒体设计</p>
             </div>
           </div>
         </div>
@@ -197,15 +196,24 @@ export default function Resume() {
         
         {/* 技能部分 */}
         <div>
-          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">专业技能</h2>
+          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">专业技能</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
             <div>
               <SkillSection 
                 title="界面设计"
                 description="熟练 Figma 和 Sketch 等软件，主要的响应式和桌面设应用设计分析流程设计和企业，将各类系统化方为用户友好界面文学规格和视觉化-SaaS 实践经验，熟悉 Win/Mac端交互特点分析方法，以数据驱动优化产品经验验数据。"
               />
-              
+            </div>
+            
+            <div>
+              <SkillSection 
+                title="交互设计"
+                description="基础语言和英标准ademic，熟练使用"
+              />
+            </div>
+            
+            <div>
               <SkillSection 
                 title="动效设计"
                 description="熟练使用 After Effects / Principle / Lottie 设计界面动画，了解两位动画表达方式。"
@@ -216,11 +224,6 @@ export default function Resume() {
               <SkillSection 
                 title="前端实现"
                 description="了解基础 React (State, Hooks)，基于在设计过程中和前端设计师配合的经验进行设计与前端的基础，有基础的理解。"
-              />
-              
-              <SkillSection 
-                title="交互设计"
-                description="基础语言和英标准ademic，熟练使用"
               />
             </div>
           </div>
