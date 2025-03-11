@@ -168,10 +168,12 @@ export default function PasswordProtection({ children, password, onContactClick 
       <Navigation onContactClick={onContactClick} />
       
       <div className="flex items-center justify-center px-4 h-[calc(100vh-64px)]">
-        <div className="bg-white dark:bg-[#202020] rounded-xl p-6 shadow-lg max-w-md w-full">
-          <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">简历访问受限</h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">请输入密码继续访问</p>
+        <div className="bg-white dark:bg-[#202020] rounded-xl p-6 max-w-xs w-full border border-[#E9E8E5] dark:border-[#333333]">
+          {/* 锁图标居中显示 */}
+          <div className="flex justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-[#C15F3C] dark:text-gray-300">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -181,7 +183,7 @@ export default function PasswordProtection({ children, password, onContactClick 
                 value={inputPassword}
                 onChange={(e) => setInputPassword(e.target.value)}
                 placeholder="请输入密码"
-                className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#2D2D2D] border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#C15F3C] text-gray-900 dark:text-gray-100"
+                className="w-full px-4 py-3 rounded-full bg-gray-50 dark:bg-[#2D2D2D] border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#C15F3C] text-gray-900 dark:text-gray-100"
                 autoFocus
                 disabled={isLocked}
               />
@@ -196,14 +198,18 @@ export default function PasswordProtection({ children, password, onContactClick 
             
             <button
               type="submit"
-              className={`w-full ${isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#C15F3C] hover:bg-[#A94F32]'} text-white py-3 rounded-lg transition-colors`}
+              className={`w-full ${isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#C15F3C] hover:bg-[#A94F32]'} text-white py-3 rounded-full transition-colors`}
               disabled={isLocked}
             >
               确认
             </button>
             
             <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-              <p>提示：密码是"daya"</p>
+              {attempts >= 3 ? (
+                <p>忘记密码？请联系管理员</p>
+              ) : (
+                <p>提示：密码是"daya"</p>
+              )}
             </div>
           </form>
         </div>
