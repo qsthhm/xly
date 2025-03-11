@@ -74,7 +74,7 @@ export default function Resume() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
+    <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
       <Navigation onContactClick={handleContactClick} />
 
       {/* 简历内容 */}
@@ -256,6 +256,6 @@ export default function Resume() {
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 
       />
-    </main>
+    </div>
   );
 }
