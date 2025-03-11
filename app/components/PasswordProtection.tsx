@@ -112,7 +112,8 @@ export default function PasswordProtection({ children, password, onContactClick 
         localStorage.setItem('resumeLocked', lockTime.toString());
         setIsLocked(true);
         setLockTimer(30);
-        setError('尝试次数过多，请等待30秒后再试');
+        // 移除错误提示，因为锁定提示会显示
+        setError('');
         startLockdownTimer(30);
       } else if (newAttempts >= 3) {
         setError(`密码不正确，请重试。剩余尝试次数: ${5 - newAttempts}`);
@@ -175,7 +176,7 @@ export default function PasswordProtection({ children, password, onContactClick 
               <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            <p className="text-sm text-gray-500 dark:text-gray-400">提示：密码是"daya"</p>
+            <p className="text-base text-gray-900 dark:text-gray-200">如无密码，请联系我索取</p>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
