@@ -81,33 +81,38 @@ export default function Resume() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 个人信息 */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-10 text-center">许璐雅</h1>
+          <div className="flex justify-between items-center mb-10">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">许璐雅</h1>
+            
+            <a 
+              href="/resume.pdf" 
+              target="_blank" 
+              className="flex items-center px-4 py-2 bg-[#C15F3C] hover:bg-[#A94F32] text-white rounded-lg transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              下载PDF
+            </a>
+          </div>
           
           <div className="space-y-8">
             {/* 个人简介 */}
             <div>
-              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">个人简介</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-lg mb-2">
+              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-2">个人简介</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-base mb-2">
                 6 年 UI/UX 设计工作经验。现就职于 SHEIN 集团担任高级交互设计师。有企业服务、供应链管和消费级电商 SaaS 产品的业务背景。
               </p>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 dark:text-gray-300 text-base">
                 工作期间积累了国际化、设计系统搭建、数据可视化和体验提量等实践经验，并独立把握流程中的各环节。
               </p>
             </div>
             
             {/* 教育背景 */}
             <div>
-              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">教育背景</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">华北理工大学(2014-2018)</p>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">艺术学学士，主修现代数字媒体设计</p>
-            </div>
-            
-            {/* 联系方式 */}
-            <div id="contact">
-              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">联系方式</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">电话：189 2500 1685</p>
-              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">邮箱：lrdbufl@gmail.com</p>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">微信：lrd.im</p>
+              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-2">教育背景</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-base mb-1">华北理工大学(2014-2018)</p>
+              <p className="text-gray-700 dark:text-gray-300 text-base">艺术学学士，主修现代数字媒体设计</p>
             </div>
           </div>
         </div>
@@ -191,31 +196,33 @@ export default function Resume() {
         </div>
         
         {/* 技能部分 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">专业技能</h2>
-            
-            <SkillSection 
-              title="界面设计"
-              description="熟练 Figma 和 Sketch 等软件，主要的响应式和桌面设应用设计分析流程设计和企业，将各类系统化方为用户友好界面文学规格和视觉化-SaaS 实践经验，熟悉 Win/Mac端交互特点分析方法，以数据驱动优化产品经验验数据。"
-            />
-            
-            <SkillSection 
-              title="动效设计"
-              description="熟练使用 After Effects / Principle / Lottie 设计界面动画，了解两位动画表达方式。"
-            />
-            
-            <SkillSection 
-              title="前端实现"
-              description="了解基础 React (State, Hooks)，基于在设计过程中和前端设计师配合的经验进行设计与前端的基础，有基础的理解。"
-            />
-          </div>
+        <div>
+          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">专业技能</h2>
           
-          <div>
-            <SkillSection 
-              title="交互设计"
-              description="基础语言和英标准ademic，熟练使用"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <SkillSection 
+                title="界面设计"
+                description="熟练 Figma 和 Sketch 等软件，主要的响应式和桌面设应用设计分析流程设计和企业，将各类系统化方为用户友好界面文学规格和视觉化-SaaS 实践经验，熟悉 Win/Mac端交互特点分析方法，以数据驱动优化产品经验验数据。"
+              />
+              
+              <SkillSection 
+                title="动效设计"
+                description="熟练使用 After Effects / Principle / Lottie 设计界面动画，了解两位动画表达方式。"
+              />
+            </div>
+            
+            <div>
+              <SkillSection 
+                title="前端实现"
+                description="了解基础 React (State, Hooks)，基于在设计过程中和前端设计师配合的经验进行设计与前端的基础，有基础的理解。"
+              />
+              
+              <SkillSection 
+                title="交互设计"
+                description="基础语言和英标准ademic，熟练使用"
+              />
+            </div>
           </div>
         </div>
       </div>
