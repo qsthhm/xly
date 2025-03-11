@@ -74,7 +74,7 @@ export default function Resume() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
+    <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
       <Navigation onContactClick={handleContactClick} />
 
       {/* 简历内容 */}
@@ -131,7 +131,7 @@ export default function Resume() {
               "建立标准化项目交付流程，优化资源配置，提升团队运转效率",
               "搭建人才培养体系，实施动态人员管理和职责轮换机制",
               "成功交付舟山城市馆、陕北三战三捷纪念馆等30+政企展厅项目",
-              "创新实施"分类管理项目监督层级"机制，项目交付准时率提升35%"
+              "创新实施\"分类管理项目监督层级\"机制，项目交付准时率提升35%"
             ]}
           />
           
@@ -207,7 +207,7 @@ export default function Resume() {
             <div>
               <SkillSection 
                 title="团队领导"
-                description="领导20人跨部门团队高效协作，擅长人才培养和团队建设。创建"阶梯式培训+轮岗激励"人才发展机制，3年内培养4名核心骨干晋升项目经理岗位。具备出色的沟通能力和问题解决能力。"
+                description="领导20人跨部门团队高效协作，擅长人才培养和团队建设。创建\"阶梯式培训+轮岗激励\"人才发展机制，3年内培养4名核心骨干晋升项目经理岗位。具备出色的沟通能力和问题解决能力。"
               />
             </div>
           </div>
@@ -219,6 +219,6 @@ export default function Resume() {
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 
       />
-    </main>
+    </div>
   );
 }
