@@ -103,13 +103,14 @@ export default function Resume() {
           </div>
           
           <div className="space-y-8">
+            {/* 个人简介 */}
             <div>
               <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">个人简介</h2>
               <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
-                6 年 UI/UX 设计工作经验。现就职于 SHEIN 集团担任高级交互设计师。有企业服务、供应链管和消费级电商 SaaS 产品的业务背景。
+                12年行业经验，擅长跨界融合艺术创意与技术实现。主导200+商业项目交付，涵盖120+地产影片与30+政企展厅，协作万达、保利、金茂等TOP10房企及政府重点文化工程，项目总价值超2000万元。
               </p>
               <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
-                工作期间积累了国际化、设计系统搭建、数据可视化和体验提量等实践经验，并独立把握流程中的各环节。
+                技术实力扎实，精通全流程数字视觉制作与技术方案落地，掌握3Dmax/AE/PR高级应用，专精异型幕影片制作与沉浸式体验设计。
               </p>
             </div>
             
@@ -122,6 +123,7 @@ export default function Resume() {
           </div>
         </div>
         
+        {/* 工作经历 */}
         <div className="mb-12">
           <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">工作经历</h2>
           
@@ -158,6 +160,7 @@ export default function Resume() {
           />
         </div>
         
+        {/* 技能部分 */}
         <div>
           <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">专业技能</h2>
           
