@@ -5,8 +5,8 @@ import { useState } from 'react';
 import PasswordProtection from '../components/PasswordProtection';
 import ContactModal from '../components/ContactModal';
 
-// 动态导入Resume组件以避免服务器端渲染
-const Resume = dynamic(() => import('../Resume'), {
+// 动态导入NewResume组件以避免服务器端渲染
+const NewResume = dynamic(() => import('../NewResume'), {
   ssr: false,
 });
 
@@ -21,7 +21,7 @@ export default function ResumePage() {
   return (
     <>
       <PasswordProtection password="daya" onContactClick={handleContactClick}>
-        <Resume />
+        <NewResume />
       </PasswordProtection>
       
       {/* 联系人弹窗 */}
