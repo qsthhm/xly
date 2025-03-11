@@ -14,7 +14,7 @@ interface ExperienceProps {
 }
 
 const Experience = ({ period, company, location, title, descriptions }: ExperienceProps) => (
-  <div className="mb-10">
+  <div className="mb-8">
     <div className="flex space-x-6">
       {/* 左侧时间 */}
       <div className="w-36 flex-shrink-0">
@@ -23,21 +23,23 @@ const Experience = ({ period, company, location, title, descriptions }: Experien
       
       {/* 右侧内容 */}
       <div className="flex-1">
-        <div className="mb-3">
+        <div className="mb-2">
           <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200">{company}</h3>
           <p className="text-gray-500 dark:text-gray-400 text-base">{location}</p>
         </div>
         
-        {title && <p className="text-gray-500 dark:text-gray-400 text-base mb-3">{title}</p>}
+        {title && <p className="text-gray-500 dark:text-gray-400 text-base mb-2">{title}</p>}
         
-        <ul className="space-y-2.5">
-          {descriptions.map((desc, index) => (
-            <li key={index} className="flex items-start">
-              <span className="text-gray-500 mr-2 mt-1">•</span>
-              <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{desc}</span>
-            </li>
-          ))}
-        </ul>
+        {descriptions.length > 0 && (
+          <ul className="space-y-1.5">
+            {descriptions.map((desc, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-[#C15F3C] dark:text-[#C15F3C] mr-2 mt-1">•</span>
+                <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{desc}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   </div>
@@ -81,8 +83,11 @@ export default function Resume() {
       <div className="container mx-auto px-4 py-10 max-w-4xl">
         {/* 个人信息 */}
         <div className="mb-12">
-          <div className="flex justify-between items-center mb-10">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">许璐雅</h1>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">许璐雅</h1>
+              <p className="text-gray-700 dark:text-gray-300 text-base">12年经验 · 数字视觉领域专家 · 项目经理</p>
+            </div>
             
             <a 
               href="/resume.pdf" 
@@ -106,19 +111,12 @@ export default function Resume() {
                 技术实力：精通全流程数字视觉制作和技术方案落地，掌握3Dmax/AE/PR高级应用，专注异型幕影片制作和沉浸式体验设计。管理20人团队高效协作，建立标准化SOP体系，项目交付准时率提升35%，客户满意度达92%。
               </p>
             </div>
-            
-            {/* 教育背景 */}
-            <div>
-              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">教育背景</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-1">上海工艺美术职业学院(2010-2013)</p>
-              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">展示设计</p>
-            </div>
           </div>
         </div>
         
-        {/* 工作经历 */}
+        {/* 主要经历 */}
         <div className="mb-12">
-          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">工作经历</h2>
+          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">主要经历</h2>
           
           <Experience 
             period="2021.05 - 至今"
@@ -176,41 +174,14 @@ export default function Resume() {
               "参与制作青岛万达、无锡万达、哈尔滨万达等旅游娱乐三维影片后期制作"
             ]}
           />
-        </div>
-        
-        {/* 技能部分 */}
-        <div className="mb-12">
-          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">专业技能</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-            <div>
-              <SkillSection 
-                title="三维制作"
-                description="精通3Dmax软件，擅长建筑场景和空间设计，能创建高质量三维模型和动画。具备异型幕影片制作的专业经验，能解决复杂的相机动画和场景过渡问题。成功交付多个12K分辨率大型五折幕/瀑布屏项目。"
-              />
-            </div>
-            
-            <div>
-              <SkillSection 
-                title="后期制作"
-                description="精通After Effects和Premiere Pro，擅长视频合成、特效制作、色彩校正和剪辑节奏控制。能处理4K-12K高分辨率素材，熟悉各类展示屏幕的技术规格，技术故障率低于行业平均水平的25%。"
-              />
-            </div>
-            
-            <div>
-              <SkillSection 
-                title="项目管理"
-                description="具备12年项目管理经验，熟悉数字视觉制作全流程，擅长资源调配、进度控制和质量把关。建立完善的SOP流程体系，提升团队协作效率和项目交付质量，使项目交付准时率提升35%，客户满意度达92%。"
-              />
-            </div>
-            
-            <div>
-              <SkillSection 
-                title="团队领导"
-                description="领导20人跨部门团队高效协作，擅长人才培养和团队建设。创建阶梯式培训与轮岗激励人才发展机制，3年内培养4名核心骨干晋升项目经理岗位。具备出色的沟通能力和问题解决能力。"
-              />
-            </div>
-          </div>
+          <Experience 
+            period="2010.07 - 2013.05"
+            company="上海工艺美术职业学院"
+            location="展示设计"
+            title=""
+            descriptions={[]}
+          />
         </div>
         
         {/* 案例展示 */}
@@ -360,6 +331,9 @@ export default function Resume() {
           </div>
         </div>
       </div>
+      
+      {/* 页面底部增加间距 */}
+      <div className="h-24"></div>
       
       {/* 联系人弹窗 */}
       <ContactModal 
