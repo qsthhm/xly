@@ -179,7 +179,7 @@ export default function Resume() {
         </div>
         
         {/* 技能部分 */}
-        <div>
+        <div className="mb-12">
           <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">专业技能</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
@@ -209,6 +209,153 @@ export default function Resume() {
                 title="团队领导"
                 description="领导20人跨部门团队高效协作，擅长人才培养和团队建设。创建阶梯式培训与轮岗激励人才发展机制，3年内培养4名核心骨干晋升项目经理岗位。具备出色的沟通能力和问题解决能力。"
               />
+            </div>
+          </div>
+        </div>
+        
+        {/* 案例展示 */}
+        <div>
+          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">案例展示</h2>
+          
+          <div className="space-y-12">
+            <div>
+              <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">舟山城市展示馆-《飞跃舟山》</h3>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目时间：</span>2023年6月-9月
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目规模：</span>五折幕沉浸式影院，全三维场景渲染，分辨率达12K，帧率30fps，约9分钟
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                  <span className="font-medium">团队规模：</span>核心制作团队12人，包括三维建模师、动画师、特效师、音效师等
+                </p>
+              </div>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">主导影片整体创意方向，设计舟山群岛主题故事线，打造具有视觉冲击力的叙事结构</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">负责所有三维镜头的设计与实现，包括镜头走向、转场设计、场景衔接等</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">协调团队完成全三维场景的建模、渲染及特效制作，优化12K分辨率下的视觉效果</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">统筹12人团队的分工与协作，制定详细项目计划，确保项目按时高质量交付</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                <span className="font-medium">项目成果：</span>影片成功落地并成为舟山城市展示馆的核心展项，获得参观者与馆方一致好评。通过该项目，展现了在大型沉浸式影片制作中的全流程管理能力、三维视觉设计能力及团队协作能力。
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">2022博博会-《华夏万载》</h3>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目时间：</span>2022年3月-8月
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目规模：</span>瀑布屏沉浸式影片，分辨率4K，帧率30fps，融合水墨风、三维实景、动态特效等多重视觉风格，时长4分30秒
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                  <span className="font-medium">团队规模：</span>12人跨领域团队（C4D、3ds Max、AE、PR等）
+                </p>
+              </div>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">配合策划团队，设计从史前文明到现代科技的内容框架，整合水墨风与三维实景双重风格</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">主导关键场景的三维镜头设计，监督跨朝代场景的无缝转场与瀑布屏适配</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">协调多软件协作，带队完成现场投放测试，确保展览期间零故障运行</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                <span className="font-medium">项目成果：</span>影片成为博博会热门展项，日均吸引超3000人次观看，多家媒体报道其以创新形式激活传统文化。超70%的参展家长带孩子重复观看，部分观众现场记录影片知识点，实现文化传播与教育功能双赢。
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">鸦片战争纪念馆</h3>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目时间：</span>2022年7月
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目规模：</span>投影（6K分辨率）+ LED全息（4K分辨率），帧率30fps，时长9分30秒
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">团队规模：</span>16人跨领域团队（策划、拍摄、三维制作、后期合成等）
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                  <span className="font-medium">制作周期：</span>半个月（含绿幕抠像、三维制作及后期合成）
+                </p>
+              </div>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">协调演员、舞蹈拍摄及抠像工作，确保历史场景的真实感与艺术性</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">主导定海城三维还原、战争场景制作及人物与场景的合成，把控相机动画与单帧效果</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">在极短制作周期内高效推进项目，确保各环节无缝衔接，返工率低于行业平均水平</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                <span className="font-medium">项目成果：</span>影片成功落地，成为舟山鸦片战争纪念馆的核心展项，日均接待游客超500人次，获馆方与观众一致好评。在极短周期内高质量交付，展现了团队的高效协作与项目管理能力。
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">陕北三战三捷纪念馆</h3>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+                  <span className="font-medium">项目类型：</span>厅馆-多媒体场景半景画
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                  <span className="font-medium">项目规模：</span>以投影形式，结合油画背景，上方空白区域用于播放视频素材，下方油画区域结合山地表现战场作战场面
+                </p>
+              </div>
+              <div className="mb-3">
+                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">解决人物动作、运动流线问题，统筹项目全流程管理</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gray-500 mr-2 mt-1">•</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">协调策划、设计、技术团队，确保项目按时交付</span>
+                  </li>
+                </ul>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+                <span className="font-medium">项目成果：</span>项目在规定时间提前完成现场测试，确保客户顺利接待重要领导。
+              </p>
             </div>
           </div>
         </div>
