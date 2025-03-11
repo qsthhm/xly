@@ -100,18 +100,18 @@ export default function Resume() {
             <div>
               <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">个人简介</h2>
               <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
-                6 年 UI/UX 设计工作经验。现就职于 SHEIN 集团担任高级交互设计师。有企业服务、供应链管和消费级电商 SaaS 产品的业务背景。
+                12年数字视觉领域经验(建筑动画7年和数字展馆5年)。擅长三维可视化全流程管理。主导200+商业项目交付，包括120+地产影片和30+政企展厅，服务万达、保利、金茂等知名企业及政府项目。
               </p>
               <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
-                工作期间积累了国际化、设计系统搭建、数据可视化和体验提量等实践经验，并独立把握流程中的各环节。
+                精通全流程数字视觉制作和技术方案落地，掌握3Dmax/AE/PR软件应用，专注异型幕影片制作和沉浸式体验设计。管理20人团队高效协作，建立标准化流程，项目交付准时率提升35%。
               </p>
             </div>
             
             {/* 教育背景 */}
             <div>
               <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">教育背景</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-1">华北理工大学(2014-2018)</p>
-              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">艺术学学士，主修现代数字媒体设计</p>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-1">上海工艺美术职业学院(2010-2013)</p>
+              <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">展示设计</p>
             </div>
           </div>
         </div>
@@ -121,75 +121,57 @@ export default function Resume() {
           <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">工作经历</h2>
           
           <Experience 
-            period="2024.2 - 至今"
-            company="SHEIN"
-            location="高级交互设计师，广州"
+            period="2021.05 - 至今"
+            company="上海妙文创意科技有限公司"
+            location="影视后期副总监，上海"
             title=""
             descriptions={[
-              // 空描述，示例中这个职位没有具体描述
+              "统筹数字视觉项目全流程管理，年均监制147部影片，2023年产能提升82%",
+              "领导跨部门创意团队，对接政企客户需求，协调脚本创意和技术实现",
+              "建立标准化项目交付流程，优化资源配置，提升团队运转效率",
+              "搭建人才培养体系，实施动态人员管理和职责轮换机制",
+              "成功交付舟山城市馆、陕北三战三捷纪念馆等30+政企展厅项目"
             ]}
           />
           
           <Experience 
-            period="2023.2 - 2023.8"
-            company="ONES"
-            location="资深 UI/UX 设计师，深圳"
+            period="2020.06 - 2021.04"
+            company="上海壹然数字科技有限公司"
+            location="多媒体项目经理，上海"
             title=""
             descriptions={[
-              "负责ONES 规划端体验设计，包含着重用户空间模型及驱动整体设计趋势的能力和相应的体验优化；",
-              "负责团队协同体任务管理系统的规则梳理和优化，沙盒权限系统改造和 Design Token 实践等；",
-              "复杂留存的复盘，分享内容包含：复盘的的本地化设计策略分析（日本和北美），两阶体验指标及其改进方式等。"
+              "全程把控宣传片制作流程，包括前期策划、现场拍摄和后期制作",
+              "协调导演、摄影、演员等多方资源，组织现场拍摄和场地协调",
+              "负责走访勘景、拍摄素材整理、剪辑包装直至成片交付",
+              "独立完成张家港工业云展厅全流程影片制作",
+              "优化工业题材拍摄流程，缩短40%现场拍摄时间"
             ]}
           />
           
           <Experience 
-            period="2021.9 - 2022.11"
-            company="欢聚集团"
-            location="资深 UI/UX 设计师，广州"
+            period="2014.06 - 2020.05"
+            company="丝路视觉科技股份有限公司"
+            location="项目经理，上海"
             title=""
             descriptions={[
-              "负责虎牙SHOPLINE商家后台数据业务和 App 项目的全流程设计；",
-              "主导提案覆盖各角度的体验分析和设计及方案调研，有效提升后台系统的可扩展性和使用感受；",
-              "负责虎牙商业场景器的优化和平台管理系统，与 UX 设计师协作统一数据流前标准；",
-              "负责 App 整体的视觉风格和交互模式探索，调整基于系统和地区需求特点的体验细节和结构优化策略的实践经验；",
-              "支持 SHOPLINE 开放平台：应用商店独立化项目，针对商家和开发者各种个性化的核心诉求体验设计及方案并评效果量。",
-              "归纳创新化设计规范，结合外部流程经验和公司业务需求并进行深解拆；并为广州、杭州和西安的设计师参与到联动。"
+              "与客户沟通脚本，深入了解客户需求，配合脚本制作完成镜头动画预演",
+              "与各环节制作人员协调沟通，推进影片制作，监督镜头制作进度",
+              "把控影片剪辑、音乐及转场衔接，确保画面效果和影片整体质量",
+              "负责片头片尾包装、logo演绎、区位制作、视频及图片包装等",
+              "参与保利、绿地、金茂、富力、碧桂园等120多条地产影片的后期制作",
+              "主导太湖院子、青岛东方小镇、金地平金中心等多个项目"
             ]}
           />
           
           <Experience 
-            period="2020.7 - 2021.9"
-            company="千麦"
-            location="资深 UI 设计师，广州"
+            period="2013.04 - 2014.05"
+            company="上海景上数码科技"
+            location="后期制作，上海"
             title=""
             descriptions={[
-              "负责千麦B 端(商家管理服务站) 业务，担任社区贸易项目，协助达成产品目标；",
-              "建立千麦商个资型社区和购物指导系统的组件文件夹库，提升设计、开发、跨部门合作的效率；",
-              "负责从零开始设计 Saas商家端CRM，在 Ant Design 的生态下制定开发实现细节规范，梳理数据场景，提出并与产品和开发讨论的实践；",
-              "梳理高效协的方式流程设计经验，与团队一起进步。"
-            ]}
-          />
-          
-          <Experience 
-            period="2018.3 - 2020.4"
-            company="阿思达克集团"
-            location="高级 UI 设计师，广州"
-            title=""
-            descriptions={[
-              "参与阿思达克 App 界面设计，涉及产品流程、交互模式、动效交付定规范 UI 规范等；",
-              "负责调控决策集团项目，独立中心的可工具设备各合作组组的设计方案；",
-              "负责面包 数据考辨系统设计，提出并策略使优化设计方案。"
-            ]}
-          />
-          
-          <Experience 
-            period="2017.7 - 2017.9"
-            company="华南农业大学"
-            location="实习 UI/UX 设计师，广州"
-            title=""
-            descriptions={[
-              "在农教台学习实践过程的页面构建，根据原型图定完成考勤 App 界面设计；",
-              "使用 Element UI 组件库完成后台管理系统界面设计。"
+              "负责建筑动画后期制作，包括logo演绎、区位及业态制作、视频及图片包装等",
+              "参与简单三维动画制作及渲染",
+              "参与制作青岛万达、无锡万达、哈尔滨万达等旅游娱乐三维影片后期制作"
             ]}
           />
         </div>
@@ -201,29 +183,29 @@ export default function Resume() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
             <div>
               <SkillSection 
-                title="界面设计"
-                description="熟练 Figma 和 Sketch 等软件，主要的响应式和桌面设应用设计分析流程设计和企业，将各类系统化方为用户友好界面文学规格和视觉化-SaaS 实践经验，熟悉 Win/Mac端交互特点分析方法，以数据驱动优化产品经验验数据。"
+                title="三维制作"
+                description="精通3Dmax软件，擅长建筑场景和空间设计，能创建高质量三维模型和动画。具备异型幕影片制作的专业经验，能解决复杂的相机动画和场景过渡问题。"
               />
             </div>
             
             <div>
               <SkillSection 
-                title="交互设计"
-                description="基础语言和英标准ademic，熟练使用"
+                title="后期制作"
+                description="精通After Effects和Premiere Pro，擅长视频合成、特效制作、色彩校正和剪辑节奏控制。能处理4K-12K高分辨率素材，熟悉各类展示屏幕的技术规格。"
               />
             </div>
             
             <div>
               <SkillSection 
-                title="动效设计"
-                description="熟练使用 After Effects / Principle / Lottie 设计界面动画，了解两位动画表达方式。"
+                title="项目管理"
+                description="具备12年项目管理经验，熟悉数字视觉制作全流程，擅长资源调配、进度控制和质量把关。建立完善的SOP流程体系，提升团队协作效率和项目交付质量。"
               />
             </div>
             
             <div>
               <SkillSection 
-                title="前端实现"
-                description="了解基础 React (State, Hooks)，基于在设计过程中和前端设计师配合的经验进行设计与前端的基础，有基础的理解。"
+                title="团队领导"
+                description="领导20人跨部门团队高效协作，擅长人才培养和团队建设。创建阶梯式培训和轮岗激励体系，促进团队成员专业成长。具备出色的沟通能力和问题解决能力。"
               />
             </div>
           </div>
