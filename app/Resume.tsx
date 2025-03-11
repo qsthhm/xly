@@ -73,12 +73,10 @@ export default function Resume() {
     return null;
   }
 
-  // 使用Fragment而不是JSX标签
   return (
-    <>
+    <div>
       <Navigation onContactClick={handleContactClick} />
 
-      {/* 简历内容 */}
       <div className="min-h-screen bg-[#F0EFE7] dark:bg-[#141414] text-gray-900 dark:text-gray-200">
         <div className="container mx-auto px-4 py-10 max-w-4xl">
           {/* 个人信息 */}
@@ -254,11 +252,10 @@ export default function Resume() {
         </div>
       </div>
       
-      {/* 联系人弹窗 */}
       <ContactModal 
         isOpen={contactModalOpen} 
         onClose={() => setContactModalOpen(false)} 
       />
-    </>
+    </div>
   );
 }
