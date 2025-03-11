@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
 
@@ -17,22 +15,31 @@ interface ExperienceProps {
 
 const Experience = ({ period, company, location, title, descriptions }: ExperienceProps) => (
   <div className="mb-10">
-    <div className="flex justify-between items-start mb-2">
-      <span className="text-gray-500 dark:text-gray-400 text-sm">{period}</span>
-      <div className="text-right">
-        <h3 className="font-medium text-gray-900 dark:text-gray-200">{company}</h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm">{location}</p>
+    <div className="flex space-x-6">
+      {/* 左侧时间 */}
+      <div className="w-36 flex-shrink-0">
+        <span className="text-gray-500 dark:text-gray-400 text-base">{period}</span>
+      </div>
+      
+      {/* 右侧内容 */}
+      <div className="flex-1">
+        <div className="mb-2">
+          <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200">{company}</h3>
+          <p className="text-gray-500 dark:text-gray-400 text-base">{location}</p>
+        </div>
+        
+        {title && <p className="text-gray-500 dark:text-gray-400 text-base mb-2">{title}</p>}
+        
+        <ul className="space-y-2">
+          {descriptions.map((desc, index) => (
+            <li key={index} className="flex items-start">
+              <span className="text-[#C15F3C] mr-2 mt-1">•</span>
+              <span className="text-gray-700 dark:text-gray-300 text-base">{desc}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
-    <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">{title}</p>
-    <ul className="space-y-2">
-      {descriptions.map((desc, index) => (
-        <li key={index} className="flex items-start">
-          <span className="text-[#C15F3C] mr-2 mt-1">•</span>
-          <span className="text-gray-700 dark:text-gray-300 text-sm">{desc}</span>
-        </li>
-      ))}
-    </ul>
   </div>
 );
 
@@ -44,8 +51,8 @@ interface SkillSectionProps {
 
 const SkillSection = ({ title, description }: SkillSectionProps) => (
   <div className="mb-6">
-    <h3 className="font-medium text-gray-900 dark:text-gray-200 mb-2">{title}</h3>
-    <p className="text-gray-700 dark:text-gray-300 text-sm">{description}</p>
+    <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-2">{title}</h3>
+    <p className="text-gray-700 dark:text-gray-300 text-base">{description}</p>
   </div>
 );
 
@@ -62,11 +69,6 @@ export default function Resume() {
     setContactModalOpen(true);
   }, []);
 
-  // 处理返回作品集按钮点击 - 使用window.location强制刷新
-  const handleBackToHome = () => {
-    window.location.href = '/';
-  };
-
   if (!mounted) {
     return null;
   }
@@ -79,39 +81,41 @@ export default function Resume() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 个人信息 */}
         <div className="mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">李瑞东</h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-10 text-center">许璐雅</h1>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="space-y-8">
             {/* 个人简介 */}
             <div>
-              <h2 className="font-medium text-gray-900 dark:text-gray-200 mb-2">个人简介</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">
+              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">个人简介</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-lg mb-2">
                 6 年 UI/UX 设计工作经验。现就职于 SHEIN 集团担任高级交互设计师。有企业服务、供应链管和消费级电商 SaaS 产品的业务背景。
               </p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
+              <p className="text-gray-700 dark:text-gray-300 text-lg">
                 工作期间积累了国际化、设计系统搭建、数据可视化和体验提量等实践经验，并独立把握流程中的各环节。
               </p>
             </div>
             
             {/* 教育背景 */}
             <div>
-              <h2 className="font-medium text-gray-900 dark:text-gray-200 mb-2">教育背景</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-sm mb-1">华北理工大学(2014-2018)</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">艺术学学士，主修现代数字媒体设计</p>
+              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">教育背景</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">华北理工大学(2014-2018)</p>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">艺术学学士，主修现代数字媒体设计</p>
             </div>
             
             {/* 联系方式 */}
             <div id="contact">
-              <h2 className="font-medium text-gray-900 dark:text-gray-200 mb-2">联系方式</h2>
-              <p className="text-gray-700 dark:text-gray-300 text-sm mb-1">电话：189 2500 1685</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm mb-1">邮箱：lrdbufl@gmail.com</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">微信：lrd.im</p>
+              <h2 className="font-medium text-xl text-gray-900 dark:text-gray-200 mb-2">联系方式</h2>
+              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">电话：189 2500 1685</p>
+              <p className="text-gray-700 dark:text-gray-300 text-lg mb-1">邮箱：lrdbufl@gmail.com</p>
+              <p className="text-gray-700 dark:text-gray-300 text-lg">微信：lrd.im</p>
             </div>
           </div>
         </div>
         
         {/* 工作经历 */}
         <div className="mb-12">
+          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">工作经历</h2>
+          
           <Experience 
             period="2024.2 - 至今"
             company="SHEIN"
@@ -189,6 +193,8 @@ export default function Resume() {
         {/* 技能部分 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
+            <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">专业技能</h2>
+            
             <SkillSection 
               title="界面设计"
               description="熟练 Figma 和 Sketch 等软件，主要的响应式和桌面设应用设计分析流程设计和企业，将各类系统化方为用户友好界面文学规格和视觉化-SaaS 实践经验，熟悉 Win/Mac端交互特点分析方法，以数据驱动优化产品经验验数据。"
@@ -210,16 +216,6 @@ export default function Resume() {
               title="交互设计"
               description="基础语言和英标准ademic，熟练使用"
             />
-            
-            <div className="mt-8">
-              {/* 替换Link组件为按钮，使用window.location.href强制刷新页面 */}
-              <button 
-                onClick={handleBackToHome}
-                className="inline-block px-6 py-3 bg-[#C15F3C] text-white rounded-lg hover:bg-[#A94F32] transition-colors"
-              >
-                查看作品集
-              </button>
-            </div>
           </div>
         </div>
       </div>
