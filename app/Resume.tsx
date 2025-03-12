@@ -5,8 +5,17 @@ import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
 import Image from 'next/image';
 
+// 主要经历组件接口
+interface ExperienceProps {
+  period: string;
+  company: string;
+  location: string;
+  title?: string;
+  descriptions?: string[];
+}
+
 // 主要经历组件
-const Experience = ({ period, company, location, title, descriptions }) => (
+const Experience = ({ period, company, location, title, descriptions }: ExperienceProps) => (
   <div className="mb-8">
     <div className="flex space-x-6">
       {/* 左侧时间 */}
@@ -38,8 +47,20 @@ const Experience = ({ period, company, location, title, descriptions }) => (
   </div>
 );
 
+// 案例展示组件接口
+interface CaseStudyProps {
+  title: string;
+  image: string;
+  time?: string;
+  scale?: string;
+  team?: string;
+  cycle?: string;
+  responsibilities?: string[];
+  results?: string;
+}
+
 // 案例展示组件
-const CaseStudy = ({ title, image, time, scale, team, cycle, responsibilities, results }) => (
+const CaseStudy = ({ title, image, time, scale, team, cycle, responsibilities, results }: CaseStudyProps) => (
   <div className="mb-12">
     <div className="flex space-x-6">
       {/* 左侧图片 */}
