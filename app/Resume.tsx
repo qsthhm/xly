@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import ContactModal from './components/ContactModal';
 import Navigation from './components/Navigation';
+import Image from 'next/image';
 
 // 主要经历组件
 interface ExperienceProps {
@@ -17,14 +18,14 @@ const Experience = ({ period, company, location, title, descriptions }: Experien
   <div className="mb-8">
     <div className="flex space-x-6">
       {/* 左侧时间 */}
-      <div className="w-36 flex-shrink-0">
+      <div className="w-28 flex-shrink-0">
         <span className="text-gray-500 dark:text-gray-400 text-base">{period}</span>
       </div>
       
       {/* 右侧内容 */}
       <div className="flex-1">
         <div className="mb-2">
-          <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200">{company}</h3>
+          <h3 className="font-bold text-lg text-gray-900 dark:text-gray-200">{company}</h3>
           <p className="text-gray-500 dark:text-gray-400 text-base">{location}</p>
         </div>
         
@@ -45,16 +46,84 @@ const Experience = ({ period, company, location, title, descriptions }: Experien
   </div>
 );
 
-// 技能组件
-interface SkillSectionProps {
+// 案例展示组件
+interface CaseStudyProps {
   title: string;
-  description: string;
+  image: string;
+  time?: string;
+  scale?: string;
+  team?: string;
+  cycle?: string;
+  responsibilities?: string[];
+  results?: string;
 }
 
-const SkillSection = ({ title, description }: SkillSectionProps) => (
-  <div className="mb-6">
-    <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">{title}</h3>
-    <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{description}</p>
+const CaseStudy = ({ title, image, time, scale, team, cycle, responsibilities, results }: CaseStudyProps) => (
+  <div className="mb-12">
+    <div className="flex space-x-6">
+      {/* 左侧图片 */}
+      <div className="w-28 flex-shrink-0">
+        <div className="relative w-full h-16 bg-gray-100 dark:bg-gray-800 rounded overflow-hidden">
+          <Image 
+            src={image} 
+            alt={title}
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
+      
+      {/* 右侧内容 */}
+      <div className="flex-1">
+        <h3 className="font-bold text-lg text-gray-900 dark:text-gray-200 mb-3">{title}</h3>
+        
+        <div className="mb-3">
+          {time && (
+            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+              <span className="font-medium">项目时间：</span>{time}
+            </p>
+          )}
+          
+          {scale && (
+            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+              <span className="font-medium">项目规模：</span>{scale}
+            </p>
+          )}
+          
+          {team && (
+            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
+              <span className="font-medium">团队规模：</span>{team}
+            </p>
+          )}
+          
+          {cycle && (
+            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+              <span className="font-medium">制作周期：</span>{cycle}
+            </p>
+          )}
+        </div>
+        
+        {responsibilities && responsibilities.length > 0 && (
+          <div className="mb-3">
+            <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
+            <ul className="space-y-1.5">
+              {responsibilities.map((resp, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-[#C15F3C] dark:text-[#C15F3C] mr-2 mt-1">•</span>
+                  <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{resp}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {results && (
+          <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+            <span className="font-medium">项目成果：</span>{results}
+          </p>
+        )}
+      </div>
+    </div>
   </div>
 );
 
@@ -86,7 +155,11 @@ export default function Resume() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">许璐雅</h1>
-              <p className="text-gray-700 dark:text-gray-300 text-base">12年经验 · 数字视觉领域专家 · 项目经理</p>
+              <p className="text-gray-500 dark:text-gray-400 text-base">
+                12年经验 <span className="mx-1.5 text-gray-400 dark:text-gray-500">|</span> 
+                数字视觉领域专家 <span className="mx-1.5 text-gray-400 dark:text-gray-500">|</span> 
+                项目经理
+              </p>
             </div>
             
             <a 
@@ -103,7 +176,7 @@ export default function Resume() {
           
           <div className="space-y-8">
             <div>
-              <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-4">个人简介</h2>
+              <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-200 mb-4">个人简介</h2>
               <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
                 12年数字视觉领域经验(建筑动画7年和数字展馆5年)，精通三维可视化全流程管理。主导200+商业项目交付，包括120+地产影片和30+政企展厅，服务万达、保利、金茂等TOP10房企及政府重点项目。
               </p>
@@ -111,12 +184,12 @@ export default function Resume() {
                 技术实力：精通全流程数字视觉制作和技术方案落地，掌握3Dmax/AE/PR高级应用，专注异型幕影片制作和沉浸式体验设计。管理20人团队高效协作，建立标准化SOP体系，项目交付准时率提升35%，客户满意度达92%。
               </p>
             </div>
-          </div>
-        </div>
+        {/* 个人简介和主要经历之间的分隔线 */}
+        <div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>
         
         {/* 主要经历 */}
         <div className="mb-12">
-          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">主要经历</h2>
+          <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-200 mb-6">主要经历</h2>
           
           <Experience 
             period="2021.05 - 至今"
@@ -184,37 +257,70 @@ export default function Resume() {
           />
         </div>
         
+        {/* 分隔线 */}
+        <div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>
+        
         {/* 案例展示 */}
         <div>
-          <h2 className="font-medium text-2xl text-gray-900 dark:text-gray-200 mb-6">案例展示</h2>
+          <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-200 mb-6">案例展示</h2>
           
-          <div className="space-y-12">
-            <div>
-              <h3 className="font-medium text-lg text-gray-900 dark:text-gray-200 mb-3">舟山城市展示馆-《飞跃舟山》</h3>
-              <div className="mb-3">
-                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
-                  <span className="font-medium">项目时间：</span>2023年6月-9月
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-2">
-                  <span className="font-medium">项目规模：</span>五折幕沉浸式影院，全三维场景渲染，分辨率达12K，帧率30fps，约9分钟
-                </p>
-                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
-                  <span className="font-medium">团队规模：</span>核心制作团队12人，包括三维建模师、动画师、特效师、音效师等
-                </p>
-              </div>
-              <div className="mb-3">
-                <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed font-medium mb-2">主要职责：</p>
-                <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-gray-500 mr-2 mt-1">•</span>
-                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">主导影片整体创意方向，设计舟山群岛主题故事线，打造具有视觉冲击力的叙事结构</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-gray-500 mr-2 mt-1">•</span>
-                    <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">负责所有三维镜头的设计与实现，包括镜头走向、转场设计、场景衔接等</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-gray-500 mr-2 mt-1">•</span>
+          <div className="space-y-2">
+            <CaseStudy
+              title="舟山城市展示馆-《飞跃舟山》" 
+              image="/img/01.png"
+              time="2023年6月-9月"
+              scale="五折幕沉浸式影院，全三维场景渲染，分辨率达12K，帧率30fps，约9分钟"
+              team="核心制作团队12人，包括三维建模师、动画师、特效师、音效师等"
+              responsibilities={[
+                "主导影片整体创意方向，设计舟山群岛主题故事线，打造具有视觉冲击力的叙事结构",
+                "负责所有三维镜头的设计与实现，包括镜头走向、转场设计、场景衔接等",
+                "协调团队完成全三维场景的建模、渲染及特效制作，优化12K分辨率下的视觉效果",
+                "统筹12人团队的分工与协作，制定详细项目计划，确保项目按时高质量交付"
+              ]}
+              results="影片成功落地并成为舟山城市展示馆的核心展项，获得参观者与馆方一致好评。通过该项目，展现了在大型沉浸式影片制作中的全流程管理能力、三维视觉设计能力及团队协作能力。"
+            />
+            
+            <CaseStudy
+              title="2022博博会-《华夏万载》" 
+              image="/img/02.png"
+              time="2022年3月-8月"
+              scale="瀑布屏沉浸式影片，分辨率4K，帧率30fps，融合水墨风、三维实景、动态特效等多重视觉风格，时长4分30秒"
+              team="12人跨领域团队（C4D、3ds Max、AE、PR等）"
+              responsibilities={[
+                "配合策划团队，设计从史前文明到现代科技的内容框架，整合水墨风与三维实景双重风格",
+                "主导关键场景的三维镜头设计，监督跨朝代场景的无缝转场与瀑布屏适配",
+                "协调多软件协作，带队完成现场投放测试，确保展览期间零故障运行"
+              ]}
+              results="影片成为博博会热门展项，日均吸引超3000人次观看，多家媒体报道其以创新形式激活传统文化。超70%的参展家长带孩子重复观看，部分观众现场记录影片知识点，实现文化传播与教育功能双赢。"
+            />
+            
+            <CaseStudy
+              title="鸦片战争纪念馆" 
+              image="/img/03.png"
+              time="2022年7月"
+              scale="投影（6K分辨率）+ LED全息（4K分辨率），帧率30fps，时长9分30秒"
+              team="16人跨领域团队（策划、拍摄、三维制作、后期合成等）"
+              cycle="半个月（含绿幕抠像、三维制作及后期合成）"
+              responsibilities={[
+                "协调演员、舞蹈拍摄及抠像工作，确保历史场景的真实感与艺术性",
+                "主导定海城三维还原、战争场景制作及人物与场景的合成，把控相机动画与单帧效果",
+                "在极短制作周期内高效推进项目，确保各环节无缝衔接，返工率低于行业平均水平"
+              ]}
+              results="影片成功落地，成为舟山鸦片战争纪念馆的核心展项，日均接待游客超500人次，获馆方与观众一致好评。在极短周期内高质量交付，展现了团队的高效协作与项目管理能力。"
+            />
+            
+            <CaseStudy
+              title="陕北三战三捷纪念馆" 
+              image="/img/01.png"
+              scale="以投影形式，结合油画背景，上方空白区域用于播放视频素材，下方油画区域结合山地表现战场作战场面"
+              responsibilities={[
+                "解决人物动作、运动流线问题，统筹项目全流程管理",
+                "协调策划、设计、技术团队，确保项目按时交付"
+              ]}
+              results="项目在规定时间提前完成现场测试，确保客户顺利接待重要领导。"
+            />
+          </div>
+        </div>•</span>
                     <span className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">协调团队完成全三维场景的建模、渲染及特效制作，优化12K分辨率下的视觉效果</span>
                   </li>
                   <li className="flex items-start">
